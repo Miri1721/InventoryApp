@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using InventoryApp.Mobile.Services;
+using Microsoft.Extensions.Logging;
 
 namespace InventoryApp.Mobile
 {
@@ -14,10 +15,7 @@ namespace InventoryApp.Mobile
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
-
-#if DEBUG
-    		builder.Logging.AddDebug();
-#endif
+            builder.Services.AddSingleton<AuthApiService>();
 
             return builder.Build();
         }

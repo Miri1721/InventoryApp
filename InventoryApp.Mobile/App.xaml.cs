@@ -1,12 +1,14 @@
-﻿namespace InventoryApp.Mobile
-{
-    public partial class App : Application
-    {
-        public App()
-        {
-            InitializeComponent();
+﻿using InventoryApp.Mobile.Services;
+using InventoryApp.Mobile.Views;
 
-            MainPage = new AppShell();
-        }
+namespace InventoryApp.Mobile;
+
+public partial class App : Application
+{
+    public App(AuthApiService authApiService)
+    {
+        InitializeComponent();
+
+        MainPage = new NavigationPage(new LoginPage(authApiService));
     }
 }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventoryApp.Mobile.Views.RegisterPage"
+             Title="Register">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="12">
+
+            <Label Text="Register"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+
+            <Entry x:Name="FirstNameEntry" Placeholder="First Name" />
+            <Entry x:Name="LastNameEntry" Placeholder="Last Name" />
+            <Entry x:Name="IdNumberEntry" Placeholder="ID Number" Keyboard="Numeric" />
+            <Entry x:Name="EmailEntry" Placeholder="Email" Keyboard="Email" />
+            <Entry x:Name="OrganizationNameEntry" Placeholder="Organization Name" />
+
+            <Picker x:Name="OrganizationTypePicker"
+                    Title="Select Organization Type">
+                <Picker.Items>
+                    <x:String>Cafe</x:String>
+                    <x:String>Restaurant</x:String>
+                    <x:String>Clothes Shop</x:String>
+                    <x:String>Kindergarten</x:String>
+                    <x:String>Grocery Store</x:String>
+                    <x:String>Bakery</x:String>
+                    <x:String>Pharmacy</x:String>
+                    <x:String>Office</x:String>
+                    <x:String>Flower Shop</x:String>
+                    <x:String>Other</x:String>
+                </Picker.Items>
+            </Picker>
+
+            <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True" />
+            <Entry x:Name="ConfirmPasswordEntry" Placeholder="Confirm Password" IsPassword="True" />
+
+            <Button Text="Register"
+                    Clicked="OnRegisterClicked" />
+
+            <Label x:Name="MessageLabel"
+                   TextColor="Red"
+                   FontSize="14" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

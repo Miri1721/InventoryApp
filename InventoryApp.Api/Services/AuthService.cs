@@ -1,12 +1,17 @@
 ﻿using InventoryApp.Api.DTOs;
 using InventoryApp.Api.Models;
+using MongoDB.Driver;
 
 namespace InventoryApp.Api.Services
 {
     public class AuthService : IAuthService
     {
-        private static readonly List<Organization> _organizations = new();
-        private static readonly List<User> _users = new();
+        private readonly MongoDbService _mongoDbService;
+
+        public AuthService(MongoDbService mongoDbService)
+        {
+            _mongoDbService = mongoDbService;
+        }
 
         public AuthResponseDto Register(RegisterRequestDto request)
         {
@@ -35,7 +40,11 @@ namespace InventoryApp.Api.Services
                 };
             }
 
-            if (_users.Any(u => u.Email.Equals(request.Email, StringComparison.OrdinalIgnoreCase)))
+            var existingUserByEmail = _mongoDbService.Users
+                .Find(u => u.Email.ToLower() == request.Email.ToLower())
+                .FirstOrDefault();
+
+            if (existingUserByEmail != null)
             {
                 return new AuthResponseDto
                 {
@@ -44,7 +53,11 @@ namespace InventoryApp.Api.Services
                 };
             }
 
-            if (_users.Any(u => u.IdNumber == request.IdNumber))
+            var existingUserByIdNumber = _mongoDbService.Users
+                .Find(u => u.IdNumber == request.IdNumber)
+                .FirstOrDefault();
+
+            if (existingUserByIdNumber != null)
             {
                 return new AuthResponseDto
                 {
@@ -53,8 +66,9 @@ namespace InventoryApp.Api.Services
                 };
             }
 
-            var existingOrganization = _organizations.FirstOrDefault(o =>
-                o.Name.Equals(request.OrganizationName, StringComparison.OrdinalIgnoreCase));
+            var existingOrganization = _mongoDbService.Organizations
+                .Find(o => o.Name.ToLower() == request.OrganizationName.ToLower())
+                .FirstOrDefault();
 
             Organization organization;
             string role;
@@ -67,7 +81,7 @@ namespace InventoryApp.Api.Services
                     Type = request.OrganizationType
                 };
 
-                _organizations.Add(organization);
+                _mongoDbService.Organizations.InsertOne(organization);
                 role = "Manager";
             }
             else
@@ -87,7 +101,7 @@ namespace InventoryApp.Api.Services
                 OrganizationId = organization.OrganizationId
             };
 
-            _users.Add(user);
+            _mongoDbService.Users.InsertOne(user);
 
             return new AuthResponseDto
             {
@@ -112,10 +126,12 @@ namespace InventoryApp.Api.Services
                 };
             }
 
-            var user = _users.FirstOrDefault(u =>
-                u.Email.Equals(request.Email, StringComparison.OrdinalIgnoreCase) &&
-                u.Password == request.Password &&
-                u.IsActive);
+            var user = _mongoDbService.Users
+                .Find(u =>
+                    u.Email.ToLower() == request.Email.ToLower() &&
+                    u.Password == request.Password &&
+                    u.IsActive)
+                .FirstOrDefault();
 
             if (user == null)
             {
@@ -126,7 +142,9 @@ namespace InventoryApp.Api.Services
                 };
             }
 
-            var organization = _organizations.FirstOrDefault(o => o.OrganizationId == user.OrganizationId);
+            var organization = _mongoDbService.Organizations
+                .Find(o => o.OrganizationId == user.OrganizationId)
+                .FirstOrDefault();
 
             return new AuthResponseDto
             {
