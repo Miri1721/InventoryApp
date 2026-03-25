@@ -6,5 +6,8 @@
         public string DatabaseName { get; set; } = string.Empty;
         public string UsersCollectionName { get; set; } = string.Empty;
         public string OrganizationsCollectionName { get; set; } = string.Empty;
+        public string CategoriesCollectionName { get; set; } = string.Empty;
+        public string ItemsCollectionName { get; set; } = string.Empty;
+        public string StockTransactionsCollectionName { get; set; } = string.Empty;
     }
 }

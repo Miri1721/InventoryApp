@@ -8,6 +8,9 @@ namespace InventoryApp.Api.Services
     {
         public IMongoCollection<User> Users { get; }
         public IMongoCollection<Organization> Organizations { get; }
+        public IMongoCollection<Category> Categories { get; }
+        public IMongoCollection<Item> Items { get; }
+        //public IMongoCollection<StockTransaction> StockTransactions { get; }
 
         public MongoDbService(IOptions<MongoDbSettings> mongoDbSettings)
         {
@@ -16,6 +19,9 @@ namespace InventoryApp.Api.Services
 
             Users = mongoDatabase.GetCollection<User>(mongoDbSettings.Value.UsersCollectionName);
             Organizations = mongoDatabase.GetCollection<Organization>(mongoDbSettings.Value.OrganizationsCollectionName);
+            Categories = mongoDatabase.GetCollection<Category>(mongoDbSettings.Value.CategoriesCollectionName);
+            Items = mongoDatabase.GetCollection<Item>(mongoDbSettings.Value.ItemsCollectionName);
+            //StockTransactions = mongoDatabase.GetCollection<StockTransaction>(mongoDbSettings.Value.StockTransactionsCollectionName);
         }
     }
 }

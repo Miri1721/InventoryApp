@@ -13,7 +13,10 @@ namespace InventoryApp.Api.Models
         public string LastName { get; set; } = string.Empty;
         public string IdNumber { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
+
+        //store only the hash, never the plain password:
+        public string PasswordHash { get; set; } = string.Empty;
+
         public string Role { get; set; } = string.Empty;
 
         [BsonRepresentation(BsonType.String)]

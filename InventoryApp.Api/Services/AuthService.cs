@@ -1,5 +1,6 @@
 ﻿using InventoryApp.Api.DTOs;
 using InventoryApp.Api.Models;
+using Microsoft.AspNetCore.Identity;
 using MongoDB.Driver;
 
 namespace InventoryApp.Api.Services
@@ -7,10 +8,12 @@ namespace InventoryApp.Api.Services
     public class AuthService : IAuthService
     {
         private readonly MongoDbService _mongoDbService;
+        private readonly PasswordHasher<User> _passwordHasher;
 
         public AuthService(MongoDbService mongoDbService)
         {
             _mongoDbService = mongoDbService;
+            _passwordHasher = new PasswordHasher<User>();
         }
 
         public AuthResponseDto Register(RegisterRequestDto request)
@@ -96,10 +99,11 @@ namespace InventoryApp.Api.Services
                 LastName = request.LastName,
                 IdNumber = request.IdNumber,
                 Email = request.Email,
-                Password = request.Password,
                 Role = role,
                 OrganizationId = organization.OrganizationId
             };
+
+            user.PasswordHash = _passwordHasher.HashPassword(user, request.Password);
 
             _mongoDbService.Users.InsertOne(user);
 
@@ -129,11 +133,24 @@ namespace InventoryApp.Api.Services
             var user = _mongoDbService.Users
                 .Find(u =>
                     u.Email.ToLower() == request.Email.ToLower() &&
-                    u.Password == request.Password &&
                     u.IsActive)
                 .FirstOrDefault();
 
             if (user == null)
+            {
+                return new AuthResponseDto
+                {
+                    Success = false,
+                    Message = "Invalid email or password."
+                };
+            }
+
+            var verifyResult = _passwordHasher.VerifyHashedPassword(
+                user,
+                user.PasswordHash,
+                request.Password);
+
+            if (verifyResult == PasswordVerificationResult.Failed)
             {
                 return new AuthResponseDto
                 {
