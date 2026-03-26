@@ -6,34 +6,19 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="15">
+            <Label Text="Inventory App" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
 
-            <Label Text="Inventory App"
-                   FontSize="28"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center" />
+            <Label Text="Login" FontSize="22" HorizontalOptions="Center" />
 
-            <Label Text="Login"
-                   FontSize="22"
-                   HorizontalOptions="Center" />
+            <Entry x:Name="EmailEntry" Placeholder="Email" Keyboard="Email" />
 
-            <Entry x:Name="EmailEntry"
-                   Placeholder="Email"
-                   Keyboard="Email" />
+            <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True" />
 
-            <Entry x:Name="PasswordEntry"
-                   Placeholder="Password"
-                   IsPassword="True" />
+            <Button Text="Login" Clicked="OnLoginClicked" />
 
-            <Button Text="Login"
-                    Clicked="OnLoginClicked" />
+            <Button Text="Go to Register" Clicked="OnGoToRegisterClicked" />
 
-            <Button Text="Go to Register"
-                    Clicked="OnGoToRegisterClicked" />
-
-            <Label x:Name="MessageLabel"
-                   TextColor="Red"
-                   FontSize="14" />
-
+            <Label x:Name="MessageLabel" TextColor="Red" FontSize="14" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

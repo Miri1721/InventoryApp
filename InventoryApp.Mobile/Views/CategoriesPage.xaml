@@ -5,15 +5,8 @@
              Title="Categories">
 
     <VerticalStackLayout Padding="20" Spacing="15">
-        <Label Text="Categories"
-               FontSize="28"
-               FontAttributes="Bold"
-               HorizontalOptions="Center" />
-
-        <Label x:Name="MessageLabel"
-               TextColor="Red"
-               FontSize="14" />
-        
+        <Label Text="Categories" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
+        <Label x:Name="MessageLabel" TextColor="Red" FontSize="14" />
         <Button Text="Add Category" Clicked="OnAddCategoryClicked" />
         
         <CollectionView x:Name="CategoriesCollectionView">
@@ -21,11 +14,8 @@
                 <DataTemplate>
                     <Frame Padding="12" Margin="0,5" BorderColor="LightGray">
                         <VerticalStackLayout>
-                            <Label Text="{Binding Name}"
-                                   FontSize="20"
-                                   FontAttributes="Bold" />
-                            <Label Text="{Binding Description}"
-                                   FontSize="14" />
+                            <Label Text="{Binding Name}" FontSize="20" FontAttributes="Bold" />
+                            <Label Text="{Binding Description}" FontSize="14" />
                         </VerticalStackLayout>
                     </Frame>
                 </DataTemplate>

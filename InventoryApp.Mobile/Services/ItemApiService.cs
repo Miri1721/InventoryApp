@@ -31,8 +31,8 @@ namespace InventoryApp.Mobile.Services
 
         public async Task<bool> DeactivateAsync(Guid itemId)
         {
-            var result = await DeleteAsync($"api/Item/{itemId}");
-            return result.Success;
+            var response = await _httpClient.DeleteAsync($"api/Item/{itemId}");
+            return response.IsSuccessStatusCode;
         }
     }
 }

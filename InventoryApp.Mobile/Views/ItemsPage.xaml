@@ -14,14 +14,15 @@
                TextColor="Red"
                FontSize="14" />
 
-        <Button Text="Edit" Clicked="OnEditClicked" CommandParameter="{Binding .}" />
-        
-        <Button Text="Add Item" Clicked="OnAddItemClicked" />
-        
+        <Button Text="Add Item"
+                Clicked="OnAddItemClicked" />
+
         <CollectionView x:Name="ItemsCollectionView">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Padding="12" Margin="0,5" BorderColor="LightGray">
+                    <Frame Padding="12"
+                           Margin="0,5"
+                           BorderColor="LightGray">
                         <VerticalStackLayout Spacing="4">
                             <Label Text="{Binding Name}"
                                    FontSize="20"
@@ -34,6 +35,14 @@
                                    FontSize="14" />
                             <Label Text="{Binding MinimumThreshold, StringFormat='Minimum Threshold: {0}'}"
                                    FontSize="14" />
+
+                            <Button Text="Edit"
+                                    Clicked="OnEditClicked"
+                                    CommandParameter="{Binding .}" />
+
+                            <Button Text="Deactivate"
+                                    Clicked="OnDeactivateClicked"
+                                    CommandParameter="{Binding .}" />
                         </VerticalStackLayout>
                     </Frame>
                 </DataTemplate>

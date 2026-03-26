@@ -6,42 +6,23 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
+            <Label Text="Create Item" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
 
-            <Label Text="Create Item"
-                   FontSize="28"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center" />
+            <Entry x:Name="NameEntry" Placeholder="Item name" />
 
-            <Entry x:Name="NameEntry"
-                   Placeholder="Item name" />
+            <Editor x:Name="DescriptionEditor" Placeholder="Description" AutoSize="TextChanges" HeightRequest="100" />
 
-            <Editor x:Name="DescriptionEditor"
-                    Placeholder="Description"
-                    AutoSize="TextChanges"
-                    HeightRequest="100" />
+            <Picker x:Name="CategoryPicker" Title="Select Category" ItemDisplayBinding="{Binding Name}" />
 
-            <Picker x:Name="CategoryPicker"
-                    Title="Select Category"
-                    ItemDisplayBinding="{Binding Name}" />
+            <Entry x:Name="UnitEntry" Placeholder="Unit (e.g. Pack, Carton, Tray)" />
 
-            <Entry x:Name="UnitEntry"
-                   Placeholder="Unit (e.g. Pack, Carton, Tray)" />
+            <Entry x:Name="CurrentQuantityEntry" Placeholder="Current quantity" Keyboard="Numeric" />
 
-            <Entry x:Name="CurrentQuantityEntry"
-                   Placeholder="Current quantity"
-                   Keyboard="Numeric" />
+            <Entry x:Name="MinimumThresholdEntry" Placeholder="Minimum threshold" Keyboard="Numeric" />
 
-            <Entry x:Name="MinimumThresholdEntry"
-                   Placeholder="Minimum threshold"
-                   Keyboard="Numeric" />
+            <Button Text="Save Item" Clicked="OnSaveClicked" />
 
-            <Button Text="Save Item"
-                    Clicked="OnSaveClicked" />
-
-            <Label x:Name="MessageLabel"
-                   TextColor="Red"
-                   FontSize="14" />
-
+            <Label x:Name="MessageLabel" TextColor="Red" FontSize="14" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

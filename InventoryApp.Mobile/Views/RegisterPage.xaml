@@ -6,11 +6,7 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="12">
-
-            <Label Text="Register"
-                   FontSize="24"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center" />
+            <Label Text="Register" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
 
             <Entry x:Name="FirstNameEntry" Placeholder="First Name" />
             <Entry x:Name="LastNameEntry" Placeholder="Last Name" />
@@ -37,13 +33,9 @@
             <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True" />
             <Entry x:Name="ConfirmPasswordEntry" Placeholder="Confirm Password" IsPassword="True" />
 
-            <Button Text="Register"
-                    Clicked="OnRegisterClicked" />
+            <Button Text="Register" Clicked="OnRegisterClicked" />
 
-            <Label x:Name="MessageLabel"
-                   TextColor="Red"
-                   FontSize="14" />
-
+            <Label x:Name="MessageLabel" TextColor="Red" FontSize="14" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

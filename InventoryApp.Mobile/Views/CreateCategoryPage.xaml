@@ -6,27 +6,15 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
+            <Label Text="Create Category" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
 
-            <Label Text="Create Category"
-                   FontSize="28"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center" />
+            <Entry x:Name="NameEntry" Placeholder="Category name" />
 
-            <Entry x:Name="NameEntry"
-                   Placeholder="Category name" />
+            <Editor x:Name="DescriptionEditor" Placeholder="Description" AutoSize="TextChanges" HeightRequest="120" />
 
-            <Editor x:Name="DescriptionEditor"
-                    Placeholder="Description"
-                    AutoSize="TextChanges"
-                    HeightRequest="120" />
+            <Button Text="Save Category" Clicked="OnSaveClicked" />
 
-            <Button Text="Save Category"
-                    Clicked="OnSaveClicked" />
-
-            <Label x:Name="MessageLabel"
-                   TextColor="Red"
-                   FontSize="14" />
-
+            <Label x:Name="MessageLabel" TextColor="Red" FontSize="14" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

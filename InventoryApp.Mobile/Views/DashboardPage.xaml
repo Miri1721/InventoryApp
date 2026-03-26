@@ -6,25 +6,17 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="15">
+            <Label Text="Dashboard" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
 
-            <Label Text="Dashboard"
-                   FontSize="28"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center" />
-
-            <Label x:Name="WelcomeLabel"
-                   FontSize="20" />
+            <Label x:Name="WelcomeLabel" FontSize="20" />
 
             <Label x:Name="OrganizationIdLabel" FontSize="16"/>
 
-            <Label x:Name="EmailLabel"
-                   FontSize="16" />
+            <Label x:Name="EmailLabel" FontSize="16" />
 
-            <Label x:Name="RoleLabel"
-                   FontSize="16" />
+            <Label x:Name="RoleLabel" FontSize="16" />
 
-            <Label x:Name="OrganizationLabel"
-                   FontSize="16" />
+            <Label x:Name="OrganizationLabel" FontSize="16" />
 
             <Button Text="Categories" Clicked="OnCategoriesClicked" />
 

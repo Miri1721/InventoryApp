@@ -49,5 +49,47 @@ namespace InventoryApp.Mobile.Views
                 await Navigation.PushAsync(new EditItemPage(_itemApiService, item));
             }
         }
+
+        private async void OnDeactivateClicked(object sender, EventArgs e)
+        {
+            if (sender is not Button button || button.CommandParameter is not ItemModel item)
+                return;
+
+            bool confirm = await DisplayAlert(
+                "Confirm",
+                $"Are you sure you want to deactivate '{item.Name}'?",
+                "Yes",
+                "No");
+
+            if (!confirm)
+                return;
+
+            try
+            {
+                var success = await _itemApiService.DeactivateAsync(item.ItemId);
+
+                if (!success)
+                {
+                    MessageLabel.Text = "Failed to deactivate item.";
+                    return;
+                }
+
+                var items = await _itemApiService.GetByOrganizationAsync(AppSession.OrganizationId);
+                ItemsCollectionView.ItemsSource = items;
+
+                if (items.Count == 0)
+                {
+                    MessageLabel.Text = "No items found.";
+                }
+                else
+                {
+                    MessageLabel.Text = string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageLabel.Text = $"Failed to deactivate item: {ex.Message}";
+            }
+        }
     }
 }

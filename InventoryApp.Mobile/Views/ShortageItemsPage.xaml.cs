@@ -42,4 +42,46 @@ public partial class ShortageItemsPage : ContentPage
             await Navigation.PushAsync(new EditItemPage(_itemApiService, item));
         }
     }
+
+    private async void OnDeactivateClicked(object sender, EventArgs e)
+    {
+        if (sender is not Button button || button.CommandParameter is not ItemModel item)
+            return;
+
+        bool confirm = await DisplayAlert(
+            "Confirm",
+            $"Are you sure you want to deactivate '{item.Name}'?",
+            "Yes",
+            "No");
+
+        if (!confirm)
+            return;
+
+        try
+        {
+            var success = await _itemApiService.DeactivateAsync(item.ItemId);
+
+            if (!success)
+            {
+                MessageLabel.Text = "Failed to deactivate item.";
+                return;
+            }
+
+            var items = await _itemApiService.GetShortageAsync(AppSession.OrganizationId);
+            ShortageItemsCollectionView.ItemsSource = items;
+
+            if (items.Count == 0)
+            {
+                MessageLabel.Text = "No shortage items found.";
+            }
+            else
+            {
+                MessageLabel.Text = string.Empty;
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageLabel.Text = $"Failed to deactivate item: {ex.Message}";
+        }
+    }
 }
