@@ -15,7 +15,10 @@ namespace InventoryApp.Mobile
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
             builder.Services.AddSingleton<AuthApiService>();
+            builder.Services.AddSingleton<CategoryApiService>();
+            builder.Services.AddSingleton<ItemApiService>();
 
             return builder.Build();
         }

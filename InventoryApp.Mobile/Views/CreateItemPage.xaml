@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventoryApp.Mobile.Views.CreateItemPage"
+             Title="Create Item">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Create Item"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+
+            <Entry x:Name="NameEntry"
+                   Placeholder="Item name" />
+
+            <Editor x:Name="DescriptionEditor"
+                    Placeholder="Description"
+                    AutoSize="TextChanges"
+                    HeightRequest="100" />
+
+            <Picker x:Name="CategoryPicker"
+                    Title="Select Category"
+                    ItemDisplayBinding="{Binding Name}" />
+
+            <Entry x:Name="UnitEntry"
+                   Placeholder="Unit (e.g. Pack, Carton, Tray)" />
+
+            <Entry x:Name="CurrentQuantityEntry"
+                   Placeholder="Current quantity"
+                   Keyboard="Numeric" />
+
+            <Entry x:Name="MinimumThresholdEntry"
+                   Placeholder="Minimum threshold"
+                   Keyboard="Numeric" />
+
+            <Button Text="Save Item"
+                    Clicked="OnSaveClicked" />
+
+            <Label x:Name="MessageLabel"
+                   TextColor="Red"
+                   FontSize="14" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

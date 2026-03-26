@@ -8,5 +8,6 @@
         public string? Email { get; set; }
         public string? Role { get; set; }
         public string? OrganizationName { get; set; }
+        public Guid? OrganizationId { get; set; }
     }
 }

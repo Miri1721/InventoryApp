@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventoryApp.Mobile.Views.CreateCategoryPage"
+             Title="Create Category">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Create Category"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+
+            <Entry x:Name="NameEntry"
+                   Placeholder="Category name" />
+
+            <Editor x:Name="DescriptionEditor"
+                    Placeholder="Description"
+                    AutoSize="TextChanges"
+                    HeightRequest="120" />
+
+            <Button Text="Save Category"
+                    Clicked="OnSaveClicked" />
+
+            <Label x:Name="MessageLabel"
+                   TextColor="Red"
+                   FontSize="14" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

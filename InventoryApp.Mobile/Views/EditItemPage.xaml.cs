@@ -1,0 +1,77 @@
+using InventoryApp.Mobile.Models;
+using InventoryApp.Mobile.Services;
+
+namespace InventoryApp.Mobile.Views;
+
+public partial class EditItemPage : ContentPage
+{
+    private readonly ItemApiService _itemApiService;
+    private readonly ItemModel _item;
+
+    public EditItemPage(ItemApiService itemApiService, ItemModel item)
+    {
+        InitializeComponent();
+        _itemApiService = itemApiService;
+        _item = item;
+
+        NameEntry.Text = _item.Name;
+        DescriptionEditor.Text = _item.Description;
+        UnitEntry.Text = _item.Unit;
+        CurrentQuantityEntry.Text = _item.CurrentQuantity.ToString();
+        MinimumThresholdEntry.Text = _item.MinimumThreshold.ToString();
+    }
+
+    private async void OnSaveClicked(object sender, EventArgs e)
+    {
+        MessageLabel.Text = string.Empty;
+
+        try
+        {
+            var name = NameEntry.Text?.Trim() ?? string.Empty;
+            var description = DescriptionEditor.Text?.Trim() ?? string.Empty;
+            var unit = UnitEntry.Text?.Trim() ?? string.Empty;
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                MessageLabel.Text = "Item name is required.";
+                return;
+            }
+
+            if (!double.TryParse(CurrentQuantityEntry.Text, out var currentQuantity))
+            {
+                MessageLabel.Text = "Current quantity must be a valid number.";
+                return;
+            }
+
+            if (!double.TryParse(MinimumThresholdEntry.Text, out var minimumThreshold))
+            {
+                MessageLabel.Text = "Minimum threshold must be a valid number.";
+                return;
+            }
+
+            var request = new UpdateItemRequest
+            {
+                Name = name,
+                Description = description,
+                Unit = unit,
+                CurrentQuantity = currentQuantity,
+                MinimumThreshold = minimumThreshold
+            };
+
+            var success = await _itemApiService.UpdateAsync(_item.ItemId, request);
+
+            if (!success)
+            {
+                MessageLabel.Text = "Failed to update item.";
+                return;
+            }
+
+            await DisplayAlert("Success", "Item updated successfully.", "OK");
+            await Navigation.PopAsync();
+        }
+        catch (Exception ex)
+        {
+            MessageLabel.Text = $"Error: {ex.Message}";
+        }
+    }
+}

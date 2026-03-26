@@ -6,11 +6,18 @@ namespace InventoryApp.Mobile.Views;
 public partial class LoginPage : ContentPage
 {
     private readonly AuthApiService _authApiService;
+    private readonly CategoryApiService _categoryApiService;
+    private readonly ItemApiService _itemApiService;
 
-    public LoginPage(AuthApiService authApiService)
+    public LoginPage(
+     AuthApiService authApiService,
+     CategoryApiService categoryApiService,
+     ItemApiService itemApiService)
     {
         InitializeComponent();
         _authApiService = authApiService;
+        _categoryApiService = categoryApiService;
+        _itemApiService = itemApiService;
     }
 
     private async void OnLoginClicked(object sender, EventArgs e)
@@ -39,7 +46,13 @@ public partial class LoginPage : ContentPage
                 return;
             }
 
-            await Navigation.PushAsync(new DashboardPage(response));
+            AppSession.FullName = response.FullName ?? string.Empty;
+            AppSession.Email = response.Email ?? string.Empty;
+            AppSession.Role = response.Role ?? string.Empty;
+            AppSession.OrganizationName = response.OrganizationName ?? string.Empty;
+            AppSession.OrganizationId = response.OrganizationId ?? Guid.Empty;
+
+            await Navigation.PushAsync(new DashboardPage(_categoryApiService, _itemApiService));
         }
         catch (Exception ex)
         {
