@@ -3,48 +3,52 @@ using InventoryApp.Mobile.Services;
 
 namespace InventoryApp.Mobile.Views;
 
-public partial class ShortageItemsPage : ContentPage
+public partial class CategoryItemsPage : ContentPage
 {
     private readonly ItemApiService _itemApiService;
     private readonly CategoryApiService _categoryApiService;
+    private readonly CategoryModel _category;
 
-    public ShortageItemsPage(ItemApiService itemApiService, CategoryApiService categoryApiService)
+    public CategoryItemsPage(ItemApiService itemApiService, CategoryApiService categoryApiService, CategoryModel category)
     {
         InitializeComponent();
         _itemApiService = itemApiService;
         _categoryApiService = categoryApiService;
+        _category = category;
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
 
+        CategoryTitleLabel.Text = _category.Name;
+        CategoryDescriptionLabel.Text = _category.Description;
+
         try
         {
             MessageLabel.Text = string.Empty;
 
-            var items = await _itemApiService.GetShortageAsync(AppSession.OrganizationId);
-            var categories = await _categoryApiService.GetByOrganizationAsync(AppSession.OrganizationId);
+            var allItems = await _itemApiService.GetByOrganizationAsync(AppSession.OrganizationId);
+            var categoryItems = allItems
+                .Where(i => i.CategoryId == _category.CategoryId)
+                .ToList();
 
-            var categoryMap = categories.ToDictionary(c => c.CategoryId, c => c.Name);
+            ItemsCollectionView.ItemsSource = categoryItems;
 
-            foreach (var item in items)
+            if (categoryItems.Count == 0)
             {
-                if (categoryMap.TryGetValue(item.CategoryId, out var categoryName))
-                    item.CategoryName = categoryName;
-            }
-
-            ShortageItemsCollectionView.ItemsSource = items;
-
-            if (items.Count == 0)
-            {
-                MessageLabel.Text = "No shortage items found.";
+                MessageLabel.Text = "No items found in this category.";
             }
         }
         catch (Exception ex)
         {
-            MessageLabel.Text = $"Failed to load shortage items: {ex.Message}";
+            MessageLabel.Text = $"Failed to load items: {ex.Message}";
         }
+    }
+
+    private async void OnAddItemClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new CreateItemPage(_itemApiService, _categoryApiService, _category));
     }
 
     private async void OnEditClicked(object sender, EventArgs e)
@@ -79,18 +83,13 @@ public partial class ShortageItemsPage : ContentPage
                 return;
             }
 
-            var items = await _itemApiService.GetShortageAsync(AppSession.OrganizationId);
-            var categories = await _categoryApiService.GetByOrganizationAsync(AppSession.OrganizationId);
-            var categoryMap = categories.ToDictionary(c => c.CategoryId, c => c.Name);
+            var allItems = await _itemApiService.GetByOrganizationAsync(AppSession.OrganizationId);
+            var categoryItems = allItems
+                .Where(i => i.CategoryId == _category.CategoryId)
+                .ToList();
 
-            foreach (var refreshedItem in items)
-            {
-                if (categoryMap.TryGetValue(refreshedItem.CategoryId, out var categoryName))
-                    refreshedItem.CategoryName = categoryName;
-            }
-
-            ShortageItemsCollectionView.ItemsSource = items;
-            MessageLabel.Text = items.Count == 0 ? "No shortage items found." : string.Empty;
+            ItemsCollectionView.ItemsSource = categoryItems;
+            MessageLabel.Text = categoryItems.Count == 0 ? "No items found in this category." : string.Empty;
         }
         catch (Exception ex)
         {

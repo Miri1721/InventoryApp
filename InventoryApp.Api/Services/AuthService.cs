@@ -114,7 +114,9 @@ namespace InventoryApp.Api.Services
                 FullName = user.FullName,
                 Email = user.Email,
                 Role = user.Role,
-                OrganizationName = organization.Name
+                OrganizationName = organization.Name,
+                OrganizationId = user.OrganizationId,
+                OrganizationType = organization.Type
             };
         }
 
@@ -171,7 +173,8 @@ namespace InventoryApp.Api.Services
                 Email = user.Email,
                 Role = user.Role,
                 OrganizationName = organization?.Name,
-                OrganizationId = user.OrganizationId
+                OrganizationId = user.OrganizationId,
+                OrganizationType = organization?.Type
             };
         }
     }

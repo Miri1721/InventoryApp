@@ -51,6 +51,7 @@ public partial class LoginPage : ContentPage
             AppSession.Role = response.Role ?? string.Empty;
             AppSession.OrganizationName = response.OrganizationName ?? string.Empty;
             AppSession.OrganizationId = response.OrganizationId ?? Guid.Empty;
+            AppSession.OrganizationType = response.OrganizationType ?? string.Empty;
 
             await Navigation.PushAsync(new DashboardPage(_categoryApiService, _itemApiService));
         }

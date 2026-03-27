@@ -4,18 +4,11 @@
              x:Class="InventoryApp.Mobile.Views.ShortageItemsPage"
              Title="Shortage Items">
 
-    <Grid RowDefinitions="Auto, *"
-          Padding="20">
-
-        <VerticalStackLayout Grid.Row="0"
-                             Spacing="12">
-
-            <Label x:Name="MessageLabel"
-                   TextColor="Red"
-                   FontSize="14"
-                   LineBreakMode="WordWrap" />
+    <Grid RowDefinitions="Auto, *" Padding="20,0,0,0">
+        <VerticalStackLayout Grid.Row="0" Spacing="12">
+            <Label x:Name="MessageLabel" TextColor="Red"
+                   FontSize="14" LineBreakMode="WordWrap" />
         </VerticalStackLayout>
-
         <CollectionView Grid.Row="1"
                         x:Name="ShortageItemsCollectionView"
                         Margin="0,16,0,0"
@@ -32,6 +25,11 @@
                                    FontSize="22"
                                    FontAttributes="Bold"
                                    LineBreakMode="WordWrap" />
+
+                            <Label Text="{Binding CategoryName, StringFormat='Category: {0}'}"
+                                   FontSize="14"
+                                   TextColor="DarkBlue"
+                                   FontAttributes="Bold" />
 
                             <Label Text="{Binding Description}"
                                    FontSize="15"
@@ -69,23 +67,25 @@
                                    FontSize="14" />
 
                             <HorizontalStackLayout Spacing="10">
-                                <Button Grid.Column="0"
-                                        Text="Edit / Restock"
+                                <Button Text="Edit / Restock"
                                         Clicked="OnEditClicked"
                                         CommandParameter="{Binding .}"
-                                       CornerRadius="5" HorizontalOptions="Center"
-  HeightRequest="40"
-  MaximumHeightRequest="140"
-  BackgroundColor="DarkBlue"/>
+                                        CornerRadius="5"
+                                        HorizontalOptions="Center"
+                                        HeightRequest="40"
+                                        MaximumHeightRequest="140"
+                                        BackgroundColor="DarkBlue"
+                                        TextColor="White"/>
 
-                                <Button Grid.Column="1"
-                                        Text="Deactivate"
+                                <Button Text="Deactivate"
                                         Clicked="OnDeactivateClicked"
                                         CommandParameter="{Binding .}"
-                                       CornerRadius="5" HorizontalOptions="Center"
-  HeightRequest="40"
-  MaximumHeightRequest="140"
-  BackgroundColor="DarkBlue"/>
+                                        CornerRadius="5"
+                                        HorizontalOptions="Center"
+                                        HeightRequest="40"
+                                        MaximumHeightRequest="140"
+                                        BackgroundColor="DarkBlue"
+                                        TextColor="White"/>
                             </HorizontalStackLayout>
                         </VerticalStackLayout>
                     </Frame>

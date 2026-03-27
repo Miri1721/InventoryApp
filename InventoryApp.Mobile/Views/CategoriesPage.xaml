@@ -4,16 +4,22 @@
              x:Class="InventoryApp.Mobile.Views.CategoriesPage"
              Title="Categories">
 
-    <Grid RowDefinitions="Auto, *" Padding="20">
-        <VerticalStackLayout Grid.Row="0" Spacing="12">
+    <Grid RowDefinitions="Auto, *" Padding="20,0,0,0">
+        <VerticalStackLayout Grid.Row="0" Spacing="12" HorizontalOptions="Start"
+                             Padding="5,0,0,0">
             <Label x:Name="MessageLabel"
                    TextColor="Red"
                    FontSize="14"
                    LineBreakMode="WordWrap" />
+
             <Button Text="Add Category"
                     Clicked="OnAddCategoryClicked"
-                    CornerRadius="5" HeightRequest="40"
-                    MaximumWidthRequest="180" BackgroundColor="DarkBlue"/>
+                    CornerRadius="5"
+                    HeightRequest="40"
+                    MaximumWidthRequest="180"
+                    HorizontalOptions="Center"
+                    BackgroundColor="DarkBlue"
+                    TextColor="White" />
         </VerticalStackLayout>
 
         <CollectionView Grid.Row="1"
@@ -22,41 +28,68 @@
                         SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Margin="0,0,0,18"
-                           Padding="16"
+                    <Frame Margin="0,0,0,12"
+                           Padding="10"
                            CornerRadius="16"
                            BorderColor="#D9D9D9"
                            HasShadow="False">
-                        <VerticalStackLayout Spacing="7">
+                        <VerticalStackLayout Spacing="8">
                             <Label Text="{Binding Name}"
                                    FontSize="22"
                                    FontAttributes="Bold"
                                    LineBreakMode="WordWrap" />
+
                             <Label Text="{Binding Description}"
                                    FontSize="15"
                                    TextColor="#555555"
                                    LineBreakMode="WordWrap" />
-                            <HorizontalStackLayout Spacing="10">
-                                <Button Grid.Column="0"
-                                        Text="Edit"
+
+                            <FlexLayout Wrap="Wrap"
+                                        Direction="Row"
+                                        JustifyContent="Start"
+                                        AlignItems="Stretch"
+                                        AlignContent="Start">
+
+                                <Button Text="View Items"
+                                        Clicked="OnViewItemsClicked"
+                                        CommandParameter="{Binding .}"
+                                        Margin="0,0,10,5"
+                                        CornerRadius="5"
+                                        HeightRequest="40"
+                                        MinimumWidthRequest="130"
+                                        BackgroundColor="DarkBlue"
+                                        TextColor="White"
+                                        FlexLayout.Basis="150"
+                                        FlexLayout.Grow="1" />
+
+                                <Button Text="Edit"
                                         Clicked="OnEditClicked"
                                         CommandParameter="{Binding .}"
-                                        CornerRadius="5" HeightRequest="40"
-                                        MaximumWidthRequest="180"
-                                        BackgroundColor="DarkBlue"/>
-                                <Button Grid.Column="1"
-                                        Text="Deactivate"
+                                        Margin="0,0,10,5"
+                                        CornerRadius="5"
+                                        HeightRequest="40"
+                                        MinimumWidthRequest="110"
+                                        BackgroundColor="DarkBlue"
+                                        TextColor="White"
+                                        FlexLayout.Basis="120"
+                                        FlexLayout.Grow="1" />
+
+                                <Button Text="Deactivate"
                                         Clicked="OnDeactivateClicked"
                                         CommandParameter="{Binding .}"
-                                        CornerRadius="5" HeightRequest="40"
-                                        MaximumWidthRequest="180"               
-                                        BackgroundColor="DarkBlue"/>
-                            </HorizontalStackLayout>
+                                        Margin="0,0,10,0"
+                                        CornerRadius="5"
+                                        HeightRequest="40"
+                                        MinimumWidthRequest="130"
+                                        BackgroundColor="DarkBlue"
+                                        TextColor="White"
+                                        FlexLayout.Basis="150"
+                                        FlexLayout.Grow="1" />
+                            </FlexLayout>
                         </VerticalStackLayout>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-
     </Grid>
 </ContentPage>

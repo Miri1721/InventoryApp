@@ -4,32 +4,12 @@ using System.Text.Json;
 
 namespace InventoryApp.Mobile.Services
 {
-    public class CategoryApiService
+    public class CategoryApiService : BaseApiService
     {
-        private readonly HttpClient _httpClient;
-        private const string BaseUrl = "https://localhost:7115/";
-
-        public CategoryApiService()
-        {
-            _httpClient = new HttpClient
-            {
-                BaseAddress = new Uri(BaseUrl)
-            };
-        }
-
         public async Task<List<CategoryModel>> GetByOrganizationAsync(Guid organizationId)
         {
-            var response = await _httpClient.GetAsync($"api/Category/organization/{organizationId}");
-
-            if (!response.IsSuccessStatusCode)
-                return new List<CategoryModel>();
-
-            var json = await response.Content.ReadAsStringAsync();
-
-            return JsonSerializer.Deserialize<List<CategoryModel>>(
-                       json,
-                       new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
-                   ?? new List<CategoryModel>();
+            var result = await GetAsync<List<CategoryModel>>($"api/Category/organization/{organizationId}");
+            return result ?? new List<CategoryModel>();
         }
 
         public async Task<bool> CreateAsync(CreateCategoryRequest request)

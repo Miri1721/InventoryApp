@@ -7,12 +7,14 @@ public partial class CreateItemPage : ContentPage
 {
     private readonly ItemApiService _itemApiService;
     private readonly CategoryApiService _categoryApiService;
+    private readonly CategoryModel? _preselectedCategory;
 
-    public CreateItemPage(ItemApiService itemApiService, CategoryApiService categoryApiService)
+    public CreateItemPage(ItemApiService itemApiService, CategoryApiService categoryApiService, CategoryModel? preselectedCategory = null)
     {
         InitializeComponent();
         _itemApiService = itemApiService;
         _categoryApiService = categoryApiService;
+        _preselectedCategory = preselectedCategory;
     }
 
     protected override async void OnAppearing()
@@ -25,6 +27,16 @@ public partial class CreateItemPage : ContentPage
 
             var categories = await _categoryApiService.GetByOrganizationAsync(AppSession.OrganizationId);
             CategoryPicker.ItemsSource = categories;
+
+            if (_preselectedCategory != null)
+            {
+                var selected = categories.FirstOrDefault(c => c.CategoryId == _preselectedCategory.CategoryId);
+                if (selected != null)
+                {
+                    CategoryPicker.SelectedItem = selected;
+                    CategoryPicker.IsEnabled = false;
+                }
+            }
 
             if (categories.Count == 0)
             {

@@ -9,5 +9,6 @@
         public string? Role { get; set; }
         public string? OrganizationName { get; set; }
         public Guid? OrganizationId { get; set; }
+        public string? OrganizationType { get; set; }
     }
 }

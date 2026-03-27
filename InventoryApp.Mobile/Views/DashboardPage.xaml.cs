@@ -21,10 +21,13 @@ public partial class DashboardPage : ContentPage
         base.OnAppearing();
 
         WelcomeLabel.Text = $"Welcome, {AppSession.FullName}";
-        OrganizationIdLabel.Text = $"Organization ID: {AppSession.OrganizationId}";
+        OrganizationLabel.Text = AppSession.OrganizationName;
+        OrganizationTypeLabel.Text = string.IsNullOrWhiteSpace(AppSession.OrganizationType)
+            ? string.Empty
+            : $"Type: {AppSession.OrganizationType}";
         EmailLabel.Text = $"Email: {AppSession.Email}";
         RoleLabel.Text = $"Role: {AppSession.Role}";
-        OrganizationLabel.Text = $"Organization: {AppSession.OrganizationName}";
+        OrganizationIdLabel.Text = $"Organization ID: {AppSession.OrganizationId}";
 
         try
         {
@@ -34,28 +37,23 @@ public partial class DashboardPage : ContentPage
 
             CategoriesCountLabel.Text = $"Categories: {categories.Count}";
             ItemsCountLabel.Text = $"Active Items: {items.Count}";
-            ShortageCountLabel.Text = $"Shortage Items: {shortageItems.Count}";
+            ShortageCountLabel.Text = $"Low Stock Items: {shortageItems.Count}";
         }
         catch (Exception ex)
         {
             CategoriesCountLabel.Text = "Categories: error";
             ItemsCountLabel.Text = "Active Items: error";
-            ShortageCountLabel.Text = $"Shortage Items: error ({ex.Message})";
+            ShortageCountLabel.Text = $"Low Stock Items: error ({ex.Message})";
         }
     }
 
     private async void OnCategoriesClicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new CategoriesPage(_categoryApiService));
-    }
-
-    private async void OnItemsClicked(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new ItemsPage(_itemApiService, _categoryApiService));
+        await Navigation.PushAsync(new CategoriesPage(_categoryApiService, _itemApiService));
     }
 
     private async void OnShortageItemsClicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new ShortageItemsPage(_itemApiService));
+        await Navigation.PushAsync(new ShortageItemsPage(_itemApiService, _categoryApiService));
     }
 }

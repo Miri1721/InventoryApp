@@ -89,8 +89,9 @@
 
             <Button Text="Register"
                     Clicked="OnRegisterClicked"
-                    CornerRadius="12"
-                    HeightRequest="52" />
+                    CornerRadius="5" HeightRequest="40"
+                    MaximumWidthRequest="180" BackgroundColor="DarkBlue"
+                    HorizontalOptions="Center"/>        
 
             <Label x:Name="MessageLabel"
                    TextColor="Red"

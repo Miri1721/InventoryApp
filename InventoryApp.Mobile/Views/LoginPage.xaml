@@ -7,9 +7,9 @@
     <ScrollView>
         <VerticalStackLayout Padding="24"
                              Spacing="14"
-                             VerticalOptions="Center">
+                             VerticalOptions="Start">
 
-            <Label Text="Inventory App"
+            <Label Text="Stockify"
                    FontSize="32"
                    FontAttributes="Bold"
                    HorizontalOptions="Center" />

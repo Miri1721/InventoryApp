@@ -5,90 +5,91 @@
              Title="Dashboard">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20"
-                             Spacing="16">
+        <VerticalStackLayout Padding="20" Spacing="18">
+            <VerticalStackLayout Spacing="8">
+                <Label x:Name="WelcomeLabel"
+                       FontSize="28"
+                       FontAttributes="Bold" />
 
-            <Frame Padding="16"
-                   CornerRadius="16"
-                   BorderColor="#D9D9D9"
-                   HasShadow="False">
-                <VerticalStackLayout Spacing="8">
-                    <Label x:Name="WelcomeLabel"
-                           FontSize="22"
-                           FontAttributes="Bold" />
+                <Label x:Name="OrganizationLabel"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="DarkBlue" />
 
-                    <Label x:Name="OrganizationIdLabel"
-                           FontSize="14"
-                           TextColor="#666666"
-                           LineBreakMode="CharacterWrap" />
+                <Label x:Name="OrganizationTypeLabel"
+                       FontSize="16"
+                       TextColor="#555555" />
 
-                    <Label x:Name="EmailLabel"
-                           FontSize="16" />
+                <Label x:Name="EmailLabel"
+                       FontSize="16" />
 
-                    <Label x:Name="RoleLabel"
-                           FontSize="16" />
+                <Label x:Name="RoleLabel"
+                       FontSize="16" />
 
-                    <Label x:Name="OrganizationLabel"
-                           FontSize="16" />
-                </VerticalStackLayout>
-            </Frame>
+                <Label x:Name="OrganizationIdLabel"
+                       FontSize="13"
+                       TextColor="#777777"
+                       LineBreakMode="CharacterWrap" />
+            </VerticalStackLayout>
 
-            <Frame Padding="16"
-                   CornerRadius="16"
-                   BorderColor="#D9D9D9"
-                   HasShadow="False">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Summary"
-                           FontSize="22"
-                           FontAttributes="Bold" />
+            <!-- Divider -->
+            <BoxView HeightRequest="1"
+                     BackgroundColor="#DDDDDD"
+                     Margin="0,6,0,2" />
 
-                    <Label x:Name="CategoriesCountLabel"
-                           FontSize="16" />
+            <!-- Summary -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Summary"
+                       FontSize="24"
+                       FontAttributes="Bold" />
 
-                    <Label x:Name="ItemsCountLabel"
-                           FontSize="16" />
+                <Label x:Name="CategoriesCountLabel"
+                       FontSize="17" />
 
-                    <Label x:Name="ShortageCountLabel"
-                           FontSize="16"
-                           TextColor="DarkRed" />
-                </VerticalStackLayout>
-            </Frame>
+                <Label x:Name="ItemsCountLabel"
+                       FontSize="17" />
 
-            <FlexLayout Wrap="Wrap" Direction="Row"
-                        JustifyContent="Start" 
+                <Label x:Name="ShortageCountLabel"
+                       FontSize="17"
+                       TextColor="DarkRed"
+                       FontAttributes="Bold" />
+            </VerticalStackLayout>
+
+            <!-- Divider -->
+            <BoxView HeightRequest="1"
+                     BackgroundColor="#DDDDDD"
+                     Margin="0,6,0,2" />
+
+            <!-- Actions -->
+            <FlexLayout Wrap="Wrap"
+                        Direction="Row"
+                        JustifyContent="Start"
                         AlignItems="Stretch"
                         AlignContent="Start">
+
                 <Button Text="Categories"
                         Clicked="OnCategoriesClicked"
                         Margin="0,0,10,10"
-                        CornerRadius="5"
-                        HeightRequest="40"
+                        CornerRadius="8"
+                        HeightRequest="44"
                         MinimumWidthRequest="140"
                         BackgroundColor="DarkBlue"
                         TextColor="White"
                         FlexLayout.Basis="180"
                         FlexLayout.Grow="1" />
-                <Button Text="Items"
-                        Clicked="OnItemsClicked"
-                        Margin="0,0,10,10"
-                        CornerRadius="5"
-                        HeightRequest="40"
-                        MinimumWidthRequest="140"
-                        BackgroundColor="DarkBlue"
-                        TextColor="White"
-                        FlexLayout.Basis="180"
-                        FlexLayout.Grow="1" />
-                <Button Text="Shortage Items"
+
+                <Button Text="Low Stock Items"
                         Clicked="OnShortageItemsClicked"
                         Margin="0,0,10,10"
-                        CornerRadius="5"
-                        HeightRequest="40"
+                        CornerRadius="8"
+                        HeightRequest="44"
                         MinimumWidthRequest="140"
                         BackgroundColor="DarkBlue"
                         TextColor="White"
                         FlexLayout.Basis="180"
                         FlexLayout.Grow="1" />
             </FlexLayout>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

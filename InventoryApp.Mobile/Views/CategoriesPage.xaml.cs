@@ -1,16 +1,18 @@
-using InventoryApp.Mobile.Services;
 using InventoryApp.Mobile.Models;
+using InventoryApp.Mobile.Services;
 
 namespace InventoryApp.Mobile.Views;
 
 public partial class CategoriesPage : ContentPage
 {
     private readonly CategoryApiService _categoryApiService;
+    private readonly ItemApiService _itemApiService;
 
-    public CategoriesPage(CategoryApiService categoryApiService)
+    public CategoriesPage(CategoryApiService categoryApiService, ItemApiService itemApiService)
     {
         InitializeComponent();
         _categoryApiService = categoryApiService;
+        _itemApiService = itemApiService;
     }
 
     protected override async void OnAppearing()
@@ -40,6 +42,13 @@ public partial class CategoriesPage : ContentPage
         await Navigation.PushAsync(new CreateCategoryPage(_categoryApiService));
     }
 
+    private async void OnViewItemsClicked(object sender, EventArgs e)
+    {
+        if (sender is Button button && button.CommandParameter is CategoryModel category)
+        {
+            await Navigation.PushAsync(new CategoryItemsPage(_itemApiService, _categoryApiService, category));
+        }
+    }
 
     private async void OnEditClicked(object sender, EventArgs e)
     {
