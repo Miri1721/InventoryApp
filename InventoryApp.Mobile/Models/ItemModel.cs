@@ -11,5 +11,10 @@
         public double CurrentQuantity { get; set; }
         public double MinimumThreshold { get; set; }
         public bool IsBelowThreshold { get; set; }
+
+        public double MissingQuantity => MinimumThreshold > CurrentQuantity
+                        ? MinimumThreshold - CurrentQuantity
+                        : 0;
+        public string MissingText => $"Missing: {MissingQuantity}";
     }
 }

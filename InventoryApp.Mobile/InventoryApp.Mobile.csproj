@@ -31,6 +31,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\EditCategoryPage.xaml.cs">
+      <DependentUpon>EditCategoryPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <MauiXaml Update="Views\CategoriesPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
@@ -38,6 +44,9 @@
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\CreateItemPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="Views\EditCategoryPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="Views\EditItemPage.xaml">

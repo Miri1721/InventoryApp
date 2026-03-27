@@ -5,24 +5,82 @@
              Title="Create Item">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
-            <Label Text="Create Item" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
+        <VerticalStackLayout Padding="20"
+                             Spacing="14">
 
-            <Entry x:Name="NameEntry" Placeholder="Item name" />
+            <Label Text="Create Item"
+                   FontSize="30"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
 
-            <Editor x:Name="DescriptionEditor" Placeholder="Description" AutoSize="TextChanges" HeightRequest="100" />
+            <Frame Padding="16"
+                   CornerRadius="16"
+                   BorderColor="#D9D9D9"
+                   HasShadow="False">
+                <VerticalStackLayout Spacing="12">
 
-            <Picker x:Name="CategoryPicker" Title="Select Category" ItemDisplayBinding="{Binding Name}" />
+                    <Label Text="Item Name"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Entry x:Name="NameEntry"
+                           Placeholder="Enter item name"
+                           ClearButtonVisibility="WhileEditing" />
 
-            <Entry x:Name="UnitEntry" Placeholder="Unit (e.g. Pack, Carton, Tray)" />
+                    <Label Text="Description"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Editor x:Name="DescriptionEditor"
+                            Placeholder="Enter description"
+                            AutoSize="TextChanges"
+                            HeightRequest="100" />
 
-            <Entry x:Name="CurrentQuantityEntry" Placeholder="Current quantity" Keyboard="Numeric" />
+                    <Label Text="Category"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Picker x:Name="CategoryPicker"
+                            Title="Select category"
+                            ItemDisplayBinding="{Binding Name}" />
 
-            <Entry x:Name="MinimumThresholdEntry" Placeholder="Minimum threshold" Keyboard="Numeric" />
+                    <Label Text="Unit"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Entry x:Name="UnitEntry"
+                           Placeholder="Pack / Carton / Tray / Bottle..." />
 
-            <Button Text="Save Item" Clicked="OnSaveClicked" />
+                    <Grid ColumnDefinitions="*,*"
+                          ColumnSpacing="12">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Current Quantity"
+                                   FontSize="16"
+                                   FontAttributes="Bold" />
+                            <Entry x:Name="CurrentQuantityEntry"
+                                   Placeholder="0"
+                                   Keyboard="Numeric" />
+                        </VerticalStackLayout>
 
-            <Label x:Name="MessageLabel" TextColor="Red" FontSize="14" />
+                        <VerticalStackLayout Grid.Column="1"
+                                             Spacing="6">
+                            <Label Text="Minimum Threshold"
+                                   FontSize="16"
+                                   FontAttributes="Bold" />
+                            <Entry x:Name="MinimumThresholdEntry"
+                                   Placeholder="0"
+                                   Keyboard="Numeric" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <Button Text="Save Item"
+                    Clicked="OnSaveClicked"
+                    CornerRadius="12"
+                    HeightRequest="52" />
+
+            <Label x:Name="MessageLabel"
+                   TextColor="Red"
+                   FontSize="14"
+                   LineBreakMode="WordWrap" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

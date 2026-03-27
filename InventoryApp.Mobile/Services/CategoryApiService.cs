@@ -37,5 +37,17 @@ namespace InventoryApp.Mobile.Services
             var response = await _httpClient.PostAsJsonAsync("api/Category", request);
             return response.IsSuccessStatusCode;
         }
+
+        public async Task<bool> UpdateAsync(Guid categoryId, UpdateCategoryRequest request)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"api/Category/{categoryId}", request);
+            return response.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> DeactivateAsync(Guid categoryId)
+        {
+            var response = await _httpClient.DeleteAsync($"api/Category/{categoryId}");
+            return response.IsSuccessStatusCode;
+        }
     }
 }

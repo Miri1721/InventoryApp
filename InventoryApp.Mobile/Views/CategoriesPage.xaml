@@ -4,22 +4,59 @@
              x:Class="InventoryApp.Mobile.Views.CategoriesPage"
              Title="Categories">
 
-    <VerticalStackLayout Padding="20" Spacing="15">
-        <Label Text="Categories" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
-        <Label x:Name="MessageLabel" TextColor="Red" FontSize="14" />
-        <Button Text="Add Category" Clicked="OnAddCategoryClicked" />
-        
-        <CollectionView x:Name="CategoriesCollectionView">
+    <Grid RowDefinitions="Auto, *" Padding="20">
+        <VerticalStackLayout Grid.Row="0" Spacing="12">
+            <Label x:Name="MessageLabel"
+                   TextColor="Red"
+                   FontSize="14"
+                   LineBreakMode="WordWrap" />
+            <Button Text="Add Category"
+                    Clicked="OnAddCategoryClicked"
+                    CornerRadius="5" HeightRequest="40"
+                    MaximumWidthRequest="180" BackgroundColor="DarkBlue"/>
+        </VerticalStackLayout>
+
+        <CollectionView Grid.Row="1"
+                        x:Name="CategoriesCollectionView"
+                        Margin="0,16,0,0"
+                        SelectionMode="None">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Padding="12" Margin="0,5" BorderColor="LightGray">
-                        <VerticalStackLayout>
-                            <Label Text="{Binding Name}" FontSize="20" FontAttributes="Bold" />
-                            <Label Text="{Binding Description}" FontSize="14" />
+                    <Frame Margin="0,0,0,18"
+                           Padding="16"
+                           CornerRadius="16"
+                           BorderColor="#D9D9D9"
+                           HasShadow="False">
+                        <VerticalStackLayout Spacing="7">
+                            <Label Text="{Binding Name}"
+                                   FontSize="22"
+                                   FontAttributes="Bold"
+                                   LineBreakMode="WordWrap" />
+                            <Label Text="{Binding Description}"
+                                   FontSize="15"
+                                   TextColor="#555555"
+                                   LineBreakMode="WordWrap" />
+                            <HorizontalStackLayout Spacing="10">
+                                <Button Grid.Column="0"
+                                        Text="Edit"
+                                        Clicked="OnEditClicked"
+                                        CommandParameter="{Binding .}"
+                                        CornerRadius="5" HeightRequest="40"
+                                        MaximumWidthRequest="180"
+                                        BackgroundColor="DarkBlue"/>
+                                <Button Grid.Column="1"
+                                        Text="Deactivate"
+                                        Clicked="OnDeactivateClicked"
+                                        CommandParameter="{Binding .}"
+                                        CornerRadius="5" HeightRequest="40"
+                                        MaximumWidthRequest="180"               
+                                        BackgroundColor="DarkBlue"/>
+                            </HorizontalStackLayout>
                         </VerticalStackLayout>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+
+    </Grid>
 </ContentPage>

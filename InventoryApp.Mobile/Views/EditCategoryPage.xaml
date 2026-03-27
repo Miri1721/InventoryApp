@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="InventoryApp.Mobile.Views.CreateCategoryPage"
-             Title="Create Category">
+             x:Class="InventoryApp.Mobile.Views.EditCategoryPage"
+             Title="Edit Category">
 
     <ScrollView>
         <VerticalStackLayout Padding="20"
@@ -32,13 +32,12 @@
                 </VerticalStackLayout>
             </Frame>
 
-            <Button Text="Save Category"
+            <Button Text="Save Changes"
                     Clicked="OnSaveClicked"
                     CornerRadius="5" HorizontalOptions="Center"
                     HeightRequest="40"
                     MaximumHeightRequest="140"
-                    BackgroundColor="DarkBlue"/>
-
+                    BackgroundColor="DarkBlue"/>  
             <Label x:Name="MessageLabel"
                    TextColor="Red"
                    FontSize="14"

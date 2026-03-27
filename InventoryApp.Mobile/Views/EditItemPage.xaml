@@ -5,23 +5,72 @@
              Title="Edit Item">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
-            <Label Text="Edit Item" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
+        <VerticalStackLayout Padding="20"
+                             Spacing="14">
 
-            <Entry x:Name="NameEntry" Placeholder="Item name" />
+            <Frame Padding="16"
+                   CornerRadius="16"
+                   BorderColor="#D9D9D9"
+                   HasShadow="False">
+                <VerticalStackLayout Spacing="12">
 
-            <Editor x:Name="DescriptionEditor" Placeholder="Description" AutoSize="TextChanges" HeightRequest="100" />
+                    <Label Text="Item Name"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Entry x:Name="NameEntry"
+                           Placeholder="Enter item name"
+                           ClearButtonVisibility="WhileEditing" />
 
-            <Entry x:Name="UnitEntry" Placeholder="Unit" />
+                    <Label Text="Description"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Editor x:Name="DescriptionEditor"
+                            Placeholder="Enter description"
+                            AutoSize="TextChanges"
+                            HeightRequest="100" />
 
-            <Entry x:Name="CurrentQuantityEntry" Placeholder="Current quantity" Keyboard="Numeric" />
+                    <Label Text="Unit"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Entry x:Name="UnitEntry"
+                           Placeholder="Enter unit" />
 
-            <Entry x:Name="MinimumThresholdEntry" Placeholder="Minimum threshold" Keyboard="Numeric" />
+                    <Grid ColumnDefinitions="*,*"
+                          ColumnSpacing="12">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Current Quantity"
+                                   FontSize="16"
+                                   FontAttributes="Bold" />
+                            <Entry x:Name="CurrentQuantityEntry"
+                                   Placeholder="0"
+                                   Keyboard="Numeric" />
+                        </VerticalStackLayout>
 
-            <Button Text="Save Changes" Clicked="OnSaveClicked" />
+                        <VerticalStackLayout Grid.Column="1"
+                                             Spacing="6">
+                            <Label Text="Minimum Threshold"
+                                   FontSize="16"
+                                   FontAttributes="Bold" />
+                            <Entry x:Name="MinimumThresholdEntry"
+                                   Placeholder="0"
+                                   Keyboard="Numeric" />
+                        </VerticalStackLayout>
+                    </Grid>
 
-            <Label x:Name="MessageLabel" TextColor="Red" FontSize="14" />
+                </VerticalStackLayout>
+            </Frame>
 
+            <Button Text="Save Changes"
+                    Clicked="OnSaveClicked"
+                    CornerRadius="5" HorizontalOptions="Center"
+                    HeightRequest="40"
+                    MaximumHeightRequest="140"
+                    BackgroundColor="DarkBlue"/>     
+
+            <Label x:Name="MessageLabel"
+                   TextColor="Red"
+                   FontSize="14"
+                   LineBreakMode="WordWrap" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

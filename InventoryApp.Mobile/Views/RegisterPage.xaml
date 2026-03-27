@@ -5,37 +5,97 @@
              Title="Register">
 
     <ScrollView>
-        <VerticalStackLayout Padding="30" Spacing="12">
-            <Label Text="Register" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
+        <VerticalStackLayout Padding="24"
+                             Spacing="14">
 
-            <Entry x:Name="FirstNameEntry" Placeholder="First Name" />
-            <Entry x:Name="LastNameEntry" Placeholder="Last Name" />
-            <Entry x:Name="IdNumberEntry" Placeholder="ID Number" Keyboard="Numeric" />
-            <Entry x:Name="EmailEntry" Placeholder="Email" Keyboard="Email" />
-            <Entry x:Name="OrganizationNameEntry" Placeholder="Organization Name" />
+            <Label Text="Register"
+                   FontSize="30"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
 
-            <Picker x:Name="OrganizationTypePicker"
-                    Title="Select Organization Type">
-                <Picker.Items>
-                    <x:String>Cafe</x:String>
-                    <x:String>Restaurant</x:String>
-                    <x:String>Clothes Shop</x:String>
-                    <x:String>Kindergarten</x:String>
-                    <x:String>Grocery Store</x:String>
-                    <x:String>Bakery</x:String>
-                    <x:String>Pharmacy</x:String>
-                    <x:String>Office</x:String>
-                    <x:String>Flower Shop</x:String>
-                    <x:String>Other</x:String>
-                </Picker.Items>
-            </Picker>
+            <Frame Padding="16"
+                   CornerRadius="16"
+                   BorderColor="#D9D9D9"
+                   HasShadow="False">
+                <VerticalStackLayout Spacing="12">
 
-            <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True" />
-            <Entry x:Name="ConfirmPasswordEntry" Placeholder="Confirm Password" IsPassword="True" />
+                    <Label Text="First Name"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Entry x:Name="FirstNameEntry"
+                           Placeholder="Enter first name" />
 
-            <Button Text="Register" Clicked="OnRegisterClicked" />
+                    <Label Text="Last Name"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Entry x:Name="LastNameEntry"
+                           Placeholder="Enter last name" />
 
-            <Label x:Name="MessageLabel" TextColor="Red" FontSize="14" />
+                    <Label Text="ID Number"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Entry x:Name="IdNumberEntry"
+                           Placeholder="Enter ID number"
+                           Keyboard="Numeric" />
+
+                    <Label Text="Email"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Entry x:Name="EmailEntry"
+                           Placeholder="Enter email"
+                           Keyboard="Email" />
+
+                    <Label Text="Organization Name"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Entry x:Name="OrganizationNameEntry"
+                           Placeholder="Enter organization name" />
+
+                    <Label Text="Organization Type"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Picker x:Name="OrganizationTypePicker"
+                            Title="Select organization type">
+                        <Picker.Items>
+                            <x:String>Cafe</x:String>
+                            <x:String>Restaurant</x:String>
+                            <x:String>Clothes Shop</x:String>
+                            <x:String>Kindergarten</x:String>
+                            <x:String>Grocery Store</x:String>
+                            <x:String>Bakery</x:String>
+                            <x:String>Pharmacy</x:String>
+                            <x:String>Office</x:String>
+                            <x:String>Flower Shop</x:String>
+                            <x:String>Other</x:String>
+                        </Picker.Items>
+                    </Picker>
+
+                    <Label Text="Password"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Entry x:Name="PasswordEntry"
+                           Placeholder="Enter password"
+                           IsPassword="True" />
+
+                    <Label Text="Confirm Password"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Entry x:Name="ConfirmPasswordEntry"
+                           Placeholder="Confirm password"
+                           IsPassword="True" />
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <Button Text="Register"
+                    Clicked="OnRegisterClicked"
+                    CornerRadius="12"
+                    HeightRequest="52" />
+
+            <Label x:Name="MessageLabel"
+                   TextColor="Red"
+                   FontSize="14"
+                   LineBreakMode="WordWrap" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

@@ -16,15 +16,32 @@ public partial class DashboardPage : ContentPage
         _itemApiService = itemApiService;
     }
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
 
         WelcomeLabel.Text = $"Welcome, {AppSession.FullName}";
+        OrganizationIdLabel.Text = $"Organization ID: {AppSession.OrganizationId}";
         EmailLabel.Text = $"Email: {AppSession.Email}";
         RoleLabel.Text = $"Role: {AppSession.Role}";
         OrganizationLabel.Text = $"Organization: {AppSession.OrganizationName}";
-        OrganizationIdLabel.Text = $"Organization ID: {AppSession.OrganizationId}";
+
+        try
+        {
+            var categories = await _categoryApiService.GetByOrganizationAsync(AppSession.OrganizationId);
+            var items = await _itemApiService.GetByOrganizationAsync(AppSession.OrganizationId);
+            var shortageItems = await _itemApiService.GetShortageAsync(AppSession.OrganizationId);
+
+            CategoriesCountLabel.Text = $"Categories: {categories.Count}";
+            ItemsCountLabel.Text = $"Active Items: {items.Count}";
+            ShortageCountLabel.Text = $"Shortage Items: {shortageItems.Count}";
+        }
+        catch (Exception ex)
+        {
+            CategoriesCountLabel.Text = "Categories: error";
+            ItemsCountLabel.Text = "Active Items: error";
+            ShortageCountLabel.Text = $"Shortage Items: error ({ex.Message})";
+        }
     }
 
     private async void OnCategoriesClicked(object sender, EventArgs e)

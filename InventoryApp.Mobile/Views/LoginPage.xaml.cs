@@ -60,7 +60,7 @@ public partial class LoginPage : ContentPage
         }
     }
 
-    private async void OnGoToRegisterClicked(object sender, EventArgs e)
+    private async void OnRegisterLabelTapped(object sender, TappedEventArgs e)
     {
         await Navigation.PushAsync(new RegisterPage(_authApiService));
     }

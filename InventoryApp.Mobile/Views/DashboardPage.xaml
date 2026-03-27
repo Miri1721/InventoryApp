@@ -5,24 +5,90 @@
              Title="Dashboard">
 
     <ScrollView>
-        <VerticalStackLayout Padding="30" Spacing="15">
-            <Label Text="Dashboard" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
+        <VerticalStackLayout Padding="20"
+                             Spacing="16">
 
-            <Label x:Name="WelcomeLabel" FontSize="20" />
+            <Frame Padding="16"
+                   CornerRadius="16"
+                   BorderColor="#D9D9D9"
+                   HasShadow="False">
+                <VerticalStackLayout Spacing="8">
+                    <Label x:Name="WelcomeLabel"
+                           FontSize="22"
+                           FontAttributes="Bold" />
 
-            <Label x:Name="OrganizationIdLabel" FontSize="16"/>
+                    <Label x:Name="OrganizationIdLabel"
+                           FontSize="14"
+                           TextColor="#666666"
+                           LineBreakMode="CharacterWrap" />
 
-            <Label x:Name="EmailLabel" FontSize="16" />
+                    <Label x:Name="EmailLabel"
+                           FontSize="16" />
 
-            <Label x:Name="RoleLabel" FontSize="16" />
+                    <Label x:Name="RoleLabel"
+                           FontSize="16" />
 
-            <Label x:Name="OrganizationLabel" FontSize="16" />
+                    <Label x:Name="OrganizationLabel"
+                           FontSize="16" />
+                </VerticalStackLayout>
+            </Frame>
 
-            <Button Text="Categories" Clicked="OnCategoriesClicked" />
+            <Frame Padding="16"
+                   CornerRadius="16"
+                   BorderColor="#D9D9D9"
+                   HasShadow="False">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Summary"
+                           FontSize="22"
+                           FontAttributes="Bold" />
 
-            <Button Text="Items" Clicked="OnItemsClicked" />
+                    <Label x:Name="CategoriesCountLabel"
+                           FontSize="16" />
 
-            <Button Text="Shortage Items" Clicked="OnShortageItemsClicked" />
+                    <Label x:Name="ItemsCountLabel"
+                           FontSize="16" />
+
+                    <Label x:Name="ShortageCountLabel"
+                           FontSize="16"
+                           TextColor="DarkRed" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <FlexLayout Wrap="Wrap" Direction="Row"
+                        JustifyContent="Start" 
+                        AlignItems="Stretch"
+                        AlignContent="Start">
+                <Button Text="Categories"
+                        Clicked="OnCategoriesClicked"
+                        Margin="0,0,10,10"
+                        CornerRadius="5"
+                        HeightRequest="40"
+                        MinimumWidthRequest="140"
+                        BackgroundColor="DarkBlue"
+                        TextColor="White"
+                        FlexLayout.Basis="180"
+                        FlexLayout.Grow="1" />
+                <Button Text="Items"
+                        Clicked="OnItemsClicked"
+                        Margin="0,0,10,10"
+                        CornerRadius="5"
+                        HeightRequest="40"
+                        MinimumWidthRequest="140"
+                        BackgroundColor="DarkBlue"
+                        TextColor="White"
+                        FlexLayout.Basis="180"
+                        FlexLayout.Grow="1" />
+                <Button Text="Shortage Items"
+                        Clicked="OnShortageItemsClicked"
+                        Margin="0,0,10,10"
+                        CornerRadius="5"
+                        HeightRequest="40"
+                        MinimumWidthRequest="140"
+                        BackgroundColor="DarkBlue"
+                        TextColor="White"
+                        FlexLayout.Basis="180"
+                        FlexLayout.Grow="1" />
+            </FlexLayout>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
