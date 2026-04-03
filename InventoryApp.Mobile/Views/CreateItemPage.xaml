@@ -74,8 +74,10 @@
 
             <Button Text="Save Item"
                     Clicked="OnSaveClicked"
-                    CornerRadius="12"
-                    HeightRequest="52" />
+                    CornerRadius="5" HorizontalOptions="Center"
+                    HeightRequest="40"
+                    MaximumHeightRequest="140"
+                    BackgroundColor="DarkBlue"/>        
 
             <Label x:Name="MessageLabel"
                    TextColor="Red"

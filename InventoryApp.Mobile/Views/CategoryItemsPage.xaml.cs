@@ -9,7 +9,12 @@ public partial class CategoryItemsPage : ContentPage
     private readonly CategoryApiService _categoryApiService;
     private readonly CategoryModel _category;
 
-    public CategoryItemsPage(ItemApiService itemApiService, CategoryApiService categoryApiService, CategoryModel category)
+    private List<ItemModel> _allItems = new();
+
+    public CategoryItemsPage(
+        ItemApiService itemApiService,
+        CategoryApiService categoryApiService,
+        CategoryModel category)
     {
         InitializeComponent();
         _itemApiService = itemApiService;
@@ -22,28 +27,82 @@ public partial class CategoryItemsPage : ContentPage
         base.OnAppearing();
 
         CategoryTitleLabel.Text = _category.Name;
-        CategoryDescriptionLabel.Text = _category.Description;
+        CategoryDescriptionLabel.Text = _category.Description ?? string.Empty;
 
         try
         {
             MessageLabel.Text = string.Empty;
 
             var allItems = await _itemApiService.GetByOrganizationAsync(AppSession.OrganizationId);
-            var categoryItems = allItems
+
+            _allItems = allItems
                 .Where(i => i.CategoryId == _category.CategoryId)
                 .ToList();
 
-            ItemsCollectionView.ItemsSource = categoryItems;
+            if (SortPicker.SelectedIndex < 0)
+                SortPicker.SelectedIndex = 0;
 
-            if (categoryItems.Count == 0)
-            {
-                MessageLabel.Text = "No items found in this category.";
-            }
+            ApplyFilters();
         }
         catch (Exception ex)
         {
             MessageLabel.Text = $"Failed to load items: {ex.Message}";
         }
+    }
+
+    private void ApplyFilters()
+    {
+        IEnumerable<ItemModel> result = _allItems;
+
+        var searchText = ItemSearchBar.Text?.Trim();
+
+        if (!string.IsNullOrWhiteSpace(searchText))
+        {
+            result = result.Where(i =>
+                (!string.IsNullOrWhiteSpace(i.Name) &&
+                 i.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase)) ||
+                (!string.IsNullOrWhiteSpace(i.Description) &&
+                 i.Description.Contains(searchText, StringComparison.OrdinalIgnoreCase)) ||
+                (!string.IsNullOrWhiteSpace(i.Unit) &&
+                 i.Unit.Contains(searchText, StringComparison.OrdinalIgnoreCase)));
+        }
+
+        switch (SortPicker.SelectedIndex)
+        {
+            case 1:
+                result = result.OrderByDescending(i => i.Name);
+                break;
+
+            case 2:
+                result = result.OrderBy(i => i.CurrentQuantity);
+                break;
+
+            case 3:
+                result = result.OrderByDescending(i => i.CurrentQuantity);
+                break;
+
+            case 0:
+            default:
+                result = result.OrderBy(i => i.Name);
+                break;
+        }
+
+        var filteredList = result.ToList();
+        ItemsCollectionView.ItemsSource = filteredList;
+
+        MessageLabel.Text = filteredList.Count == 0
+            ? "No items found in this category."
+            : string.Empty;
+    }
+
+    private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
+    {
+        ApplyFilters();
+    }
+
+    private void OnSortChanged(object sender, EventArgs e)
+    {
+        ApplyFilters();
     }
 
     private async void OnAddItemClicked(object sender, EventArgs e)
@@ -84,12 +143,12 @@ public partial class CategoryItemsPage : ContentPage
             }
 
             var allItems = await _itemApiService.GetByOrganizationAsync(AppSession.OrganizationId);
-            var categoryItems = allItems
+
+            _allItems = allItems
                 .Where(i => i.CategoryId == _category.CategoryId)
                 .ToList();
 
-            ItemsCollectionView.ItemsSource = categoryItems;
-            MessageLabel.Text = categoryItems.Count == 0 ? "No items found in this category." : string.Empty;
+            ApplyFilters();
         }
         catch (Exception ex)
         {

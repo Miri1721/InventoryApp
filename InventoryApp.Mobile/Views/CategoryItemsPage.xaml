@@ -11,19 +11,41 @@
                    FontAttributes="Bold"
                    HorizontalOptions="Center" />
 
+            <Label x:Name="CategoryDescriptionLabel"
+                   FontSize="15"
+                   TextColor="#555555"
+                   HorizontalTextAlignment="Center"
+                   LineBreakMode="WordWrap" />
+
             <Label x:Name="MessageLabel"
                    TextColor="Red"
                    FontSize="14"
                    LineBreakMode="WordWrap" />
 
+            <SearchBar x:Name="ItemSearchBar"
+                    Placeholder="Search items in this category"
+                    TextChanged="OnSearchTextChanged" />
+
+            <Picker x:Name="SortPicker"
+                     Title="Sort items"
+                     SelectedIndexChanged="OnSortChanged">
+                <Picker.Items>
+                    <x:String>Name A-Z</x:String>
+                    <x:String>Name Z-A</x:String>
+                    <x:String>Quantity Low-High</x:String>
+                    <x:String>Quantity High-Low</x:String>
+                </Picker.Items>
+            </Picker>
+            
             <Button Text="Add Item"
                     Clicked="OnAddItemClicked"
                     CornerRadius="5"
                     HeightRequest="40"
                     MaximumWidthRequest="180"
-                    HorizontalOptions="Center"
-                    BackgroundColor="DarkBlue"
-                    TextColor="White" />
+                    HorizontalOptions="Start"
+                    BorderColor="DarkBlue" BackgroundColor="White" BorderWidth="2"
+                    TextColor="Black" />    
+           
         </VerticalStackLayout>
 
         <CollectionView Grid.Row="1" x:Name="ItemsCollectionView"
