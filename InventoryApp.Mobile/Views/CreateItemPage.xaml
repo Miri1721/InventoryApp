@@ -5,7 +5,7 @@
              Title="Create Item">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20"
+        <VerticalStackLayout Padding="20,0,20,0"
                              Spacing="14">
 
             <Label Text="Create Item"

@@ -5,7 +5,7 @@
              Title="Dashboard">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="18">
+        <VerticalStackLayout Padding="20,0,20,0" Spacing="18">
             <VerticalStackLayout Spacing="8">
                 <Label x:Name="WelcomeLabel"
                        FontSize="28"
@@ -78,7 +78,7 @@
                         FlexLayout.Basis="180"
                         FlexLayout.Grow="1" />
 
-                <Button Text="Low Stock Items"
+                <Button Text="Items To Reorder"
                         Clicked="OnShortageItemsClicked"
                         Margin="0,0,10,10"
                         CornerRadius="8"

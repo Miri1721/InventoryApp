@@ -2,20 +2,62 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InventoryApp.Mobile.Views.ShortageItemsPage"
-             Title="Shortage Items">
+             Title="Items To Reorder">
 
-    <Grid RowDefinitions="Auto, *" Padding="20,0,0,0">
+    <Grid RowDefinitions="Auto,Auto,*" Padding="20,0,20,0">
+
         <VerticalStackLayout Grid.Row="0" Spacing="12">
-            <Label x:Name="MessageLabel" TextColor="Red"
-                   FontSize="14" LineBreakMode="WordWrap" />
+            <Label x:Name="MessageLabel"
+                   TextColor="Red"
+                   FontSize="14"
+                   LineBreakMode="WordWrap" />
         </VerticalStackLayout>
-        <CollectionView Grid.Row="1"
+
+        <Grid x:Name="SearchSection"
+              Grid.Row="1"
+              ColumnDefinitions="*,*"
+              ColumnSpacing="20"
+              Margin="0,0,0,10"
+              IsVisible="False">
+            <VerticalStackLayout Grid.Column="0"
+                         Spacing="6" Padding="0,0,0,5"
+                         HorizontalOptions="Fill"
+                         VerticalOptions="Start">
+                <Label Text="Search by Category"
+                       FontSize="14"
+                       FontAttributes="Bold" />
+                <SearchBar x:Name="CategorySearchBar"
+                           Placeholder="Type category name"
+                           TextChanged="OnSearchTextChanged"
+                           HorizontalOptions="Fill"
+                           VerticalOptions="Center" />  
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Column="1"
+                         Spacing="6" Padding="0,0,0,5"
+                         HorizontalOptions="Fill"
+                         VerticalOptions="Start">
+                <Label Text="Search by Item"
+                       FontSize="14"
+                       FontAttributes="Bold" />
+                <SearchBar x:Name="ItemSearchBar"
+                           Placeholder="Type item name"
+                           TextChanged="OnSearchTextChanged"
+                           HorizontalOptions="Fill"
+                           VerticalOptions="Center" />
+            </VerticalStackLayout>
+        </Grid>
+
+        <CollectionView Grid.Row="2"
                         x:Name="ShortageItemsCollectionView"
-                        Margin="0,16,0,0"
+                        Margin="0,8,0,0"
                         SelectionMode="None">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
+            </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Margin="0,0,0,12"
+                    <Frame Margin="0"
                            Padding="16"
                            CornerRadius="16"
                            BorderColor="#D9D9D9"
@@ -75,7 +117,7 @@
                                         HeightRequest="40"
                                         MaximumHeightRequest="140"
                                         BackgroundColor="DarkBlue"
-                                        TextColor="White"/>
+                                        TextColor="White" />
 
                                 <Button Text="Deactivate"
                                         Clicked="OnDeactivateClicked"
@@ -85,7 +127,7 @@
                                         HeightRequest="40"
                                         MaximumHeightRequest="140"
                                         BackgroundColor="DarkBlue"
-                                        TextColor="White"/>
+                                        TextColor="White" />
                             </HorizontalStackLayout>
                         </VerticalStackLayout>
                     </Frame>

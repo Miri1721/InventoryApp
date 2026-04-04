@@ -6,13 +6,18 @@ namespace InventoryApp.Mobile;
 public partial class App : Application
 {
     public App(
-    AuthApiService authApiService,
-    CategoryApiService categoryApiService,
-    ItemApiService itemApiService)
+        AuthApiService authApiService,
+        CategoryApiService categoryApiService,
+        ItemApiService itemApiService,
+        StockTransactionApiService stockTransactionApiService)
     {
         InitializeComponent();
 
         MainPage = new NavigationPage(
-            new LoginPage(authApiService, categoryApiService, itemApiService));
+            new LoginPage(
+                authApiService,
+                categoryApiService,
+                itemApiService,
+                stockTransactionApiService));
     }
 }

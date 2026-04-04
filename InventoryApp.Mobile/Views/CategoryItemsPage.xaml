@@ -4,7 +4,7 @@
              x:Class="InventoryApp.Mobile.Views.CategoryItemsPage"
              Title="Category Items">
 
-    <Grid RowDefinitions="Auto, *" Padding="20">
+    <Grid RowDefinitions="Auto, *" Padding="20,0,20,0">
         <VerticalStackLayout Grid.Row="0" Spacing="12">
             <Label x:Name="CategoryTitleLabel"
                    FontSize="28"
@@ -22,69 +22,135 @@
                    FontSize="14"
                    LineBreakMode="WordWrap" />
 
-            <SearchBar x:Name="ItemSearchBar"
-                    Placeholder="Search items in this category"
-                    TextChanged="OnSearchTextChanged" />
+         
 
-            <Picker x:Name="SortPicker"
-                     Title="Sort items"
-                     SelectedIndexChanged="OnSortChanged">
-                <Picker.Items>
-                    <x:String>Name A-Z</x:String>
-                    <x:String>Name Z-A</x:String>
-                    <x:String>Quantity Low-High</x:String>
-                    <x:String>Quantity High-Low</x:String>
-                </Picker.Items>
-            </Picker>
-            
+            <SearchBar x:Name="ItemSearchBar"
+                       IsVisible="False"
+                       Placeholder="Search items in this category"
+                       TextChanged="OnSearchTextChanged" />
+
+            <Grid x:Name="SortContainer"
+                  IsVisible="False"
+                  ColumnDefinitions="Auto,*"
+                  ColumnSpacing="12"
+                  VerticalOptions="Center">
+                <Label Text="⇅ Sort by"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center" />
+
+                <Picker Grid.Column="1"
+                        x:Name="SortPicker"
+                        SelectedIndexChanged="OnSortChanged">
+                    <Picker.Items>
+                        <x:String>Name A-Z</x:String>
+                        <x:String>Name Z-A</x:String>
+                        <x:String>Quantity Low-High</x:String>
+                        <x:String>Quantity High-Low</x:String>
+                    </Picker.Items>
+                </Picker>
+            </Grid>
+
             <Button Text="Add Item"
-                    Clicked="OnAddItemClicked"
-                    CornerRadius="5"
-                    HeightRequest="40"
-                    MaximumWidthRequest="180"
-                    HorizontalOptions="Start"
-                    BorderColor="DarkBlue" BackgroundColor="White" BorderWidth="2"
-                    TextColor="Black" />    
-           
+                   Clicked="OnAddItemClicked"
+                   CornerRadius="5"
+                   HeightRequest="40"
+                   MaximumWidthRequest="180"
+                   HorizontalOptions="Start"
+                   BorderColor="DarkBlue"
+                   BackgroundColor="White"
+                   BorderWidth="2"
+                   TextColor="Black" /> 
         </VerticalStackLayout>
 
-        <CollectionView Grid.Row="1" x:Name="ItemsCollectionView"
-                        Margin="0,16,0,0" SelectionMode="None">
+        <CollectionView Grid.Row="1"
+                        x:Name="ItemsCollectionView"
+                        Margin="0,16,0,0"
+                        SelectionMode="None">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
+            </CollectionView.ItemsLayout>
+
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Margin="0,0,0,12" Padding="10"
-                           CornerRadius="16" BorderColor="#D9D9D9"
+                    <Frame Padding="10"
+                           CornerRadius="16"
+                           BorderColor="#D9D9D9"
                            HasShadow="False">
                         <VerticalStackLayout Spacing="8">
                             <Label Text="{Binding Name}"
                                    FontSize="22"
                                    FontAttributes="Bold"
                                    LineBreakMode="WordWrap" />
+
                             <Label Text="{Binding Description}"
                                    FontSize="15"
                                    TextColor="#555555"
                                    LineBreakMode="WordWrap" />
+
                             <Label Text="{Binding Unit, StringFormat='Unit: {0}'}"
                                    FontSize="14" />
+
                             <Label Text="{Binding CurrentQuantity, StringFormat='Current Quantity: {0}'}"
                                    FontSize="14" />
+
                             <Label Text="{Binding MinimumThreshold, StringFormat='Minimum Threshold: {0}'}"
                                    FontSize="14" />
-                            <FlexLayout Wrap="Wrap" Direction="Row"
-                                        JustifyContent="Start" AlignItems="Stretch"
+
+                            <FlexLayout Wrap="Wrap"
+                                        Direction="Row"
+                                        JustifyContent="Start"
+                                        AlignItems="Stretch"
                                         AlignContent="Start">
-                                <Button Text="Edit" Clicked="OnEditClicked"
+                                <Button Text="Edit"
+                                        Clicked="OnEditClicked"
                                         CommandParameter="{Binding .}"
-                                        Margin="0,0,10,0" CornerRadius="5"
-                                        HeightRequest="40" MinimumWidthRequest="110"
-                                        BackgroundColor="DarkBlue" TextColor="White"
-                                        FlexLayout.Basis="120" FlexLayout.Grow="1" />
-                                <Button Text="Deactivate" Clicked="OnDeactivateClicked"
-                                        CommandParameter="{Binding .}" Margin="0,0,10,0"
-                                        CornerRadius="5" HeightRequest="40"
-                                        MinimumWidthRequest="130" BackgroundColor="DarkBlue"
-                                        TextColor="White" FlexLayout.Basis="150"
-                                        FlexLayout.Grow="1"/>
+                                        Margin="0,0,10,0"
+                                        CornerRadius="5"
+                                        HeightRequest="40"
+                                        MinimumWidthRequest="110"
+                                        BackgroundColor="DarkBlue"
+                                        TextColor="White"
+                                        FlexLayout.Basis="120"
+                                        FlexLayout.Grow="1" />
+
+                                <Button Text="Deactivate"
+                                        Clicked="OnDeactivateClicked"
+                                        CommandParameter="{Binding .}"
+                                        Margin="0,0,10,0"
+                                        CornerRadius="5"
+                                        HeightRequest="40"
+                                        MinimumWidthRequest="130"
+                                        BackgroundColor="DarkBlue"
+                                        TextColor="White"
+                                        FlexLayout.Basis="150"
+                                        FlexLayout.Grow="1" />
+
+                                <Button Text="Record Movement"
+                                        Clicked="OnRecordMovementClicked"
+                                        CommandParameter="{Binding .}"
+                                        Margin="0,0,10,5"
+                                        CornerRadius="5"
+                                        HeightRequest="40"
+                                        MinimumWidthRequest="160"
+                                        BackgroundColor="DarkBlue"
+                                        TextColor="White"
+                                        FlexLayout.Basis="180"
+                                        FlexLayout.Grow="1" />
+
+                                <Button Text="View History"
+                                        Clicked="OnViewHistoryClicked"
+                                        CommandParameter="{Binding .}"
+                                        Margin="0,0,10,5"
+                                        CornerRadius="5"
+                                        HeightRequest="40"
+                                        MinimumWidthRequest="140"
+                                        BackgroundColor="White"
+                                        BorderColor="DarkBlue"
+                                        BorderWidth="2"
+                                        TextColor="Black"
+                                        FlexLayout.Basis="150"
+                                        FlexLayout.Grow="1" />      
                             </FlexLayout>
                         </VerticalStackLayout>
                     </Frame>

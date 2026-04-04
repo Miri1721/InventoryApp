@@ -17,7 +17,6 @@ public partial class EditItemPage : ContentPage
         NameEntry.Text = _item.Name;
         DescriptionEditor.Text = _item.Description;
         UnitEntry.Text = _item.Unit;
-        CurrentQuantityEntry.Text = _item.CurrentQuantity.ToString();
         MinimumThresholdEntry.Text = _item.MinimumThreshold.ToString();
     }
 
@@ -37,15 +36,15 @@ public partial class EditItemPage : ContentPage
                 return;
             }
 
-            if (!double.TryParse(CurrentQuantityEntry.Text, out var currentQuantity))
-            {
-                MessageLabel.Text = "Current quantity must be a valid number.";
-                return;
-            }
-
             if (!double.TryParse(MinimumThresholdEntry.Text, out var minimumThreshold))
             {
                 MessageLabel.Text = "Minimum threshold must be a valid number.";
+                return;
+            }
+
+            if (minimumThreshold < 0)
+            {
+                MessageLabel.Text = "Minimum threshold cannot be negative.";
                 return;
             }
 
@@ -54,7 +53,7 @@ public partial class EditItemPage : ContentPage
                 Name = name,
                 Description = description,
                 Unit = unit,
-                CurrentQuantity = currentQuantity,
+                CurrentQuantity = _item.CurrentQuantity,
                 MinimumThreshold = minimumThreshold
             };
 

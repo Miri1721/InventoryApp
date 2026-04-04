@@ -5,7 +5,7 @@
              Title="Edit Item">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20"
+        <VerticalStackLayout Padding="20,0,20,0"
                              Spacing="14">
 
             <Frame Padding="16"
@@ -35,28 +35,12 @@
                     <Entry x:Name="UnitEntry"
                            Placeholder="Enter unit" />
 
-                    <Grid ColumnDefinitions="*,*"
-                          ColumnSpacing="12">
-                        <VerticalStackLayout Spacing="6">
-                            <Label Text="Current Quantity"
-                                   FontSize="16"
-                                   FontAttributes="Bold" />
-                            <Entry x:Name="CurrentQuantityEntry"
-                                   Placeholder="0"
-                                   Keyboard="Numeric" />
-                        </VerticalStackLayout>
-
-                        <VerticalStackLayout Grid.Column="1"
-                                             Spacing="6">
-                            <Label Text="Minimum Threshold"
-                                   FontSize="16"
-                                   FontAttributes="Bold" />
-                            <Entry x:Name="MinimumThresholdEntry"
-                                   Placeholder="0"
-                                   Keyboard="Numeric" />
-                        </VerticalStackLayout>
-                    </Grid>
-
+                    <Label Text="Minimum Threshold"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Entry x:Name="MinimumThresholdEntry"
+                           Placeholder="0"
+                           Keyboard="Numeric" />   
                 </VerticalStackLayout>
             </Frame>
 

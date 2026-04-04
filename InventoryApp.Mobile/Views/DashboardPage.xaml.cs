@@ -6,14 +6,17 @@ public partial class DashboardPage : ContentPage
 {
     private readonly CategoryApiService _categoryApiService;
     private readonly ItemApiService _itemApiService;
+    private readonly StockTransactionApiService _stockTransactionApiService;
 
     public DashboardPage(
-        CategoryApiService categoryApiService,
-        ItemApiService itemApiService)
+       CategoryApiService categoryApiService,
+       ItemApiService itemApiService,
+       StockTransactionApiService stockTransactionApiService)
     {
         InitializeComponent();
         _categoryApiService = categoryApiService;
         _itemApiService = itemApiService;
+        _stockTransactionApiService = stockTransactionApiService;
     }
 
     protected override async void OnAppearing()
@@ -49,7 +52,8 @@ public partial class DashboardPage : ContentPage
 
     private async void OnCategoriesClicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new CategoriesPage(_categoryApiService, _itemApiService));
+        await Navigation.PushAsync(new CategoriesPage(_categoryApiService, _itemApiService,
+                                                      _stockTransactionApiService));
     }
 
     private async void OnShortageItemsClicked(object sender, EventArgs e)

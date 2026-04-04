@@ -8,16 +8,19 @@ public partial class LoginPage : ContentPage
     private readonly AuthApiService _authApiService;
     private readonly CategoryApiService _categoryApiService;
     private readonly ItemApiService _itemApiService;
+    private readonly StockTransactionApiService _stockTransactionApiService;
 
     public LoginPage(
      AuthApiService authApiService,
      CategoryApiService categoryApiService,
-     ItemApiService itemApiService)
+     ItemApiService itemApiService,
+     StockTransactionApiService stockTransactionApiService)
     {
         InitializeComponent();
         _authApiService = authApiService;
         _categoryApiService = categoryApiService;
         _itemApiService = itemApiService;
+        _stockTransactionApiService = stockTransactionApiService;
     }
 
     private async void OnLoginClicked(object sender, EventArgs e)
@@ -53,7 +56,8 @@ public partial class LoginPage : ContentPage
             AppSession.OrganizationId = response.OrganizationId ?? Guid.Empty;
             AppSession.OrganizationType = response.OrganizationType ?? string.Empty;
 
-            await Navigation.PushAsync(new DashboardPage(_categoryApiService, _itemApiService));
+            await Navigation.PushAsync(new DashboardPage(_categoryApiService, _itemApiService,
+                                                         _stockTransactionApiService));
         }
         catch (Exception ex)
         {

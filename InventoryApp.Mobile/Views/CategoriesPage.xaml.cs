@@ -9,12 +9,17 @@ public partial class CategoriesPage : ContentPage
     private readonly ItemApiService _itemApiService;
 
     private List<CategoryModel> _allCategories = new();
+    private readonly StockTransactionApiService _stockTransactionApiService;
 
-    public CategoriesPage(CategoryApiService categoryApiService, ItemApiService itemApiService)
+    public CategoriesPage(
+       CategoryApiService categoryApiService,
+       ItemApiService itemApiService,
+       StockTransactionApiService stockTransactionApiService)
     {
         InitializeComponent();
         _categoryApiService = categoryApiService;
         _itemApiService = itemApiService;
+        _stockTransactionApiService = stockTransactionApiService;
     }
 
     protected override async void OnAppearing()
@@ -27,6 +32,12 @@ public partial class CategoriesPage : ContentPage
 
             var categories = await _categoryApiService.GetByOrganizationAsync(AppSession.OrganizationId);
             _allCategories = categories;
+
+            if(_allCategories.Count != 0)
+            {
+                SortPickerGrid.IsVisible = true;
+                CategorySearchBar.IsVisible = true;
+            }
 
             if (SortPicker.SelectedIndex < 0)
                 SortPicker.SelectedIndex = 0;
@@ -93,7 +104,8 @@ public partial class CategoriesPage : ContentPage
     {
         if (sender is Button button && button.CommandParameter is CategoryModel category)
         {
-            await Navigation.PushAsync(new CategoryItemsPage(_itemApiService, _categoryApiService, category));
+            await Navigation.PushAsync(
+    new CategoryItemsPage(_itemApiService, _categoryApiService, _stockTransactionApiService, category));
         }
     }
 

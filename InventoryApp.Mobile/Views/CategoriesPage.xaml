@@ -14,21 +14,19 @@
                    FontSize="14"
                    LineBreakMode="WordWrap" />
 
-            <SearchBar x:Name="CategorySearchBar"
+            <SearchBar x:Name="CategorySearchBar" IsVisible="False"
                        Placeholder="Search categories"
                        TextChanged="OnSearchTextChanged" />
 
-        
-
-            <Grid ColumnDefinitions="Auto,*"
-                  ColumnSpacing="12"
+            <Grid ColumnDefinitions="Auto,*" x:Name="SortPickerGrid"
+                  ColumnSpacing="12" IsVisible="False"
                   VerticalOptions="Center">
                 <Label Text="⇅ Sort by"
                        FontSize="16"
                        FontAttributes="Bold"
                        VerticalOptions="Center" />
 
-                <Picker Grid.Column="1"
+                <Picker Grid.Column="1" 
                         x:Name="SortPicker"
                         SelectedIndexChanged="OnSortChanged">
                     <Picker.Items>

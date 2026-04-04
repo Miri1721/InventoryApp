@@ -10,15 +10,18 @@ public partial class CategoryItemsPage : ContentPage
     private readonly CategoryModel _category;
 
     private List<ItemModel> _allItems = new();
+    private readonly StockTransactionApiService _stockTransactionApiService;
 
     public CategoryItemsPage(
-        ItemApiService itemApiService,
-        CategoryApiService categoryApiService,
-        CategoryModel category)
+     ItemApiService itemApiService,
+     CategoryApiService categoryApiService,
+     StockTransactionApiService stockTransactionApiService,
+     CategoryModel category)
     {
         InitializeComponent();
         _itemApiService = itemApiService;
         _categoryApiService = categoryApiService;
+        _stockTransactionApiService = stockTransactionApiService;
         _category = category;
     }
 
@@ -39,13 +42,20 @@ public partial class CategoryItemsPage : ContentPage
                 .Where(i => i.CategoryId == _category.CategoryId)
                 .ToList();
 
-            if (SortPicker.SelectedIndex < 0)
+            bool hasItems = _allItems.Count > 0;
+
+            ItemSearchBar.IsVisible = hasItems;
+            SortContainer.IsVisible = hasItems;
+
+            if (hasItems && SortPicker.SelectedIndex < 0)
                 SortPicker.SelectedIndex = 0;
 
             ApplyFilters();
         }
         catch (Exception ex)
         {
+            ItemSearchBar.IsVisible = false;
+            SortContainer.IsVisible = false;
             MessageLabel.Text = $"Failed to load items: {ex.Message}";
         }
     }
@@ -148,11 +158,31 @@ public partial class CategoryItemsPage : ContentPage
                 .Where(i => i.CategoryId == _category.CategoryId)
                 .ToList();
 
+            bool hasItems = _allItems.Count > 0;
+            ItemSearchBar.IsVisible = hasItems;
+            SortContainer.IsVisible = hasItems;
+
             ApplyFilters();
         }
         catch (Exception ex)
         {
             MessageLabel.Text = $"Failed to deactivate item: {ex.Message}";
+        }
+    }
+
+    private async void OnRecordMovementClicked(object sender, EventArgs e)
+    {
+        if (sender is Button button && button.CommandParameter is ItemModel item)
+        {
+            await Navigation.PushAsync(new RecordStockMovementPage(_stockTransactionApiService, item));
+        }
+    }
+
+    private async void OnViewHistoryClicked(object sender, EventArgs e)
+    {
+        if (sender is Button button && button.CommandParameter is ItemModel item)
+        {
+            await Navigation.PushAsync(new ItemHistoryPage(_stockTransactionApiService, item));
         }
     }
 }
