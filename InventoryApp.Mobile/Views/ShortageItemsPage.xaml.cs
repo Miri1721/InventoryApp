@@ -9,12 +9,16 @@ public partial class ShortageItemsPage : ContentPage
     private readonly CategoryApiService _categoryApiService;
 
     private List<ItemModel> _allShortageItems = new();
+    private readonly StockTransactionApiService _stockTransactionApiService;
 
-    public ShortageItemsPage(ItemApiService itemApiService, CategoryApiService categoryApiService)
+    public ShortageItemsPage(ItemApiService itemApiService,
+                             CategoryApiService categoryApiService,
+                             StockTransactionApiService stockTransactionApiService)
     {
         InitializeComponent();
         _itemApiService = itemApiService;
         _categoryApiService = categoryApiService;
+        _stockTransactionApiService = stockTransactionApiService;
     }
 
     protected override async void OnAppearing()
@@ -134,6 +138,22 @@ public partial class ShortageItemsPage : ContentPage
         catch (Exception ex)
         {
             MessageLabel.Text = $"Failed to deactivate item: {ex.Message}";
+        }
+    }
+
+    private async void OnRecordMovementClicked(object sender, EventArgs e)
+    {
+        if (sender is Button button && button.CommandParameter is ItemModel item)
+        {
+            await Navigation.PushAsync(new RecordStockMovementPage(_stockTransactionApiService, item));
+        }
+    }
+
+    private async void OnViewHistoryClicked(object sender, EventArgs e)
+    {
+        if (sender is Button button && button.CommandParameter is ItemModel item)
+        {
+            await Navigation.PushAsync(new ItemHistoryPage(_stockTransactionApiService, item));
         }
     }
 }

@@ -20,6 +20,8 @@ namespace InventoryApp.Mobile
             builder.Services.AddSingleton<CategoryApiService>();
             builder.Services.AddSingleton<ItemApiService>();
             builder.Services.AddSingleton<StockTransactionApiService>();
+            builder.Services.AddSingleton<ReportApiService>();
+            builder.Services.AddSingleton<OrganizationApiService>();
 
             return builder.Build();
         }

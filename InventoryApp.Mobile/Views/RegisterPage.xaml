@@ -45,30 +45,71 @@
                            Placeholder="Enter email"
                            Keyboard="Email" />
 
-                    <Label Text="Organization Name"
+                    <Label Text="Organization Choice"
                            FontSize="16"
                            FontAttributes="Bold" />
-                    <Entry x:Name="OrganizationNameEntry"
-                           Placeholder="Enter organization name" />
 
-                    <Label Text="Organization Type"
-                           FontSize="16"
-                           FontAttributes="Bold" />
-                    <Picker x:Name="OrganizationTypePicker"
-                            Title="Select organization type">
-                        <Picker.Items>
-                            <x:String>Cafe</x:String>
-                            <x:String>Restaurant</x:String>
-                            <x:String>Clothes Shop</x:String>
-                            <x:String>Kindergarten</x:String>
-                            <x:String>Grocery Store</x:String>
-                            <x:String>Bakery</x:String>
-                            <x:String>Pharmacy</x:String>
-                            <x:String>Office</x:String>
-                            <x:String>Flower Shop</x:String>
-                            <x:String>Other</x:String>
-                        </Picker.Items>
-                    </Picker>
+                    <HorizontalStackLayout Spacing="20">
+                        <RadioButton x:Name="NewOrganizationRadioButton"
+                                     Content="New organization"
+                                     GroupName="OrganizationMode"
+                                     IsChecked="True"
+                                     CheckedChanged="OnOrganizationModeChanged" />
+
+                        <RadioButton x:Name="ExistingOrganizationRadioButton"
+                                     Content="Existing organization"
+                                     GroupName="OrganizationMode"
+                                     CheckedChanged="OnOrganizationModeChanged" />
+                    </HorizontalStackLayout>
+
+                    <VerticalStackLayout x:Name="NewOrganizationSection"
+                                         Spacing="12">
+                        <Label Text="You will be registered as the manager of this organization."
+                               FontSize="13"
+                               TextColor="#555555"
+                               LineBreakMode="WordWrap" />          
+                        <Label Text="Organization Name"
+                               FontSize="16"
+                               FontAttributes="Bold" />
+                        <Entry x:Name="OrganizationNameEntry"
+                               Placeholder="Enter organization name" />
+
+                        <Label Text="Organization Type"
+                               FontSize="16"
+                               FontAttributes="Bold" />
+                        <Picker x:Name="OrganizationTypePicker"
+                                Title="Select organization type">
+                            <Picker.Items>
+                                <x:String>Cafe</x:String>
+                                <x:String>Restaurant</x:String>
+                                <x:String>Clothes Shop</x:String>
+                                <x:String>Kindergarten</x:String>
+                                <x:String>Grocery Store</x:String>
+                                <x:String>Bakery</x:String>
+                                <x:String>Pharmacy</x:String>
+                                <x:String>Office</x:String>
+                                <x:String>Flower Shop</x:String>
+                                <x:String>Other</x:String>
+                            </Picker.Items>
+                        </Picker>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout x:Name="ExistingOrganizationSection"
+                                         Spacing="12"
+                                         IsVisible="False">
+                        <Label Text="Choose Existing Organization"
+                               FontSize="16"
+                               FontAttributes="Bold" />
+
+                        <Label Text="You will be registered as a worker in this organization, with limited permissions compared to the manager."
+                               FontSize="13"
+                               TextColor="#555555"
+                               LineBreakMode="WordWrap" />          
+
+                        <Picker x:Name="ExistingOrganizationPicker"
+                                Title="Select organization"
+                                ItemDisplayBinding="{Binding DisplayName}" />
+                    </VerticalStackLayout>
 
                     <Label Text="Password"
                            FontSize="16"
@@ -89,9 +130,11 @@
 
             <Button Text="Register"
                     Clicked="OnRegisterClicked"
-                    CornerRadius="5" HeightRequest="40"
-                    MaximumWidthRequest="180" BackgroundColor="DarkBlue"
-                    HorizontalOptions="Center"/>        
+                    CornerRadius="5"
+                    HeightRequest="40"
+                    MaximumWidthRequest="180"
+                    BackgroundColor="DarkBlue"
+                    HorizontalOptions="Center" />
 
             <Label x:Name="MessageLabel"
                    TextColor="Red"

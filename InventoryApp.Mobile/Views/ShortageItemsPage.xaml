@@ -108,27 +108,62 @@
                                    FontAttributes="Bold"
                                    FontSize="14" />
 
-                            <HorizontalStackLayout Spacing="10">
-                                <Button Text="Edit / Restock"
+                            <FlexLayout Wrap="Wrap"
+                                        Direction="Row"
+                                        JustifyContent="Start"
+                                        AlignItems="Stretch"
+                                        AlignContent="Start">
+
+                                <Button Text="Edit"
                                         Clicked="OnEditClicked"
                                         CommandParameter="{Binding .}"
+                                        Margin="0,0,10,5"
                                         CornerRadius="5"
-                                        HorizontalOptions="Center"
                                         HeightRequest="40"
-                                        MaximumHeightRequest="140"
+                                        MinimumWidthRequest="110"
                                         BackgroundColor="DarkBlue"
-                                        TextColor="White" />
+                                        TextColor="White"
+                                        FlexLayout.Basis="120"
+                                        FlexLayout.Grow="1" />          
 
                                 <Button Text="Deactivate"
                                         Clicked="OnDeactivateClicked"
                                         CommandParameter="{Binding .}"
+                                        Margin="0,0,10,5"
                                         CornerRadius="5"
-                                        HorizontalOptions="Center"
                                         HeightRequest="40"
-                                        MaximumHeightRequest="140"
+                                        MinimumWidthRequest="130"
                                         BackgroundColor="DarkBlue"
-                                        TextColor="White" />
-                            </HorizontalStackLayout>
+                                        TextColor="White"
+                                        FlexLayout.Basis="150"
+                                        FlexLayout.Grow="1" />
+
+                                <Button Text="Record Movement"
+                                        Clicked="OnRecordMovementClicked"
+                                        CommandParameter="{Binding .}"
+                                        Margin="0,0,10,5"
+                                        CornerRadius="5"
+                                        HeightRequest="40"
+                                        MinimumWidthRequest="160"
+                                        BackgroundColor="DarkBlue"
+                                        TextColor="White"
+                                        FlexLayout.Basis="180"
+                                        FlexLayout.Grow="1" />
+
+                                <Button Text="View History"
+                                        Clicked="OnViewHistoryClicked"
+                                        CommandParameter="{Binding .}"
+                                        Margin="0,0,10,5"
+                                        CornerRadius="5"
+                                        HeightRequest="40"
+                                        MinimumWidthRequest="140"
+                                        BackgroundColor="White"
+                                        BorderColor="DarkBlue"
+                                        BorderWidth="2"
+                                        TextColor="Black"
+                                        FlexLayout.Basis="150"
+                                        FlexLayout.Grow="1" />  
+                            </FlexLayout>
                         </VerticalStackLayout>
                     </Frame>
                 </DataTemplate>

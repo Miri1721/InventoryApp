@@ -9,7 +9,10 @@ public partial class App : Application
         AuthApiService authApiService,
         CategoryApiService categoryApiService,
         ItemApiService itemApiService,
-        StockTransactionApiService stockTransactionApiService)
+        StockTransactionApiService stockTransactionApiService,
+        ReportApiService reportApiService,
+        OrganizationApiService organizationApiService
+        )
     {
         InitializeComponent();
 
@@ -18,6 +21,7 @@ public partial class App : Application
                 authApiService,
                 categoryApiService,
                 itemApiService,
-                stockTransactionApiService));
+                stockTransactionApiService,
+                reportApiService,organizationApiService));
     }
 }

@@ -9,18 +9,23 @@ public partial class LoginPage : ContentPage
     private readonly CategoryApiService _categoryApiService;
     private readonly ItemApiService _itemApiService;
     private readonly StockTransactionApiService _stockTransactionApiService;
+    private readonly ReportApiService _reportApiService;
+    private readonly OrganizationApiService _organizationApiService;
 
-    public LoginPage(
-     AuthApiService authApiService,
-     CategoryApiService categoryApiService,
-     ItemApiService itemApiService,
-     StockTransactionApiService stockTransactionApiService)
+    public LoginPage(AuthApiService authApiService,
+                     CategoryApiService categoryApiService,
+                     ItemApiService itemApiService,
+                     StockTransactionApiService stockTransactionApiService,
+                     ReportApiService reportApiService,
+                     OrganizationApiService organizationApiService)
     {
         InitializeComponent();
         _authApiService = authApiService;
         _categoryApiService = categoryApiService;
         _itemApiService = itemApiService;
         _stockTransactionApiService = stockTransactionApiService;
+        _reportApiService = reportApiService;
+        _organizationApiService = organizationApiService;
     }
 
     private async void OnLoginClicked(object sender, EventArgs e)
@@ -56,8 +61,13 @@ public partial class LoginPage : ContentPage
             AppSession.OrganizationId = response.OrganizationId ?? Guid.Empty;
             AppSession.OrganizationType = response.OrganizationType ?? string.Empty;
 
-            await Navigation.PushAsync(new DashboardPage(_categoryApiService, _itemApiService,
-                                                         _stockTransactionApiService));
+            await Navigation.PushAsync(new DashboardPage(
+                                             _authApiService,
+                                             _categoryApiService,
+                                             _itemApiService,
+                                             _stockTransactionApiService,
+                                             _reportApiService,
+                                             _organizationApiService));
         }
         catch (Exception ex)
         {
@@ -67,6 +77,6 @@ public partial class LoginPage : ContentPage
 
     private async void OnRegisterLabelTapped(object sender, TappedEventArgs e)
     {
-        await Navigation.PushAsync(new RegisterPage(_authApiService));
+        await Navigation.PushAsync(new RegisterPage(_authApiService, _organizationApiService));
     }
 }

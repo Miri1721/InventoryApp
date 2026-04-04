@@ -71,11 +71,6 @@
                            TextColor="#555555"
                            LineBreakMode="WordWrap" />
 
-                            <Label Text="View items in this category"
-                           FontSize="13"
-                           TextColor="DarkBlue"
-                           FontAttributes="Italic" />
-
                             <FlexLayout Wrap="Wrap"
                                 Direction="Row"
                                 JustifyContent="Start"

@@ -22,15 +22,13 @@ namespace InventoryApp.Api.Services
                 string.IsNullOrWhiteSpace(request.LastName) ||
                 string.IsNullOrWhiteSpace(request.IdNumber) ||
                 string.IsNullOrWhiteSpace(request.Email) ||
-                string.IsNullOrWhiteSpace(request.OrganizationName) ||
-                string.IsNullOrWhiteSpace(request.OrganizationType) ||
                 string.IsNullOrWhiteSpace(request.Password) ||
                 string.IsNullOrWhiteSpace(request.ConfirmPassword))
             {
                 return new AuthResponseDto
                 {
                     Success = false,
-                    Message = "All fields are required."
+                    Message = "All required fields must be filled."
                 };
             }
 
@@ -69,15 +67,60 @@ namespace InventoryApp.Api.Services
                 };
             }
 
-            var existingOrganization = _mongoDbService.Organizations
-                .Find(o => o.Name.ToLower() == request.OrganizationName.ToLower())
-                .FirstOrDefault();
-
             Organization organization;
             string role;
 
-            if (existingOrganization == null)
+            if (request.IsExistingOrganization)
             {
+                if (request.ExistingOrganizationId == null || request.ExistingOrganizationId == Guid.Empty)
+                {
+                    return new AuthResponseDto
+                    {
+                        Success = false,
+                        Message = "Please choose an existing organization."
+                    };
+                }
+
+                organization = _mongoDbService.Organizations
+                    .Find(o => o.OrganizationId == request.ExistingOrganizationId.Value && o.IsActive)
+                    .FirstOrDefault();
+
+                if (organization == null)
+                {
+                    return new AuthResponseDto
+                    {
+                        Success = false,
+                        Message = "Selected organization was not found."
+                    };
+                }
+
+                role = "Worker";
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(request.OrganizationName) ||
+                    string.IsNullOrWhiteSpace(request.OrganizationType))
+                {
+                    return new AuthResponseDto
+                    {
+                        Success = false,
+                        Message = "Organization name and type are required for a new organization."
+                    };
+                }
+
+                var existingOrganizationByName = _mongoDbService.Organizations
+                    .Find(o => o.Name.ToLower() == request.OrganizationName.ToLower() && o.IsActive)
+                    .FirstOrDefault();
+
+                if (existingOrganizationByName != null)
+                {
+                    return new AuthResponseDto
+                    {
+                        Success = false,
+                        Message = "An organization with this name already exists. Please choose 'Existing organization'."
+                    };
+                }
+
                 organization = new Organization
                 {
                     Name = request.OrganizationName,
@@ -86,11 +129,6 @@ namespace InventoryApp.Api.Services
 
                 _mongoDbService.Organizations.InsertOne(organization);
                 role = "Manager";
-            }
-            else
-            {
-                organization = existingOrganization;
-                role = "Worker";
             }
 
             var user = new User

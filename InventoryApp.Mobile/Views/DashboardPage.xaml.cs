@@ -7,16 +7,28 @@ public partial class DashboardPage : ContentPage
     private readonly CategoryApiService _categoryApiService;
     private readonly ItemApiService _itemApiService;
     private readonly StockTransactionApiService _stockTransactionApiService;
+    private readonly ReportApiService _reportApiService;
+
+    private readonly AuthApiService _authApiService;
+    private readonly OrganizationApiService _organizationApiService;
 
     public DashboardPage(
-       CategoryApiService categoryApiService,
-       ItemApiService itemApiService,
-       StockTransactionApiService stockTransactionApiService)
+                    AuthApiService authApiService,
+                    CategoryApiService categoryApiService,
+                    ItemApiService itemApiService,
+                    StockTransactionApiService stockTransactionApiService,
+                    ReportApiService reportApiService,
+                    OrganizationApiService organizationApiService)
     {
         InitializeComponent();
+        _authApiService = authApiService;
         _categoryApiService = categoryApiService;
         _itemApiService = itemApiService;
         _stockTransactionApiService = stockTransactionApiService;
+        _reportApiService = reportApiService;
+        _organizationApiService = organizationApiService;
+
+        NavigationPage.SetHasBackButton(this, false);
     }
 
     protected override async void OnAppearing()
@@ -58,6 +70,69 @@ public partial class DashboardPage : ContentPage
 
     private async void OnShortageItemsClicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new ShortageItemsPage(_itemApiService, _categoryApiService));
+        await Navigation.PushAsync(new ShortageItemsPage(
+                                        _itemApiService,
+                                        _categoryApiService,
+                                        _stockTransactionApiService));
+    }
+
+    private async void OnExportExcelReportClicked(object sender, EventArgs e)
+    {
+        try
+        {
+            var bytes = await _reportApiService.ExportExcelAsync(AppSession.OrganizationId);
+
+            if (bytes == null || bytes.Length == 0)
+            {
+                await DisplayAlert("Error", "Failed to export Excel report.", "OK");
+                return;
+            }
+
+            var safeOrganizationName = string.IsNullOrWhiteSpace(AppSession.OrganizationName)
+                ? "Organization"
+                : string.Concat(AppSession.OrganizationName.Split(Path.GetInvalidFileNameChars()));
+
+            var fileName = $"InventoryReport_{safeOrganizationName}_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+            var filePath = Path.Combine(FileSystem.CacheDirectory, fileName);
+
+            File.WriteAllBytes(filePath, bytes);
+
+            await Launcher.Default.OpenAsync(new OpenFileRequest
+            {
+                File = new ReadOnlyFile(filePath)
+            });
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", $"Export failed: {ex.Message}", "OK");
+        }
+    }
+
+    private async void OnLogoutClicked(object sender, EventArgs e)
+    {
+        bool confirm = await DisplayAlert(
+            "Logout",
+            "Are you sure you want to logout?",
+            "Yes",
+            "No");
+
+        if (!confirm)
+            return;
+
+        AppSession.FullName = string.Empty;
+        AppSession.Email = string.Empty;
+        AppSession.Role = string.Empty;
+        AppSession.OrganizationName = string.Empty;
+        AppSession.OrganizationId = Guid.Empty;
+        AppSession.OrganizationType = string.Empty;
+
+        Application.Current!.MainPage = new NavigationPage(
+            new LoginPage(
+                _authApiService,
+                _categoryApiService,
+                _itemApiService,
+                _stockTransactionApiService,
+                _reportApiService,
+                _organizationApiService));
     }
 }

@@ -30,14 +30,22 @@
                        FontSize="13"
                        TextColor="#777777"
                        LineBreakMode="CharacterWrap" />
+
+                <Button Text="Logout"
+                        Clicked="OnLogoutClicked"
+                        CornerRadius="8"
+                        HeightRequest="42"
+                        MaximumWidthRequest="160"
+                        HorizontalOptions="Start"
+                        BackgroundColor="White"
+                        BorderColor="DarkBlue"
+                        BorderWidth="2"
+                        TextColor="Black" />   
             </VerticalStackLayout>
 
-            <!-- Divider -->
-            <BoxView HeightRequest="1"
-                     BackgroundColor="#DDDDDD"
+            <BoxView HeightRequest="1" BackgroundColor="#DDDDDD"
                      Margin="0,6,0,2" />
 
-            <!-- Summary -->
             <VerticalStackLayout Spacing="8">
                 <Label Text="Summary"
                        FontSize="24"
@@ -55,12 +63,9 @@
                        FontAttributes="Bold" />
             </VerticalStackLayout>
 
-            <!-- Divider -->
-            <BoxView HeightRequest="1"
-                     BackgroundColor="#DDDDDD"
+            <BoxView HeightRequest="1" BackgroundColor="#DDDDDD"
                      Margin="0,6,0,2" />
-
-            <!-- Actions -->
+            
             <FlexLayout Wrap="Wrap"
                         Direction="Row"
                         JustifyContent="Start"
@@ -88,6 +93,17 @@
                         TextColor="White"
                         FlexLayout.Basis="180"
                         FlexLayout.Grow="1" />
+
+                <Button Text="Export Excel Report"
+                        Clicked="OnExportExcelReportClicked"
+                        Margin="0,0,10,10"
+                        CornerRadius="8"
+                        HeightRequest="44"
+                        MinimumWidthRequest="170"
+                        BackgroundColor="DarkBlue"
+                        TextColor="White"
+                        FlexLayout.Basis="200"
+                        FlexLayout.Grow="1" />      
             </FlexLayout>
 
         </VerticalStackLayout>
