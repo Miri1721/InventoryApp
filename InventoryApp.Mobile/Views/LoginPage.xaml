@@ -2,63 +2,103 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InventoryApp.Mobile.Views.LoginPage"
-             Title="Login">
+             Title="Login"
+             BackgroundColor="#F7F9FC">
 
     <ScrollView>
-        <VerticalStackLayout Padding="24"
-                             Spacing="14"
-                             VerticalOptions="Start">
+        <VerticalStackLayout Padding="24,40,24,32"
+                             Spacing="20"
+                             VerticalOptions="Center">
 
-            <Label Text="Stockify"
-                   FontSize="32"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center" />
+            <VerticalStackLayout Spacing="6">
+                <Label Text="Stockify"
+                       FontSize="34"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#1F2937" />
 
-            <Frame Padding="16"
-                   CornerRadius="16"
-                   BorderColor="#D9D9D9"
-                   HasShadow="False">
-                <VerticalStackLayout Spacing="12">
+                <Label Text="Inventory management for growing organizations"
+                       FontSize="15"
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       TextColor="#6B7280" Padding="0,0,0,2"/>
+            </VerticalStackLayout>
 
-                    <Label Text="Email"
-                           FontSize="16"
-                           FontAttributes="Bold" />
-                    <Entry x:Name="EmailEntry"
-                           Placeholder="Enter your email"
-                           Keyboard="Email"
-                           ClearButtonVisibility="WhileEditing" />
+            <Frame Padding="22"
+                   CornerRadius="20"
+                   BorderColor="#E5E7EB"
+                   BackgroundColor="White"
+                   HasShadow="False"
+                   MaximumWidthRequest="460"
+                   HorizontalOptions="Fill">      
+                <VerticalStackLayout Spacing="16">
 
-                    <Label Text="Password"
-                           FontSize="16"
-                           FontAttributes="Bold" />
-                    <Entry x:Name="PasswordEntry"
-                           Placeholder="Enter your password"
-                           IsPassword="True" />
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Sign in"
+                               FontSize="24"
+                               FontAttributes="Bold"
+                               TextColor="#111827" />
+                    </VerticalStackLayout>
 
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Email"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="#374151" />
+                        <Entry x:Name="EmailEntry"
+                               Placeholder="Enter your email"
+                               Keyboard="Email"
+                               ClearButtonVisibility="WhileEditing"
+                               BackgroundColor="#F9FAFB"
+                               TextColor="#111827"
+                               PlaceholderColor="#9CA3AF"
+                               HeightRequest="48" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Password"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="#374151" />
+                        <Entry x:Name="PasswordEntry"
+                               Placeholder="Enter your password"
+                               IsPassword="True"
+                               BackgroundColor="#F9FAFB"
+                               TextColor="#111827"
+                               PlaceholderColor="#9CA3AF"
+                               HeightRequest="48" />
+                    </VerticalStackLayout>
+
+                    <Button Text="Login"
+                            Clicked="OnLoginClicked"
+                            CornerRadius="10"
+                            HeightRequest="48"
+                            BackgroundColor="#1D4ED8"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            Margin="0,6,0,0" />
+
+                    <Label x:Name="MessageLabel"
+                           TextColor="#B91C1C"
+                           FontSize="14" 
+                           LineBreakMode="WordWrap"
+                           HorizontalTextAlignment="Center" />
                 </VerticalStackLayout>
             </Frame>
 
-            <Button Text="Login"
-                    Clicked="OnLoginClicked"
-                    CornerRadius="5" HeightRequest="40"
-                    MaximumWidthRequest="180" BackgroundColor="DarkBlue"
-                    HorizontalOptions="Center"/>
-
-            <Label Text="No account yet? Register here"
-                   TextColor="Blue"
-                   FontSize="14"
-                   HorizontalOptions="Center"
-                   TextDecorations="Underline">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnRegisterLabelTapped" />
-                </Label.GestureRecognizers>
-            </Label>
-
-            <Label x:Name="MessageLabel"
-                   TextColor="Red"
-                   FontSize="14"
-                   LineBreakMode="WordWrap"
-                   HorizontalTextAlignment="Center" />
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
+                <Label Text="No account yet?"
+                       FontSize="14"
+                       TextColor="#6B7280" />
+                <Label Text="Register"
+                       TextColor="#1D4ED8"
+                       FontSize="14"
+                       FontAttributes="Bold">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnRegisterLabelTapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
