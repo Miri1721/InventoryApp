@@ -33,7 +33,8 @@ namespace InventoryApp.Api.Controllers
                 OrganizationId = request.OrganizationId,
                 Unit = request.Unit,
                 CurrentQuantity = request.CurrentQuantity,
-                MinimumThreshold = request.MinimumThreshold
+                MinimumThreshold = request.MinimumThreshold,
+                Supplier = request.Supplier
             };
 
             _mongoDbService.Items.InsertOne(item);
@@ -48,7 +49,10 @@ namespace InventoryApp.Api.Controllers
                 Unit = item.Unit,
                 CurrentQuantity = item.CurrentQuantity,
                 MinimumThreshold = item.MinimumThreshold,
-                IsBelowThreshold = item.CurrentQuantity < item.MinimumThreshold
+                Supplier = item.Supplier,
+                IsBelowThreshold = item.CurrentQuantity < item.MinimumThreshold,
+                IsActive = item.IsActive,
+                IsDeleted = item.IsDeleted
             });
         }
 
@@ -56,7 +60,7 @@ namespace InventoryApp.Api.Controllers
         public IActionResult GetByOrganization(Guid organizationId)
         {
             var items = _mongoDbService.Items
-                .Find(i => i.OrganizationId == organizationId && i.IsActive)
+                .Find(i => i.OrganizationId == organizationId && !i.IsDeleted)
                 .ToList();
 
             var response = items.Select(i => new ItemResponseDto
@@ -69,7 +73,10 @@ namespace InventoryApp.Api.Controllers
                 Unit = i.Unit,
                 CurrentQuantity = i.CurrentQuantity,
                 MinimumThreshold = i.MinimumThreshold,
-                IsBelowThreshold = i.CurrentQuantity < i.MinimumThreshold
+                Supplier = i.Supplier,
+                IsBelowThreshold = i.CurrentQuantity < i.MinimumThreshold,
+                IsActive = i.IsActive,
+                IsDeleted = i.IsDeleted
             });
 
             return Ok(response);
@@ -81,6 +88,7 @@ namespace InventoryApp.Api.Controllers
             var items = _mongoDbService.Items
                 .Find(i =>
                     i.OrganizationId == organizationId &&
+                    !i.IsDeleted &&
                     i.IsActive &&
                     i.CurrentQuantity < i.MinimumThreshold)
                 .ToList();
@@ -95,19 +103,21 @@ namespace InventoryApp.Api.Controllers
                 Unit = i.Unit,
                 CurrentQuantity = i.CurrentQuantity,
                 MinimumThreshold = i.MinimumThreshold,
-                IsBelowThreshold = true
+                Supplier = i.Supplier,
+                IsBelowThreshold = true,
+                IsActive = i.IsActive,
+                IsDeleted = i.IsDeleted
             });
 
             return Ok(response);
         }
 
-
         [HttpPut("{itemId}")]
         public IActionResult Update(Guid itemId, [FromBody] UpdateItemRequestDto request)
         {
             var item = _mongoDbService.Items
-                .Find(i => i.ItemId == itemId && i.IsActive)
-                .FirstOrDefault();
+                      .Find(i => i.ItemId == itemId && !i.IsDeleted && i.IsActive)
+                      .FirstOrDefault();
 
             if (item == null)
             {
@@ -124,7 +134,8 @@ namespace InventoryApp.Api.Controllers
                 .Set(i => i.Description, request.Description)
                 .Set(i => i.Unit, request.Unit)
                 .Set(i => i.CurrentQuantity, request.CurrentQuantity)
-                .Set(i => i.MinimumThreshold, request.MinimumThreshold);
+                .Set(i => i.MinimumThreshold, request.MinimumThreshold)
+                .Set(i => i.Supplier, request.Supplier);
 
             _mongoDbService.Items.UpdateOne(
                 i => i.ItemId == itemId,
@@ -135,6 +146,7 @@ namespace InventoryApp.Api.Controllers
             item.Unit = request.Unit;
             item.CurrentQuantity = request.CurrentQuantity;
             item.MinimumThreshold = request.MinimumThreshold;
+            item.Supplier = request.Supplier;
 
             return Ok(new ItemResponseDto
             {
@@ -146,20 +158,45 @@ namespace InventoryApp.Api.Controllers
                 Unit = item.Unit,
                 CurrentQuantity = item.CurrentQuantity,
                 MinimumThreshold = item.MinimumThreshold,
-                IsBelowThreshold = item.CurrentQuantity < item.MinimumThreshold
+                Supplier = item.Supplier,
+                IsBelowThreshold = item.CurrentQuantity < item.MinimumThreshold,
+                IsActive = item.IsActive,
+                IsDeleted = item.IsDeleted
             });
         }
 
-        [HttpDelete("{itemId}")]
+        //[HttpDelete("{itemId}")]
+        //public IActionResult Deactivate(Guid itemId)
+        //{
+        //    var item = _mongoDbService.Items
+        //        .Find(i => i.ItemId == itemId && i.IsActive)
+        //        .FirstOrDefault();
+
+        //    if (item == null)
+        //    {
+        //        return NotFound("Item not found.");
+        //    }
+
+        //    var update = Builders<Item>.Update
+        //        .Set(i => i.IsActive, false);
+
+        //    _mongoDbService.Items.UpdateOne(
+        //        i => i.ItemId == itemId,
+        //        update);
+
+        //    return Ok("Item deactivated successfully.");
+        //}
+
+        [HttpPut("deactivate/{itemId}")]
         public IActionResult Deactivate(Guid itemId)
         {
             var item = _mongoDbService.Items
-                .Find(i => i.ItemId == itemId && i.IsActive)
+                .Find(i => i.ItemId == itemId && !i.IsDeleted && i.IsActive)
                 .FirstOrDefault();
 
             if (item == null)
             {
-                return NotFound("Item not found.");
+                return NotFound("Active item not found.");
             }
 
             var update = Builders<Item>.Update
@@ -170,6 +207,50 @@ namespace InventoryApp.Api.Controllers
                 update);
 
             return Ok("Item deactivated successfully.");
+        }
+
+        [HttpPut("reactivate/{itemId}")]
+        public IActionResult Reactivate(Guid itemId)
+        {
+            var item = _mongoDbService.Items
+                .Find(i => i.ItemId == itemId && !i.IsDeleted && !i.IsActive)
+                .FirstOrDefault();
+
+            if (item == null)
+            {
+                return NotFound("Deactivated item not found.");
+            }
+
+            var update = Builders<Item>.Update
+                .Set(i => i.IsActive, true);
+
+            _mongoDbService.Items.UpdateOne(
+                i => i.ItemId == itemId,
+                update);
+
+            return Ok("Item reactivated successfully.");
+        }
+
+        [HttpDelete("{itemId}")]
+        public IActionResult Delete(Guid itemId)
+        {
+            var item = _mongoDbService.Items
+                .Find(i => i.ItemId == itemId && !i.IsDeleted)
+                .FirstOrDefault();
+
+            if (item == null)
+            {
+                return NotFound("Item not found.");
+            }
+
+            var update = Builders<Item>.Update
+                .Set(i => i.IsDeleted, true);
+
+            _mongoDbService.Items.UpdateOne(
+                i => i.ItemId == itemId,
+                update);
+
+            return Ok("Item deleted successfully.");
         }
     }
 }

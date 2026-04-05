@@ -31,6 +31,18 @@ namespace InventoryApp.Mobile.Services
 
         public async Task<bool> DeactivateAsync(Guid itemId)
         {
+            var response = await _httpClient.PutAsync($"api/Item/deactivate/{itemId}", null);
+            return response.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> ReactivateAsync(Guid itemId)
+        {
+            var response = await _httpClient.PutAsync($"api/Item/reactivate/{itemId}", null);
+            return response.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> DeleteAsync(Guid itemId)
+        {
             var response = await _httpClient.DeleteAsync($"api/Item/{itemId}");
             return response.IsSuccessStatusCode;
         }

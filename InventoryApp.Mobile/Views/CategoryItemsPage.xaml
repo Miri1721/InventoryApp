@@ -22,8 +22,6 @@
                    FontSize="14"
                    LineBreakMode="WordWrap" />
 
-         
-
             <SearchBar x:Name="ItemSearchBar"
                        IsVisible="False"
                        Placeholder="Search items in this category"
@@ -52,15 +50,15 @@
             </Grid>
 
             <Button Text="Add Item"
-                   Clicked="OnAddItemClicked"
-                   CornerRadius="5"
-                   HeightRequest="40"
-                   MaximumWidthRequest="180"
-                   HorizontalOptions="Start"
-                   BorderColor="DarkBlue"
-                   BackgroundColor="White"
-                   BorderWidth="2"
-                   TextColor="Black" /> 
+                    Clicked="OnAddItemClicked"
+                    CornerRadius="5"
+                    HeightRequest="40"
+                    MaximumWidthRequest="180"
+                    HorizontalOptions="Start"
+                    BorderColor="DarkBlue"
+                    BackgroundColor="White"
+                    BorderWidth="2"
+                    TextColor="Black" />
         </VerticalStackLayout>
 
         <CollectionView Grid.Row="1"
@@ -76,12 +74,43 @@
                     <Frame Padding="10"
                            CornerRadius="16"
                            BorderColor="#D9D9D9"
+                           BackgroundColor="White"
                            HasShadow="False">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding IsActiveAndBelowThreshold}"
+                                         Value="True">      
+                                <Setter Property="BackgroundColor" Value="#FFF1F1" />
+                            </DataTrigger>
+
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding IsDeactivated}"
+                                         Value="True">      
+                                <Setter Property="BackgroundColor" Value="#F0F0F0" />
+                            </DataTrigger>
+                        </Frame.Triggers>
                         <VerticalStackLayout Spacing="8">
-                            <Label Text="{Binding Name}"
-                                   FontSize="22"
-                                   FontAttributes="Bold"
-                                   LineBreakMode="WordWrap" />
+                            <Grid ColumnDefinitions="*,Auto"
+                                  ColumnSpacing="8">
+                                <Label Grid.Column="0"
+                                       Text="{Binding Name}"
+                                       FontSize="22"
+                                       FontAttributes="Bold"
+                                       LineBreakMode="WordWrap"
+                                       VerticalOptions="Center" />
+
+                                <Border Grid.Column="1"
+                                        StrokeThickness="0"
+                                        BackgroundColor="#D9534F"
+                                        Padding="10,4"
+                                        StrokeShape="RoundRectangle 12"
+                                        IsVisible="{Binding ShowDeactivatedBadge}">
+                                    <Label Text="Deactivated"
+                                           TextColor="White"
+                                           FontSize="12"
+                                           FontAttributes="Bold" />
+                                </Border>
+                            </Grid>
 
                             <Label Text="{Binding Description}"
                                    FontSize="15"
@@ -91,20 +120,35 @@
                             <Label Text="{Binding Unit, StringFormat='Unit: {0}'}"
                                    FontSize="14" />
 
+                            <Label Text="{Binding Supplier, StringFormat='Supplier: {0}'}"
+                                   FontSize="14" />
+                            
                             <Label Text="{Binding CurrentQuantity, StringFormat='Current Quantity: {0}'}"
                                    FontSize="14" />
 
                             <Label Text="{Binding MinimumThreshold, StringFormat='Minimum Threshold: {0}'}"
                                    FontSize="14" />
+                            <Label Text="{Binding MissingText}"
+                                   IsVisible="{Binding ShowBelowThresholdWarning}"
+                                   TextColor="DarkRed"
+                                   FontAttributes="Bold"
+                                   FontSize="15" />
 
+                            <Label Text="Below Threshold"
+                                   IsVisible="{Binding ShowBelowThresholdWarning}"
+                                   TextColor="Red"
+                                   FontAttributes="Bold"
+                                   FontSize="14" />     
                             <FlexLayout Wrap="Wrap"
                                         Direction="Row"
                                         JustifyContent="Start"
                                         AlignItems="Stretch"
                                         AlignContent="Start">
+
                                 <Button Text="Edit"
                                         Clicked="OnEditClicked"
                                         CommandParameter="{Binding .}"
+                                        IsVisible="{Binding ShowEditButton}"
                                         Margin="0,0,10,0"
                                         CornerRadius="5"
                                         HeightRequest="40"
@@ -117,6 +161,7 @@
                                 <Button Text="Deactivate"
                                         Clicked="OnDeactivateClicked"
                                         CommandParameter="{Binding .}"
+                                        IsVisible="{Binding ShowDeactivateButton}"
                                         Margin="0,0,10,0"
                                         CornerRadius="5"
                                         HeightRequest="40"
@@ -126,9 +171,36 @@
                                         FlexLayout.Basis="150"
                                         FlexLayout.Grow="1" />
 
+                                <Button Text="Reactivate"
+                                        Clicked="OnReactivateClicked"
+                                        CommandParameter="{Binding .}"
+                                        IsVisible="{Binding ShowReactivateButton}"
+                                        Margin="0,0,10,0"
+                                        CornerRadius="5"
+                                        HeightRequest="40"
+                                        MinimumWidthRequest="130"
+                                        BackgroundColor="DarkBlue"
+                                        TextColor="White"
+                                        FlexLayout.Basis="150"
+                                        FlexLayout.Grow="1" />
+
+                                <Button Text="Delete"
+                                        Clicked="OnDeleteClicked"
+                                        CommandParameter="{Binding .}"
+                                        IsVisible="{Binding ShowDeleteButton}"
+                                        Margin="0,0,10,0"
+                                        CornerRadius="5"
+                                        HeightRequest="40"
+                                        MinimumWidthRequest="110"
+                                        BackgroundColor="#B00020"
+                                        TextColor="White"
+                                        FlexLayout.Basis="120"
+                                        FlexLayout.Grow="1" />
+
                                 <Button Text="Record Movement"
                                         Clicked="OnRecordMovementClicked"
                                         CommandParameter="{Binding .}"
+                                        IsVisible="{Binding ShowRecordMovementButton}"
                                         Margin="0,0,10,5"
                                         CornerRadius="5"
                                         HeightRequest="40"
@@ -141,6 +213,7 @@
                                 <Button Text="View History"
                                         Clicked="OnViewHistoryClicked"
                                         CommandParameter="{Binding .}"
+                                        IsVisible="{Binding ShowViewHistoryButton}"
                                         Margin="0,0,10,5"
                                         CornerRadius="5"
                                         HeightRequest="40"
@@ -150,7 +223,7 @@
                                         BorderWidth="2"
                                         TextColor="Black"
                                         FlexLayout.Basis="150"
-                                        FlexLayout.Grow="1" />      
+                                        FlexLayout.Grow="1" />
                             </FlexLayout>
                         </VerticalStackLayout>
                     </Frame>

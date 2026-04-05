@@ -141,6 +141,38 @@ public partial class ShortageItemsPage : ContentPage
         }
     }
 
+    private async void OnDeleteClicked(object sender, EventArgs e)
+    {
+        if (sender is not Button button || button.CommandParameter is not ItemModel item)
+            return;
+
+        bool confirm = await DisplayAlert(
+            "Confirm Delete",
+            $"Are you sure you want to delete '{item.Name}'?",
+            "Yes",
+            "No");
+
+        if (!confirm)
+            return;
+
+        try
+        {
+            var success = await _itemApiService.DeleteAsync(item.ItemId);
+
+            if (!success)
+            {
+                MessageLabel.Text = "Failed to delete item.";
+                return;
+            }
+
+            await LoadShortageItemsAsync();
+        }
+        catch (Exception ex)
+        {
+            MessageLabel.Text = $"Failed to delete item: {ex.Message}";
+        }
+    }
+
     private async void OnRecordMovementClicked(object sender, EventArgs e)
     {
         if (sender is Button button && button.CommandParameter is ItemModel item)

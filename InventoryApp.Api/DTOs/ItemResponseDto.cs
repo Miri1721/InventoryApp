@@ -10,6 +10,10 @@
         public string Unit { get; set; } = string.Empty;
         public double CurrentQuantity { get; set; }
         public double MinimumThreshold { get; set; }
+        public string Supplier { get; set; } = string.Empty;
         public bool IsBelowThreshold { get; set; }
+
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

@@ -58,6 +58,7 @@ public partial class CreateItemPage : ContentPage
             var name = NameEntry.Text?.Trim() ?? string.Empty;
             var description = DescriptionEditor.Text?.Trim() ?? string.Empty;
             var unit = UnitEntry.Text?.Trim() ?? string.Empty;
+            var supplier = SupplierEntry.Text?.Trim() ?? string.Empty;
 
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -91,7 +92,8 @@ public partial class CreateItemPage : ContentPage
                 OrganizationId = AppSession.OrganizationId,
                 Unit = unit,
                 CurrentQuantity = currentQuantity,
-                MinimumThreshold = minimumThreshold
+                MinimumThreshold = minimumThreshold,
+                Supplier = supplier,
             };
 
             var success = await _itemApiService.CreateAsync(request);

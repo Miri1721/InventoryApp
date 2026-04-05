@@ -35,6 +35,12 @@
                     <Entry x:Name="UnitEntry"
                            Placeholder="Enter unit" />
 
+                    <Label Text="Supplier"
+                           FontSize="16"
+                           FontAttributes="Bold" /> 
+                    <Entry x:Name="SupplierEntry"
+                           Placeholder="Enter supplier" />
+
                     <Label Text="Minimum Threshold"
                            FontSize="16"
                            FontAttributes="Bold" />

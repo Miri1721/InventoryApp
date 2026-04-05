@@ -20,9 +20,10 @@
               Margin="0,0,0,10"
               IsVisible="False">
             <VerticalStackLayout Grid.Column="0"
-                         Spacing="6" Padding="0,0,0,5"
-                         HorizontalOptions="Fill"
-                         VerticalOptions="Start">
+                                 Spacing="6"
+                                 Padding="0,0,0,5"
+                                 HorizontalOptions="Fill"
+                                 VerticalOptions="Start">
                 <Label Text="Search by Category"
                        FontSize="14"
                        FontAttributes="Bold" />
@@ -30,13 +31,14 @@
                            Placeholder="Type category name"
                            TextChanged="OnSearchTextChanged"
                            HorizontalOptions="Fill"
-                           VerticalOptions="Center" />  
+                           VerticalOptions="Center" />
             </VerticalStackLayout>
 
             <VerticalStackLayout Grid.Column="1"
-                         Spacing="6" Padding="0,0,0,5"
-                         HorizontalOptions="Fill"
-                         VerticalOptions="Start">
+                                 Spacing="6"
+                                 Padding="0,0,0,5"
+                                 HorizontalOptions="Fill"
+                                 VerticalOptions="Start">
                 <Label Text="Search by Item"
                        FontSize="14"
                        FontAttributes="Bold" />
@@ -55,6 +57,7 @@
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
             </CollectionView.ItemsLayout>
+
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame Margin="0"
@@ -78,25 +81,17 @@
                                    TextColor="#555555"
                                    LineBreakMode="WordWrap" />
 
-                            <Grid ColumnDefinitions="*,*"
-                                  ColumnSpacing="12"
-                                  RowDefinitions="Auto,Auto"
-                                  RowSpacing="6">
-                                <Label Grid.Row="0"
-                                       Grid.Column="0"
-                                       Text="{Binding Unit, StringFormat='Unit: {0}'}"
-                                       FontSize="14" />
+                            <Label Text="{Binding Unit, StringFormat='Unit: {0}'}"
+                                   FontSize="14" />
 
-                                <Label Grid.Row="0"
-                                       Grid.Column="1"
-                                       Text="{Binding CurrentQuantity, StringFormat='Current: {0}'}"
-                                       FontSize="14" />
+                            <Label Text="{Binding Supplier, StringFormat='Supplier: {0}'}"
+                                   FontSize="14" />
+                            
+                            <Label Text="{Binding CurrentQuantity, StringFormat='Current: {0}'}"
+                                   FontSize="14" />
 
-                                <Label Grid.Row="1"
-                                       Grid.ColumnSpan="2"
-                                       Text="{Binding MinimumThreshold, StringFormat='Minimum Threshold: {0}'}"
-                                       FontSize="14" />
-                            </Grid>
+                            <Label Text="{Binding MinimumThreshold, StringFormat='Minimum Threshold: {0}'}"
+                                   FontSize="14" />
 
                             <Label Text="{Binding MissingText}"
                                    TextColor="DarkRed"
@@ -108,12 +103,9 @@
                                    FontAttributes="Bold"
                                    FontSize="14" />
 
-                            <FlexLayout Wrap="Wrap"
-                                        Direction="Row"
-                                        JustifyContent="Start"
-                                        AlignItems="Stretch"
+                            <FlexLayout Wrap="Wrap" Direction="Row"
+                                        JustifyContent="Start" AlignItems="Stretch"
                                         AlignContent="Start">
-
                                 <Button Text="Edit"
                                         Clicked="OnEditClicked"
                                         CommandParameter="{Binding .}"
@@ -124,7 +116,7 @@
                                         BackgroundColor="DarkBlue"
                                         TextColor="White"
                                         FlexLayout.Basis="120"
-                                        FlexLayout.Grow="1" />          
+                                        FlexLayout.Grow="1" />
 
                                 <Button Text="Deactivate"
                                         Clicked="OnDeactivateClicked"
@@ -136,6 +128,18 @@
                                         BackgroundColor="DarkBlue"
                                         TextColor="White"
                                         FlexLayout.Basis="150"
+                                        FlexLayout.Grow="1" />
+
+                                <Button Text="Delete"
+                                        Clicked="OnDeleteClicked"
+                                        CommandParameter="{Binding .}"
+                                        Margin="0,0,10,5"
+                                        CornerRadius="5"
+                                        HeightRequest="40"
+                                        MinimumWidthRequest="110"
+                                        BackgroundColor="#B00020"
+                                        TextColor="White"
+                                        FlexLayout.Basis="120"
                                         FlexLayout.Grow="1" />
 
                                 <Button Text="Record Movement"
@@ -162,7 +166,7 @@
                                         BorderWidth="2"
                                         TextColor="Black"
                                         FlexLayout.Basis="150"
-                                        FlexLayout.Grow="1" />  
+                                        FlexLayout.Grow="1" />
                             </FlexLayout>
                         </VerticalStackLayout>
                     </Frame>

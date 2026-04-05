@@ -28,26 +28,29 @@ public partial class CategoriesPage : ContentPage
 
         try
         {
-            MessageLabel.Text = string.Empty;
-
-            var categories = await _categoryApiService.GetByOrganizationAsync(AppSession.OrganizationId);
-            _allCategories = categories;
-
-            if(_allCategories.Count != 0)
-            {
-                SortPickerGrid.IsVisible = true;
-                CategorySearchBar.IsVisible = true;
-            }
-
-            if (SortPicker.SelectedIndex < 0)
-                SortPicker.SelectedIndex = 0;
-
-            ApplyFilters();
+            await LoadCategoriesAsync();
         }
         catch (Exception ex)
         {
             MessageLabel.Text = $"Failed to load categories: {ex.Message}";
         }
+    }
+
+    private async Task LoadCategoriesAsync()
+    {
+        MessageLabel.Text = string.Empty;
+
+        var categories = await _categoryApiService.GetByOrganizationAsync(AppSession.OrganizationId);
+        _allCategories = categories;
+
+        bool hasCategories = _allCategories.Count > 0;
+        SortPickerGrid.IsVisible = hasCategories;
+        CategorySearchBar.IsVisible = hasCategories;
+
+        if (hasCategories && SortPicker.SelectedIndex < 0)
+            SortPicker.SelectedIndex = 0;
+
+        ApplyFilters();
     }
 
     private void ApplyFilters()
@@ -105,7 +108,7 @@ public partial class CategoriesPage : ContentPage
         if (sender is Button button && button.CommandParameter is CategoryModel category)
         {
             await Navigation.PushAsync(
-    new CategoryItemsPage(_itemApiService, _categoryApiService, _stockTransactionApiService, category));
+                new CategoryItemsPage(_itemApiService, _categoryApiService, _stockTransactionApiService, category));
         }
     }
 
@@ -141,12 +144,75 @@ public partial class CategoriesPage : ContentPage
                 return;
             }
 
-            _allCategories = await _categoryApiService.GetByOrganizationAsync(AppSession.OrganizationId);
-            ApplyFilters();
+            await LoadCategoriesAsync();
         }
         catch (Exception ex)
         {
             MessageLabel.Text = $"Failed to deactivate category: {ex.Message}";
+        }
+    }
+
+    private async void OnReactivateClicked(object sender, EventArgs e)
+    {
+        if (sender is not Button button || button.CommandParameter is not CategoryModel category)
+            return;
+
+        bool confirm = await DisplayAlert(
+            "Confirm",
+            $"Are you sure you want to reactivate '{category.Name}'?",
+            "Yes",
+            "No");
+
+        if (!confirm)
+            return;
+
+        try
+        {
+            var success = await _categoryApiService.ReactivateAsync(category.CategoryId);
+
+            if (!success)
+            {
+                MessageLabel.Text = "Failed to reactivate category.";
+                return;
+            }
+
+            await LoadCategoriesAsync();
+        }
+        catch (Exception ex)
+        {
+            MessageLabel.Text = $"Failed to reactivate category: {ex.Message}";
+        }
+    }
+
+    private async void OnDeleteClicked(object sender, EventArgs e)
+    {
+        if (sender is not Button button || button.CommandParameter is not CategoryModel category)
+            return;
+
+        bool confirm = await DisplayAlert(
+            "Confirm Delete",
+            $"Are you sure you want to delete '{category.Name}'?",
+            "Yes",
+            "No");
+
+        if (!confirm)
+            return;
+
+        try
+        {
+            var success = await _categoryApiService.DeleteAsync(category.CategoryId);
+
+            if (!success)
+            {
+                MessageLabel.Text = "Failed to delete category.";
+                return;
+            }
+
+            await LoadCategoriesAsync();
+        }
+        catch (Exception ex)
+        {
+            MessageLabel.Text = $"Failed to delete category: {ex.Message}";
         }
     }
 }

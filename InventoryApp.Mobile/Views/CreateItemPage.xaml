@@ -47,6 +47,12 @@
                     <Entry x:Name="UnitEntry"
                            Placeholder="Pack / Carton / Tray / Bottle..." />
 
+                    <Label Text="Supplier"
+                           FontSize="16"
+                           FontAttributes="Bold" />     
+                    <Entry x:Name="SupplierEntry"
+                           Placeholder="Enter supplier name" />
+
                     <Grid ColumnDefinitions="*,*"
                           ColumnSpacing="12">
                         <VerticalStackLayout Spacing="6">

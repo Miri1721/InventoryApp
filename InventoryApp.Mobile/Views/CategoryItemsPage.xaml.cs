@@ -13,10 +13,10 @@ public partial class CategoryItemsPage : ContentPage
     private readonly StockTransactionApiService _stockTransactionApiService;
 
     public CategoryItemsPage(
-     ItemApiService itemApiService,
-     CategoryApiService categoryApiService,
-     StockTransactionApiService stockTransactionApiService,
-     CategoryModel category)
+        ItemApiService itemApiService,
+        CategoryApiService categoryApiService,
+        StockTransactionApiService stockTransactionApiService,
+        CategoryModel category)
     {
         InitializeComponent();
         _itemApiService = itemApiService;
@@ -34,23 +34,7 @@ public partial class CategoryItemsPage : ContentPage
 
         try
         {
-            MessageLabel.Text = string.Empty;
-
-            var allItems = await _itemApiService.GetByOrganizationAsync(AppSession.OrganizationId);
-
-            _allItems = allItems
-                .Where(i => i.CategoryId == _category.CategoryId)
-                .ToList();
-
-            bool hasItems = _allItems.Count > 0;
-
-            ItemSearchBar.IsVisible = hasItems;
-            SortContainer.IsVisible = hasItems;
-
-            if (hasItems && SortPicker.SelectedIndex < 0)
-                SortPicker.SelectedIndex = 0;
-
-            ApplyFilters();
+            await LoadItemsAsync();
         }
         catch (Exception ex)
         {
@@ -58,6 +42,27 @@ public partial class CategoryItemsPage : ContentPage
             SortContainer.IsVisible = false;
             MessageLabel.Text = $"Failed to load items: {ex.Message}";
         }
+    }
+
+    private async Task LoadItemsAsync()
+    {
+        MessageLabel.Text = string.Empty;
+
+        var allItems = await _itemApiService.GetByOrganizationAsync(AppSession.OrganizationId);
+
+        _allItems = allItems
+            .Where(i => i.CategoryId == _category.CategoryId)
+            .ToList();
+
+        bool hasItems = _allItems.Count > 0;
+
+        ItemSearchBar.IsVisible = hasItems;
+        SortContainer.IsVisible = hasItems;
+
+        if (hasItems && SortPicker.SelectedIndex < 0)
+            SortPicker.SelectedIndex = 0;
+
+        ApplyFilters();
     }
 
     private void ApplyFilters()
@@ -152,21 +157,75 @@ public partial class CategoryItemsPage : ContentPage
                 return;
             }
 
-            var allItems = await _itemApiService.GetByOrganizationAsync(AppSession.OrganizationId);
-
-            _allItems = allItems
-                .Where(i => i.CategoryId == _category.CategoryId)
-                .ToList();
-
-            bool hasItems = _allItems.Count > 0;
-            ItemSearchBar.IsVisible = hasItems;
-            SortContainer.IsVisible = hasItems;
-
-            ApplyFilters();
+            await LoadItemsAsync();
         }
         catch (Exception ex)
         {
             MessageLabel.Text = $"Failed to deactivate item: {ex.Message}";
+        }
+    }
+
+    private async void OnReactivateClicked(object sender, EventArgs e)
+    {
+        if (sender is not Button button || button.CommandParameter is not ItemModel item)
+            return;
+
+        bool confirm = await DisplayAlert(
+            "Confirm",
+            $"Are you sure you want to reactivate '{item.Name}'?",
+            "Yes",
+            "No");
+
+        if (!confirm)
+            return;
+
+        try
+        {
+            var success = await _itemApiService.ReactivateAsync(item.ItemId);
+
+            if (!success)
+            {
+                MessageLabel.Text = "Failed to reactivate item.";
+                return;
+            }
+
+            await LoadItemsAsync();
+        }
+        catch (Exception ex)
+        {
+            MessageLabel.Text = $"Failed to reactivate item: {ex.Message}";
+        }
+    }
+
+    private async void OnDeleteClicked(object sender, EventArgs e)
+    {
+        if (sender is not Button button || button.CommandParameter is not ItemModel item)
+            return;
+
+        bool confirm = await DisplayAlert(
+            "Confirm Delete",
+            $"Are you sure you want to delete '{item.Name}'?",
+            "Yes",
+            "No");
+
+        if (!confirm)
+            return;
+
+        try
+        {
+            var success = await _itemApiService.DeleteAsync(item.ItemId);
+
+            if (!success)
+            {
+                MessageLabel.Text = "Failed to delete item.";
+                return;
+            }
+
+            await LoadItemsAsync();
+        }
+        catch (Exception ex)
+        {
+            MessageLabel.Text = $"Failed to delete item: {ex.Message}";
         }
     }
 

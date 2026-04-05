@@ -33,13 +33,14 @@ namespace InventoryApp.Api.Controllers
             };
 
             _mongoDbService.Categories.InsertOne(category);
-
             return Ok(new CategoryResponseDto
             {
                 CategoryId = category.CategoryId,
                 Name = category.Name,
                 Description = category.Description,
-                OrganizationId = category.OrganizationId
+                OrganizationId = category.OrganizationId,
+                IsActive = category.IsActive,
+                IsDeleted = category.IsDeleted
             });
         }
 
@@ -47,7 +48,7 @@ namespace InventoryApp.Api.Controllers
         public IActionResult GetByOrganization(Guid organizationId)
         {
             var categories = _mongoDbService.Categories
-                .Find(c => c.OrganizationId == organizationId && c.IsActive)
+                .Find(c => c.OrganizationId == organizationId && !c.IsDeleted)
                 .ToList();
 
             var response = categories.Select(c => new CategoryResponseDto
@@ -55,7 +56,9 @@ namespace InventoryApp.Api.Controllers
                 CategoryId = c.CategoryId,
                 Name = c.Name,
                 Description = c.Description,
-                OrganizationId = c.OrganizationId
+                OrganizationId = c.OrganizationId,
+                IsActive = c.IsActive,
+                IsDeleted = c.IsDeleted
             });
 
             return Ok(response);
@@ -65,7 +68,7 @@ namespace InventoryApp.Api.Controllers
         public IActionResult Update(Guid categoryId, [FromBody] UpdateCategoryRequestDto request)
         {
             var category = _mongoDbService.Categories
-                .Find(c => c.CategoryId == categoryId && c.IsActive)
+                .Find(c => c.CategoryId == categoryId && !c.IsDeleted && c.IsActive)
                 .FirstOrDefault();
 
             if (category == null)
@@ -94,15 +97,71 @@ namespace InventoryApp.Api.Controllers
                 CategoryId = category.CategoryId,
                 Name = category.Name,
                 Description = category.Description,
-                OrganizationId = category.OrganizationId
+                OrganizationId = category.OrganizationId,
+                IsActive = category.IsActive,
+                IsDeleted = category.IsDeleted
             });
         }
 
-        [HttpDelete("{categoryId}")]
+        [HttpPut("deactivate/{categoryId}")]
         public IActionResult Deactivate(Guid categoryId)
         {
             var category = _mongoDbService.Categories
-                .Find(c => c.CategoryId == categoryId && c.IsActive)
+                .Find(c => c.CategoryId == categoryId && !c.IsDeleted && c.IsActive)
+                .FirstOrDefault();
+
+            if (category == null)
+            {
+                return NotFound("Active category not found.");
+            }
+
+            var categoryUpdate = Builders<Category>.Update
+                .Set(c => c.IsActive, false);
+
+            _mongoDbService.Categories.UpdateOne(
+                c => c.CategoryId == categoryId,
+                categoryUpdate);
+
+            var itemFilter = Builders<Item>.Filter.And(
+                Builders<Item>.Filter.Eq(i => i.CategoryId, categoryId),
+                Builders<Item>.Filter.Eq(i => i.IsDeleted, false)
+            );
+
+            var itemUpdate = Builders<Item>.Update
+                .Set(i => i.IsActive, false);
+
+            _mongoDbService.Items.UpdateMany(itemFilter, itemUpdate);
+
+            return Ok("Category deactivated successfully.");
+        }
+
+        [HttpPut("reactivate/{categoryId}")]
+        public IActionResult Reactivate(Guid categoryId)
+        {
+            var category = _mongoDbService.Categories
+                .Find(c => c.CategoryId == categoryId && !c.IsDeleted && !c.IsActive)
+                .FirstOrDefault();
+
+            if (category == null)
+            {
+                return NotFound("Deactivated category not found.");
+            }
+
+            var update = Builders<Category>.Update
+                .Set(c => c.IsActive, true);
+
+            _mongoDbService.Categories.UpdateOne(
+                c => c.CategoryId == categoryId,
+                update);
+
+            return Ok("Category reactivated successfully.");
+        }
+
+        [HttpDelete("{categoryId}")]
+        public IActionResult Delete(Guid categoryId)
+        {
+            var category = _mongoDbService.Categories
+                .Find(c => c.CategoryId == categoryId && !c.IsDeleted)
                 .FirstOrDefault();
 
             if (category == null)
@@ -110,14 +169,24 @@ namespace InventoryApp.Api.Controllers
                 return NotFound("Category not found.");
             }
 
-            var update = Builders<Category>.Update
-                .Set(c => c.IsActive, false);
+            var categoryUpdate = Builders<Category>.Update
+                .Set(c => c.IsDeleted, true);
 
             _mongoDbService.Categories.UpdateOne(
                 c => c.CategoryId == categoryId,
-                update);
+                categoryUpdate);
 
-            return Ok("Category deactivated successfully.");
+            var itemFilter = Builders<Item>.Filter.And(
+                Builders<Item>.Filter.Eq(i => i.CategoryId, categoryId),
+                Builders<Item>.Filter.Eq(i => i.IsDeleted, false)
+            );
+
+            var itemUpdate = Builders<Item>.Update
+                .Set(i => i.IsDeleted, true);
+
+            _mongoDbService.Items.UpdateMany(itemFilter, itemUpdate);
+
+            return Ok("Category deleted successfully.");
         }
     }
 }

@@ -34,8 +34,8 @@ namespace InventoryApp.Api.Controllers
                     .ToList();
 
                 var items = _mongoDbService.Items
-                    .Find(i => i.OrganizationId == organizationId && i.IsActive)
-                    .ToList();
+                     .Find(i => i.OrganizationId == organizationId && !i.IsDeleted)
+                     .ToList();
 
                 var transactions = _mongoDbService.StockTransactions
                     .Find(t => t.OrganizationId == organizationId)
@@ -70,11 +70,11 @@ namespace InventoryApp.Api.Controllers
                 row++;
 
                 worksheet.Cell(row, 1).Value = "Active Items Count";
-                worksheet.Cell(row, 2).Value = items.Count;
+                worksheet.Cell(row, 2).Value = items.Count(i => i.IsActive);
                 row++;
 
                 worksheet.Cell(row, 1).Value = "Items To Reorder";
-                worksheet.Cell(row, 2).Value = items.Count(i => i.CurrentQuantity < i.MinimumThreshold);
+                worksheet.Cell(row, 2).Value = items.Count(i => i.IsActive && i.CurrentQuantity < i.MinimumThreshold);
                 row += 2;
 
                 // Style summary labels
@@ -87,7 +87,7 @@ namespace InventoryApp.Api.Controllers
                 foreach (var category in categories.OrderBy(c => c.Name))
                 {
                     worksheet.Cell(row, 1).Value = $"Category: {category.Name}";
-                    worksheet.Range(row, 1, row, 7).Merge();
+                    worksheet.Range(row, 1, row, 8).Merge();
                     worksheet.Cell(row, 1).Style.Font.Bold = true;
                     worksheet.Cell(row, 1).Style.Fill.BackgroundColor = XLColor.LightBlue;
                     row++;
@@ -95,13 +95,14 @@ namespace InventoryApp.Api.Controllers
                     worksheet.Cell(row, 1).Value = "Item Name";
                     worksheet.Cell(row, 2).Value = "Description";
                     worksheet.Cell(row, 3).Value = "Unit";
-                    worksheet.Cell(row, 4).Value = "Current Quantity";
-                    worksheet.Cell(row, 5).Value = "Minimum Threshold";
-                    worksheet.Cell(row, 6).Value = "Status";
-                    worksheet.Cell(row, 7).Value = "History Exists";
+                    worksheet.Cell(row, 4).Value = "Supplier";
+                    worksheet.Cell(row, 5).Value = "Current Quantity";
+                    worksheet.Cell(row, 6).Value = "Minimum Threshold";
+                    worksheet.Cell(row, 7).Value = "Status";
+                    worksheet.Cell(row, 8).Value = "History Exists";
 
-                    worksheet.Range(row, 1, row, 7).Style.Font.Bold = true;
-                    worksheet.Range(row, 1, row, 7).Style.Fill.BackgroundColor = XLColor.LightGray;
+                    worksheet.Range(row, 1, row, 8).Style.Font.Bold = true;
+                    worksheet.Range(row, 1, row, 8).Style.Fill.BackgroundColor = XLColor.LightGray;
                     row++;
 
                     var categoryItems = items
@@ -111,13 +112,31 @@ namespace InventoryApp.Api.Controllers
 
                     if (categoryItems.Count == 0)
                     {
-                        worksheet.Cell(row, 1).Value = "No active items in this category.";
+                        worksheet.Cell(row, 1).Value = "No items in this category.";
                         row += 2;
                         continue;
                     }
 
                     foreach (var item in categoryItems)
                     {
+                        if (!item.IsActive)
+                        {
+                            worksheet.Cell(row, 1).Value = item.Name;
+                            worksheet.Cell(row, 2).Value = "Deactivated";
+                            worksheet.Cell(row, 3).Value = "Deactivated";
+                            worksheet.Cell(row, 4).Value = "Deactivated";
+                            worksheet.Cell(row, 5).Value = "Deactivated";
+                            worksheet.Cell(row, 6).Value = "Deactivated";
+                            worksheet.Cell(row, 7).Value = "Deactivated";
+                            worksheet.Cell(row, 8).Value = "Deactivated";
+
+                            worksheet.Range(row, 1, row, 8).Style.Fill.BackgroundColor = XLColor.LightGray;
+
+                            row++;
+                            row++;
+                            continue;
+                        }
+
                         var itemTransactions = transactions
                             .Where(t => t.ItemId == item.ItemId)
                             .OrderByDescending(t => t.CreatedAtUtc)
@@ -126,19 +145,19 @@ namespace InventoryApp.Api.Controllers
                         worksheet.Cell(row, 1).Value = item.Name;
                         worksheet.Cell(row, 2).Value = item.Description;
                         worksheet.Cell(row, 3).Value = item.Unit;
-                        worksheet.Cell(row, 4).Value = item.CurrentQuantity;
-                        worksheet.Cell(row, 5).Value = item.MinimumThreshold;
-                        worksheet.Cell(row, 6).Value = item.CurrentQuantity < item.MinimumThreshold ? "Below Threshold" : "OK";
-                        worksheet.Cell(row, 7).Value = itemTransactions.Any() ? "Yes" : "No";
+                        worksheet.Cell(row, 4).Value = item.Supplier;
+                        worksheet.Cell(row, 5).Value = item.CurrentQuantity;
+                        worksheet.Cell(row, 6).Value = item.MinimumThreshold;
+                        worksheet.Cell(row, 7).Value = item.CurrentQuantity < item.MinimumThreshold ? "Below Threshold" : "OK";
+                        worksheet.Cell(row, 8).Value = itemTransactions.Any() ? "Yes" : "No";
 
                         if (item.CurrentQuantity < item.MinimumThreshold)
                         {
-                            worksheet.Range(row, 1, row, 7).Style.Fill.BackgroundColor = XLColor.LightPink;
+                            worksheet.Range(row, 1, row, 8).Style.Fill.BackgroundColor = XLColor.LightPink;
                         }
 
                         row++;
 
-                        // History section under the item
                         if (itemTransactions.Any())
                         {
                             worksheet.Cell(row, 2).Value = "History";

@@ -14,19 +14,22 @@
                    FontSize="14"
                    LineBreakMode="WordWrap" />
 
-            <SearchBar x:Name="CategorySearchBar" IsVisible="False"
+            <SearchBar x:Name="CategorySearchBar"
+                       IsVisible="False"
                        Placeholder="Search categories"
                        TextChanged="OnSearchTextChanged" />
 
-            <Grid ColumnDefinitions="Auto,*" x:Name="SortPickerGrid"
-                  ColumnSpacing="12" IsVisible="False"
+            <Grid ColumnDefinitions="Auto,*"
+                  x:Name="SortPickerGrid"
+                  ColumnSpacing="12"
+                  IsVisible="False"
                   VerticalOptions="Center">
                 <Label Text="⇅ Sort by"
                        FontSize="16"
                        FontAttributes="Bold"
                        VerticalOptions="Center" />
 
-                <Picker Grid.Column="1" 
+                <Picker Grid.Column="1"
                         x:Name="SortPicker"
                         SelectedIndexChanged="OnSortChanged">
                     <Picker.Items>
@@ -35,20 +38,23 @@
                     </Picker.Items>
                 </Picker>
             </Grid>
+
             <Button Text="Add Category"
                     Clicked="OnAddCategoryClicked"
                     CornerRadius="5"
                     Padding="5,0,5,0"
                     MaximumWidthRequest="180"
                     HorizontalOptions="Start"
-                    BorderColor="DarkBlue" BackgroundColor="White" BorderWidth="2"
-                    TextColor="Black"  />    
+                    BorderColor="DarkBlue"
+                    BackgroundColor="White"
+                    BorderWidth="2"
+                    TextColor="Black" />
         </VerticalStackLayout>
 
         <CollectionView Grid.Row="1"
-                x:Name="CategoriesCollectionView"
-                Margin="0,16,0,0"
-                SelectionMode="None">
+                        x:Name="CategoriesCollectionView"
+                        Margin="0,16,0,0"
+                        SelectionMode="None">
 
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
@@ -59,59 +65,113 @@
                     <Frame Padding="10"
                            CornerRadius="16"
                            BorderColor="#D9D9D9"
-                           HasShadow="False">   
+                           BackgroundColor="White"
+                           HasShadow="False">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame"
+                                         Binding="{Binding IsDeactivated}"
+                                         Value="True">
+                                <Setter Property="BackgroundColor" Value="#F0F0F0" />
+                            </DataTrigger>
+                        </Frame.Triggers>
+
                         <VerticalStackLayout Spacing="10">
-                            <Label Text="{Binding Name}"
-                           FontSize="22"
-                           FontAttributes="Bold"
-                           LineBreakMode="WordWrap" />
+                            <Grid ColumnDefinitions="*,Auto"
+                                  ColumnSpacing="8">
+                                <Label Grid.Column="0"
+                                       Text="{Binding Name}"
+                                       FontSize="22"
+                                       FontAttributes="Bold"
+                                       LineBreakMode="WordWrap"
+                                       VerticalOptions="Center" />
+
+                                <Border Grid.Column="1"
+                                        StrokeThickness="0"
+                                        BackgroundColor="#D9534F"
+                                        Padding="10,4"
+                                        StrokeShape="RoundRectangle 12"
+                                        IsVisible="{Binding ShowDeactivatedBadge}">
+                                    <Label Text="Deactivated"
+                                           TextColor="White"
+                                           FontSize="12"
+                                           FontAttributes="Bold" />
+                                </Border>
+                            </Grid>
 
                             <Label Text="{Binding Description}"
-                           FontSize="15"
-                           TextColor="#555555"
-                           LineBreakMode="WordWrap" />
+                                   FontSize="15"
+                                   TextColor="#555555"
+                                   LineBreakMode="WordWrap" />
 
                             <FlexLayout Wrap="Wrap"
-                                Direction="Row"
-                                JustifyContent="Start"
-                                AlignItems="Stretch"
-                                AlignContent="Start">
+                                        Direction="Row"
+                                        JustifyContent="Start"
+                                        AlignItems="Stretch"
+                                        AlignContent="Start">
 
                                 <Button Text="View Items"
-                                Clicked="OnViewItemsClicked"
-                                CommandParameter="{Binding .}"
-                                Margin="0,0,10,5"
-                                CornerRadius="5"
-                                HeightRequest="40"
-                                MinimumWidthRequest="130"
-                                BackgroundColor="DarkBlue"
-                                TextColor="White"
-                                FlexLayout.Basis="150"
-                                FlexLayout.Grow="1"/>
+                                        Clicked="OnViewItemsClicked"
+                                        CommandParameter="{Binding .}"
+                                        Margin="0,0,10,5"
+                                        CornerRadius="5"
+                                        HeightRequest="40"
+                                        MinimumWidthRequest="130"
+                                        BackgroundColor="DarkBlue"
+                                        TextColor="White"
+                                        FlexLayout.Basis="150"
+                                        FlexLayout.Grow="1" />
 
                                 <Button Text="Edit"
-                                Clicked="OnEditClicked"
-                                CommandParameter="{Binding .}"
-                                Margin="0,0,10,5"
-                                CornerRadius="5"
-                                HeightRequest="40"
-                                MinimumWidthRequest="110"
-                                BackgroundColor="DarkBlue"
-                                TextColor="White"
-                                FlexLayout.Basis="120"
-                                FlexLayout.Grow="1"/>
+                                        Clicked="OnEditClicked"
+                                        CommandParameter="{Binding .}"
+                                        IsVisible="{Binding ShowEditButton}"
+                                        Margin="0,0,10,5"
+                                        CornerRadius="5"
+                                        HeightRequest="40"
+                                        MinimumWidthRequest="110"
+                                        BackgroundColor="DarkBlue"
+                                        TextColor="White"
+                                        FlexLayout.Basis="120"
+                                        FlexLayout.Grow="1" />
 
                                 <Button Text="Deactivate"
-                                Clicked="OnDeactivateClicked"
-                                CommandParameter="{Binding .}"
-                                Margin="0,0,10,0"
-                                CornerRadius="5"
-                                HeightRequest="40"
-                                MinimumWidthRequest="130"
-                                BackgroundColor="DarkBlue"
-                                TextColor="White"
-                                FlexLayout.Basis="150"
-                                FlexLayout.Grow="1"/>
+                                        Clicked="OnDeactivateClicked"
+                                        CommandParameter="{Binding .}"
+                                        IsVisible="{Binding ShowDeactivateButton}"
+                                        Margin="0,0,10,0"
+                                        CornerRadius="5"
+                                        HeightRequest="40"
+                                        MinimumWidthRequest="130"
+                                        BackgroundColor="DarkBlue"
+                                        TextColor="White"
+                                        FlexLayout.Basis="150"
+                                        FlexLayout.Grow="1" />
+
+                                <Button Text="Reactivate"
+                                        Clicked="OnReactivateClicked"
+                                        CommandParameter="{Binding .}"
+                                        IsVisible="{Binding ShowReactivateButton}"
+                                        Margin="0,0,10,0"
+                                        CornerRadius="5"
+                                        HeightRequest="40"
+                                        MinimumWidthRequest="130"
+                                        BackgroundColor="DarkBlue"
+                                        TextColor="White"
+                                        FlexLayout.Basis="150"
+                                        FlexLayout.Grow="1" />
+
+                                <Button Text="Delete"
+                                        Clicked="OnDeleteClicked"
+                                        CommandParameter="{Binding .}"
+                                        IsVisible="{Binding ShowDeleteButton}"
+                                        Margin="0,0,10,0"
+                                        CornerRadius="5"
+                                        HeightRequest="40"
+                                        MinimumWidthRequest="110"
+                                        BackgroundColor="#B00020"
+                                        TextColor="White"
+                                        FlexLayout.Basis="120"
+                                        FlexLayout.Grow="1" />
                             </FlexLayout>
                         </VerticalStackLayout>
                     </Frame>
