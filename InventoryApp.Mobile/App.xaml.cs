@@ -11,7 +11,8 @@ public partial class App : Application
         ItemApiService itemApiService,
         StockTransactionApiService stockTransactionApiService,
         ReportApiService reportApiService,
-        OrganizationApiService organizationApiService
+        OrganizationApiService organizationApiService,
+        UserApiService userApiService
         )
     {
         InitializeComponent();
@@ -22,6 +23,8 @@ public partial class App : Application
                 categoryApiService,
                 itemApiService,
                 stockTransactionApiService,
-                reportApiService,organizationApiService));
+                reportApiService,
+                organizationApiService,
+                userApiService));
     }
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="InventoryApp.Mobile.Views.DeletedUsersPage"
+             Title="Deleted Staff Users">
+
+    <Grid RowDefinitions="Auto,*" Padding="20,0,20,0">
+        <Label x:Name="MessageLabel"
+               Grid.Row="0"
+               TextColor="Red"
+               FontSize="14"
+               LineBreakMode="WordWrap" />
+
+        <CollectionView Grid.Row="1"
+                        x:Name="UsersCollectionView"
+                        Margin="0,16,0,0"
+                        SelectionMode="None">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="12"
+                           CornerRadius="16"
+                           BorderColor="#D9D9D9"
+                           HasShadow="False">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="{Binding FullName}"
+                                   FontSize="20"
+                                   FontAttributes="Bold" />
+
+                            <Label Text="{Binding Email, StringFormat='Email: {0}'}"
+                                   FontSize="15" />
+
+                            <Label Text="{Binding Role, StringFormat='Role: {0}'}"
+                                   FontSize="15"
+                                   TextColor="DarkBlue" />
+
+                            <Button Text="Recover"
+                                    Clicked="OnRecoverClicked"
+                                    CommandParameter="{Binding .}"
+                                    CornerRadius="5"
+                                    HeightRequest="40"
+                                    MaximumWidthRequest="140"
+                                    HorizontalOptions="Start"
+                                    BackgroundColor="DarkBlue"
+                                    TextColor="White" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

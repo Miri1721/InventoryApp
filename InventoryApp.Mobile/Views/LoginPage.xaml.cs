@@ -11,13 +11,16 @@ public partial class LoginPage : ContentPage
     private readonly StockTransactionApiService _stockTransactionApiService;
     private readonly ReportApiService _reportApiService;
     private readonly OrganizationApiService _organizationApiService;
+    private readonly UserApiService _userApiService;
 
-    public LoginPage(AuthApiService authApiService,
-                     CategoryApiService categoryApiService,
-                     ItemApiService itemApiService,
-                     StockTransactionApiService stockTransactionApiService,
-                     ReportApiService reportApiService,
-                     OrganizationApiService organizationApiService)
+    public LoginPage(
+      AuthApiService authApiService,
+      CategoryApiService categoryApiService,
+      ItemApiService itemApiService,
+      StockTransactionApiService stockTransactionApiService,
+      ReportApiService reportApiService,
+      OrganizationApiService organizationApiService,
+      UserApiService userApiService)
     {
         InitializeComponent();
         _authApiService = authApiService;
@@ -26,6 +29,7 @@ public partial class LoginPage : ContentPage
         _stockTransactionApiService = stockTransactionApiService;
         _reportApiService = reportApiService;
         _organizationApiService = organizationApiService;
+        _userApiService = userApiService;
     }
 
     private async void OnLoginClicked(object sender, EventArgs e)
@@ -62,12 +66,13 @@ public partial class LoginPage : ContentPage
             AppSession.OrganizationType = response.OrganizationType ?? string.Empty;
 
             await Navigation.PushAsync(new DashboardPage(
-                                             _authApiService,
-                                             _categoryApiService,
-                                             _itemApiService,
-                                             _stockTransactionApiService,
-                                             _reportApiService,
-                                             _organizationApiService));
+                                        _authApiService,
+                                        _categoryApiService,
+                                        _itemApiService,
+                                        _stockTransactionApiService,
+                                        _reportApiService,
+                                        _organizationApiService,
+                                        _userApiService));
         }
         catch (Exception ex)
         {

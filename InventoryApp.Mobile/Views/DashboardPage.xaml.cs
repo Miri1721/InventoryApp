@@ -8,17 +8,18 @@ public partial class DashboardPage : ContentPage
     private readonly ItemApiService _itemApiService;
     private readonly StockTransactionApiService _stockTransactionApiService;
     private readonly ReportApiService _reportApiService;
-
     private readonly AuthApiService _authApiService;
     private readonly OrganizationApiService _organizationApiService;
+    private readonly UserApiService _userApiService;
 
     public DashboardPage(
-                    AuthApiService authApiService,
-                    CategoryApiService categoryApiService,
-                    ItemApiService itemApiService,
-                    StockTransactionApiService stockTransactionApiService,
-                    ReportApiService reportApiService,
-                    OrganizationApiService organizationApiService)
+        AuthApiService authApiService,
+        CategoryApiService categoryApiService,
+        ItemApiService itemApiService,
+        StockTransactionApiService stockTransactionApiService,
+        ReportApiService reportApiService,
+        OrganizationApiService organizationApiService,
+        UserApiService userApiService)
     {
         InitializeComponent();
         _authApiService = authApiService;
@@ -27,9 +28,13 @@ public partial class DashboardPage : ContentPage
         _stockTransactionApiService = stockTransactionApiService;
         _reportApiService = reportApiService;
         _organizationApiService = organizationApiService;
+        _userApiService = userApiService;
 
         NavigationPage.SetHasBackButton(this, false);
     }
+
+    private bool IsManager =>
+        string.Equals(AppSession.Role, "Manager", StringComparison.OrdinalIgnoreCase);
 
     protected override async void OnAppearing()
     {
@@ -44,6 +49,10 @@ public partial class DashboardPage : ContentPage
         RoleLabel.Text = $"Role: {AppSession.Role}";
         OrganizationIdLabel.Text = $"Organization ID: {AppSession.OrganizationId}";
 
+        StaffButton.IsVisible = IsManager;
+        //DeletedUsersButton.IsVisible = IsManager;
+        ExportExcelButton.IsVisible = IsManager;
+
         try
         {
             var categories = await _categoryApiService.GetByOrganizationAsync(AppSession.OrganizationId);
@@ -51,7 +60,7 @@ public partial class DashboardPage : ContentPage
             var shortageItems = await _itemApiService.GetShortageAsync(AppSession.OrganizationId);
 
             CategoriesCountLabel.Text = $"Categories: {categories.Count}";
-            ItemsCountLabel.Text = $"Active Items: {items.Count}";
+            ItemsCountLabel.Text = $"Active Items: {items.Count(i => i.IsActive)}";
             ShortageCountLabel.Text = $"Low Stock Items: {shortageItems.Count}";
         }
         catch (Exception ex)
@@ -64,17 +73,29 @@ public partial class DashboardPage : ContentPage
 
     private async void OnCategoriesClicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new CategoriesPage(_categoryApiService, _itemApiService,
-                                                      _stockTransactionApiService));
+        await Navigation.PushAsync(new CategoriesPage(
+            _categoryApiService,
+            _itemApiService,
+            _stockTransactionApiService));
     }
 
     private async void OnShortageItemsClicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new ShortageItemsPage(
-                                        _itemApiService,
-                                        _categoryApiService,
-                                        _stockTransactionApiService));
+            _itemApiService,
+            _categoryApiService,
+            _stockTransactionApiService));
     }
+
+    private async void OnStaffClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new StaffPage(_userApiService));
+    }
+
+    //private async void OnDeletedUsersClicked(object sender, EventArgs e)
+    //{
+    //    await Navigation.PushAsync(new DeletedUsersPage(_userApiService));
+    //}
 
     private async void OnExportExcelReportClicked(object sender, EventArgs e)
     {
@@ -127,12 +148,13 @@ public partial class DashboardPage : ContentPage
         AppSession.OrganizationType = string.Empty;
 
         Application.Current!.MainPage = new NavigationPage(
-            new LoginPage(
-                _authApiService,
-                _categoryApiService,
-                _itemApiService,
-                _stockTransactionApiService,
-                _reportApiService,
-                _organizationApiService));
+                     new LoginPage(
+                         _authApiService,
+                         _categoryApiService,
+                         _itemApiService,
+                         _stockTransactionApiService,
+                         _reportApiService,
+                         _organizationApiService,
+                         _userApiService));
     }
 }

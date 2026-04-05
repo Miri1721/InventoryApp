@@ -65,7 +65,7 @@
 
             <BoxView HeightRequest="1" BackgroundColor="#DDDDDD"
                      Margin="0,6,0,2" />
-            
+
             <FlexLayout Wrap="Wrap"
                         Direction="Row"
                         JustifyContent="Start"
@@ -94,7 +94,8 @@
                         FlexLayout.Basis="180"
                         FlexLayout.Grow="1" />
 
-                <Button Text="Export Excel Report"
+                <Button x:Name="ExportExcelButton"
+                        Text="Export Excel Report"
                         Clicked="OnExportExcelReportClicked"
                         Margin="0,0,10,10"
                         CornerRadius="8"
@@ -103,9 +104,32 @@
                         BackgroundColor="DarkBlue"
                         TextColor="White"
                         FlexLayout.Basis="200"
-                        FlexLayout.Grow="1" />      
+                        FlexLayout.Grow="1" />
+                <Button x:Name="StaffButton"
+                        Text="Staff"
+                        Clicked="OnStaffClicked"
+                        Margin="0,0,10,10"
+                        CornerRadius="8"
+                        HeightRequest="44"
+                        MinimumWidthRequest="140"
+                        BackgroundColor="DarkBlue"
+                        TextColor="White"
+                        FlexLayout.Basis="180"
+                        FlexLayout.Grow="1"
+                        IsVisible="False" />
+                <!--<Button x:Name="DeletedUsersButton"
+                        Text="Deleted Users"
+                        Clicked="OnDeletedUsersClicked"
+                        Margin="0,0,10,10"
+                        CornerRadius="8"
+                        HeightRequest="44"
+                        MinimumWidthRequest="160"
+                        BackgroundColor="DarkBlue"
+                        TextColor="White"
+                        FlexLayout.Basis="190"
+                        FlexLayout.Grow="1"
+                        IsVisible="False" />-->    
             </FlexLayout>
-
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
