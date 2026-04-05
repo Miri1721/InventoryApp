@@ -2,68 +2,89 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InventoryApp.Mobile.Views.RecordStockMovementPage"
-             Title="Record Stock Movement">
+             Title="Record Stock Movement"
+             BackgroundColor="#F7F9FC">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20,0,20,0" Spacing="14">
+        <VerticalStackLayout Padding="20,5,20,0" Spacing="20">
 
-            <Label x:Name="ItemNameLabel"
-                   FontSize="28"
-                   FontAttributes="Bold" />
+            <VerticalStackLayout Spacing="6">
+                <Label x:Name="ItemNameLabel"
+                       FontSize="30"
+                       FontAttributes="Bold"
+                       TextColor="#111827" />
 
-            <Label x:Name="CurrentQuantityLabel"
-                   FontSize="16"
-                   TextColor="#555555" />
+                <Label x:Name="CurrentQuantityLabel"
+                       FontSize="15"
+                       TextColor="#6B7280" />
+            </VerticalStackLayout>
 
-            <Frame Padding="16"
-                   CornerRadius="16"
-                   BorderColor="#D9D9D9"
-                   HasShadow="False">
-                <VerticalStackLayout Spacing="12">
+            <Frame Padding="20,10,20,0"
+                   CornerRadius="20"
+                   BorderColor="#E5E7EB"
+                   BackgroundColor="White"
+                   HasShadow="False"
+                   HorizontalOptions="Fill">
+                <VerticalStackLayout Spacing="18">
 
-                    <Label Text="Movement Type"
-                           FontSize="16"
-                           FontAttributes="Bold" />
-                    <Picker x:Name="TransactionTypePicker"
-                            Title="Select movement type">
-                        <Picker.Items>
-                            <x:String>Restock</x:String>
-                            <x:String>Usage</x:String>
-                            <x:String>Waste</x:String>
-                        </Picker.Items>
-                    </Picker>
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Movement Type"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="#374151" />
+                        <Picker x:Name="TransactionTypePicker"
+                                Title="Select movement type"
+                                BackgroundColor="#F9FAFB">
+                            <Picker.Items>
+                                <x:String>Restock</x:String>
+                                <x:String>Usage</x:String>
+                                <x:String>Waste</x:String>
+                            </Picker.Items>
+                        </Picker>
+                    </VerticalStackLayout>
 
-                    <Label Text="Quantity"
-                           FontSize="16"
-                           FontAttributes="Bold" />
-                    <Entry x:Name="QuantityEntry"
-                           Placeholder="Enter quantity"
-                           Keyboard="Numeric" />
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Quantity"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="#374151" />
+                        <Entry x:Name="QuantityEntry"
+                               Placeholder="Enter quantity"
+                               Keyboard="Numeric"
+                               BackgroundColor="#F9FAFB"
+                               TextColor="#111827"
+                               PlaceholderColor="#9CA3AF"
+                               HeightRequest="48" />
+                    </VerticalStackLayout>
 
-                    <Label Text="Note"
-                           FontSize="16"
-                           FontAttributes="Bold" />
-                    <Editor x:Name="NoteEditor"
-                            Placeholder="Optional note"
-                            AutoSize="TextChanges"
-                            HeightRequest="120" />
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Note"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="#374151" />
+                        <Editor x:Name="NoteEditor"
+                                Placeholder="Optional note"
+                                AutoSize="TextChanges"
+                                HeightRequest="120"
+                                BackgroundColor="#F9FAFB"
+                                TextColor="#111827" />
+                    </VerticalStackLayout>
 
+                    <Button Text="Save Movement"
+                            Clicked="OnSaveClicked"
+                            CornerRadius="10"
+                            HeightRequest="48"
+                            MaximumWidthRequest="150"
+                            BackgroundColor="#1D4ED8"
+                            TextColor="White"
+                            FontAttributes="Bold"/>
+
+                    <Label x:Name="MessageLabel"
+                           TextColor="#B91C1C"
+                           FontSize="14"
+                           LineBreakMode="WordWrap" />
                 </VerticalStackLayout>
             </Frame>
-
-            <Button Text="Save Movement"
-                    Clicked="OnSaveClicked"
-                    CornerRadius="5"
-                    HeightRequest="40"
-                    MaximumWidthRequest="180"
-                    BackgroundColor="DarkBlue"
-                    TextColor="White"
-                    HorizontalOptions="Center" />
-
-            <Label x:Name="MessageLabel"
-                   TextColor="Red"
-                   FontSize="14"
-                   LineBreakMode="WordWrap" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

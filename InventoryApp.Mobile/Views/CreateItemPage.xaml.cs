@@ -25,22 +25,9 @@ public partial class CreateItemPage : ContentPage
         {
             MessageLabel.Text = string.Empty;
 
-            var categories = await _categoryApiService.GetByOrganizationAsync(AppSession.OrganizationId);
-            CategoryPicker.ItemsSource = categories;
-
             if (_preselectedCategory != null)
             {
-                var selected = categories.FirstOrDefault(c => c.CategoryId == _preselectedCategory.CategoryId);
-                if (selected != null)
-                {
-                    CategoryPicker.SelectedItem = selected;
-                    CategoryPicker.IsEnabled = false;
-                }
-            }
-
-            if (categories.Count == 0)
-            {
-                MessageLabel.Text = "No categories available. Create a category first.";
+                CategoryNameLabel.Text = _preselectedCategory.Name;
             }
         }
         catch (Exception ex)
@@ -66,12 +53,6 @@ public partial class CreateItemPage : ContentPage
                 return;
             }
 
-            if (CategoryPicker.SelectedItem is not CategoryModel selectedCategory)
-            {
-                MessageLabel.Text = "Please select a category.";
-                return;
-            }
-
             if (!double.TryParse(CurrentQuantityEntry.Text, out var currentQuantity))
             {
                 MessageLabel.Text = "Current quantity must be a valid number.";
@@ -84,11 +65,17 @@ public partial class CreateItemPage : ContentPage
                 return;
             }
 
+            if (_preselectedCategory == null)
+            {
+                MessageLabel.Text = "Category is missing.";
+                return;
+            }
+
             var request = new CreateItemRequest
             {
                 Name = name,
                 Description = description,
-                CategoryId = selectedCategory.CategoryId,
+                CategoryId = _preselectedCategory.CategoryId,
                 OrganizationId = AppSession.OrganizationId,
                 Unit = unit,
                 CurrentQuantity = currentQuantity,

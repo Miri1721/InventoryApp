@@ -2,93 +2,131 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InventoryApp.Mobile.Views.CreateItemPage"
-             Title="Create Item">
+             Title="Create Item"
+             BackgroundColor="#F7F9FC">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20,0,20,0"
-                             Spacing="14">
+        <VerticalStackLayout Padding="20,5,20,5" Spacing="10">
+            <Label Text="Add a new item to your inventory"
+                       FontSize="15"
+                       TextColor="#6B7280" />
 
-            <Label Text="Create Item"
-                   FontSize="30"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center" />
+                <Frame Padding="20,10,20,0"
+                   CornerRadius="20"
+                   BorderColor="#E5E7EB"
+                   BackgroundColor="White"
+                   HasShadow="False"
+                   HorizontalOptions="Fill">
 
-            <Frame Padding="16"
-                   CornerRadius="16"
-                   BorderColor="#D9D9D9"
-                   HasShadow="False">
-                <VerticalStackLayout Spacing="12">
+                <VerticalStackLayout Spacing="18">
 
-                    <Label Text="Item Name"
-                           FontSize="16"
-                           FontAttributes="Bold" />
-                    <Entry x:Name="NameEntry"
-                           Placeholder="Enter item name"
-                           ClearButtonVisibility="WhileEditing" />
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Item Name"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="#374151" />
+                        <Entry x:Name="NameEntry"
+                               Placeholder="Enter item name"
+                               ClearButtonVisibility="WhileEditing"
+                               BackgroundColor="#F9FAFB"
+                               TextColor="#111827"
+                               PlaceholderColor="#9CA3AF"
+                               HeightRequest="48" />
+                    </VerticalStackLayout>
 
-                    <Label Text="Description"
-                           FontSize="16"
-                           FontAttributes="Bold" />
-                    <Editor x:Name="DescriptionEditor"
-                            Placeholder="Enter description"
-                            AutoSize="TextChanges"
-                            HeightRequest="100" />
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Description"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="#374151" />
+                        <Editor x:Name="DescriptionEditor"
+                                Placeholder="Enter description"
+                                AutoSize="TextChanges"
+                                HeightRequest="100"
+                                BackgroundColor="#F9FAFB"
+                                TextColor="#111827" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Category"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="#374151" />
+                        <Label x:Name="CategoryNameLabel"
+                               FontSize="15"
+                               TextColor="#111827"
+                               BackgroundColor="#F9FAFB"
+                               Padding="12,14"
+                               LineBreakMode="WordWrap" />      
+                    </VerticalStackLayout>
+                    
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Unit"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="#374151" />
+                        <Entry x:Name="UnitEntry"
+                               Placeholder="Pack / Carton / Tray / Bottle..."
+                               BackgroundColor="#F9FAFB"
+                               TextColor="#111827"
+                               PlaceholderColor="#9CA3AF"
+                               HeightRequest="48" />
+                    </VerticalStackLayout>
 
-                    <Label Text="Category"
-                           FontSize="16"
-                           FontAttributes="Bold" />
-                    <Picker x:Name="CategoryPicker"
-                            Title="Select category"
-                            ItemDisplayBinding="{Binding Name}" />
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Supplier"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="#374151" />
+                        <Entry x:Name="SupplierEntry"
+                               Placeholder="Enter supplier name"
+                               BackgroundColor="#F9FAFB"
+                               TextColor="#111827"
+                               PlaceholderColor="#9CA3AF"
+                               HeightRequest="48" />
+                    </VerticalStackLayout>
 
-                    <Label Text="Unit"
-                           FontSize="16"
-                           FontAttributes="Bold" />
-                    <Entry x:Name="UnitEntry"
-                           Placeholder="Pack / Carton / Tray / Bottle..." />
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Current Quantity"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="#374151" />
+                        <Entry x:Name="CurrentQuantityEntry"
+                               Placeholder="0"
+                               Keyboard="Numeric"
+                               BackgroundColor="#F9FAFB"
+                               TextColor="#111827"
+                               PlaceholderColor="#9CA3AF"
+                               HeightRequest="48" />
+                    </VerticalStackLayout>
 
-                    <Label Text="Supplier"
-                           FontSize="16"
-                           FontAttributes="Bold" />     
-                    <Entry x:Name="SupplierEntry"
-                           Placeholder="Enter supplier name" />
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Minimum Threshold"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="#374151" />
+                        <Entry x:Name="MinimumThresholdEntry"
+                               Placeholder="0"
+                               Keyboard="Numeric"
+                               BackgroundColor="#F9FAFB"
+                               TextColor="#111827"
+                               PlaceholderColor="#9CA3AF"
+                               HeightRequest="48" />
+                    </VerticalStackLayout>
 
-                    <Grid ColumnDefinitions="*,*"
-                          ColumnSpacing="12">
-                        <VerticalStackLayout Spacing="6">
-                            <Label Text="Current Quantity"
-                                   FontSize="16"
-                                   FontAttributes="Bold" />
-                            <Entry x:Name="CurrentQuantityEntry"
-                                   Placeholder="0"
-                                   Keyboard="Numeric" />
-                        </VerticalStackLayout>
+                    <Button Text="Save Item"
+                            Clicked="OnSaveClicked"
+                            CornerRadius="10"
+                            HeightRequest="48"
+                            BackgroundColor="#1D4ED8"
+                            TextColor="White"
+                            FontAttributes="Bold" MaximumWidthRequest="150"/>
 
-                        <VerticalStackLayout Grid.Column="1"
-                                             Spacing="6">
-                            <Label Text="Minimum Threshold"
-                                   FontSize="16"
-                                   FontAttributes="Bold" />
-                            <Entry x:Name="MinimumThresholdEntry"
-                                   Placeholder="0"
-                                   Keyboard="Numeric" />
-                        </VerticalStackLayout>
-                    </Grid>
-
+                    <Label x:Name="MessageLabel"
+                           TextColor="#B91C1C"
+                           FontSize="14"
+                           LineBreakMode="WordWrap" />
                 </VerticalStackLayout>
             </Frame>
-
-            <Button Text="Save Item"
-                    Clicked="OnSaveClicked"
-                    CornerRadius="5" HorizontalOptions="Center"
-                    HeightRequest="40"
-                    MaximumHeightRequest="140"
-                    BackgroundColor="DarkBlue"/>        
-
-            <Label x:Name="MessageLabel"
-                   TextColor="Red"
-                   FontSize="14"
-                   LineBreakMode="WordWrap" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

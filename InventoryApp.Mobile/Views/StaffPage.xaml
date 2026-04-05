@@ -2,62 +2,73 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InventoryApp.Mobile.Views.StaffPage"
-             Title="Staff">
+             Title="Staff"
+             BackgroundColor="#F7F9FC">
 
-    <Grid RowDefinitions="Auto,Auto,*" Padding="20,0,20,0">
-        <VerticalStackLayout Grid.Row="0" Spacing="12">
+    <Grid RowDefinitions="Auto,*" Padding="20,5,20,0" RowSpacing="5">
+
+        <VerticalStackLayout Grid.Row="0" Spacing="10">
+
+            <Label Text="Manage your organization's staff users"
+                    FontSize="15"
+                    TextColor="#6B7280" />
             <Button Text="Deleted Staff Users"
                     Clicked="OnDeletedStaffUsersClicked"
-                    CornerRadius="8"
-                    HeightRequest="42"
+                    CornerRadius="10"
+                    HeightRequest="48"
                     MaximumWidthRequest="220"
                     HorizontalOptions="Start"
                     BackgroundColor="White"
-                    BorderColor="DarkBlue"
-                    BorderWidth="2"
-                    TextColor="Black" />
-
+                    BorderColor="#D1D5DB"
+                    BorderWidth="1.5"
+                    TextColor="#111827"
+                    FontAttributes="Bold" />
             <Label x:Name="MessageLabel"
-                   TextColor="Red"
-                   FontSize="14"
-                   LineBreakMode="WordWrap" />
+                    TextColor="#B91C1C"
+                    FontSize="14"
+                    LineBreakMode="WordWrap" />
         </VerticalStackLayout>
 
-        <CollectionView Grid.Row="2"
-                        x:Name="UsersCollectionView"
+        <CollectionView Grid.Row="1" x:Name="UsersCollectionView"
                         SelectionMode="None">
             <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
             </CollectionView.ItemsLayout>
-
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Padding="12"
-                           CornerRadius="16"
-                           BorderColor="#D9D9D9"
+                    <Frame Padding="20,10,20,0"
+                           CornerRadius="18"
+                           BorderColor="#E5E7EB"
+                           BackgroundColor="White"
                            HasShadow="False">
-                        <VerticalStackLayout Spacing="8">
+                        <VerticalStackLayout Spacing="10">
                             <Label Text="{Binding FullName}"
-                                   FontSize="20"
-                                   FontAttributes="Bold" />
+                                   FontSize="22"
+                                   FontAttributes="Bold"
+                                   TextColor="#111827"
+                                   LineBreakMode="WordWrap" />
 
                             <Label Text="{Binding Email, StringFormat='Email: {0}'}"
-                                   FontSize="15" />
+                                   FontSize="15"
+                                   TextColor="#374151"
+                                   LineBreakMode="WordWrap" />
 
                             <Label Text="{Binding Role, StringFormat='Role: {0}'}"
                                    FontSize="15"
-                                   TextColor="DarkBlue" />
+                                   TextColor="#1D4ED8"
+                                   FontAttributes="Bold" />
 
                             <Button Text="Delete"
                                     Clicked="OnDeleteClicked"
                                     CommandParameter="{Binding .}"
                                     IsVisible="{Binding CanDelete}"
-                                    CornerRadius="5"
-                                    HeightRequest="40"
+                                    CornerRadius="10"
+                                    HeightRequest="48"
                                     MaximumWidthRequest="140"
                                     HorizontalOptions="Start"
-                                    BackgroundColor="#B00020"
-                                    TextColor="White" />
+                                    BackgroundColor="#B91C1C"
+                                    TextColor="White"
+                                    FontAttributes="Bold" />
                         </VerticalStackLayout>
                     </Frame>
                 </DataTemplate>

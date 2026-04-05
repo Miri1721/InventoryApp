@@ -2,16 +2,24 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InventoryApp.Mobile.Views.ItemHistoryPage"
-             Title="Item History">
+             Title="Item History"
+             BackgroundColor="#F7F9FC">
 
-    <Grid RowDefinitions="Auto,*" Padding="20,0,20,0">
-        <VerticalStackLayout Grid.Row="0" Spacing="8">
-            <Label x:Name="ItemNameLabel"
-                   FontSize="28"
-                   FontAttributes="Bold" />
+    <Grid RowDefinitions="Auto,*" Padding="20,5,20,0" RowSpacing="5">
+        <VerticalStackLayout Grid.Row="0" Spacing="10">
+            <VerticalStackLayout Spacing="6">
+                <Label x:Name="ItemNameLabel"
+                       FontSize="30"
+                       FontAttributes="Bold"
+                       TextColor="#111827" />
+
+                <Label Text="View the movement history of this item"
+                       FontSize="15"
+                       TextColor="#6B7280" />
+            </VerticalStackLayout>
 
             <Label x:Name="MessageLabel"
-                   TextColor="Red"
+                   TextColor="#B91C1C"
                    FontSize="14"
                    LineBreakMode="WordWrap" />
         </VerticalStackLayout>
@@ -22,39 +30,48 @@
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
             </CollectionView.ItemsLayout>
+
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Padding="14"
+                    <Frame Padding="18"
                            Margin="0"
-                           CornerRadius="16"
-                           BorderColor="#D9D9D9"
+                           CornerRadius="18"
+                           BorderColor="#E5E7EB"
+                           BackgroundColor="White"
                            HasShadow="False">
-                        <VerticalStackLayout Spacing="6">
+                        <VerticalStackLayout Spacing="8">
                             <Label Text="{Binding TransactionType}"
-                                   FontSize="18"
-                                   FontAttributes="Bold" />
+                                   FontSize="20"
+                                   FontAttributes="Bold"
+                                   TextColor="#111827" />
 
                             <Label Text="{Binding QuantityChangeText, StringFormat='Change: {0}'}"
                                    FontSize="15"
-                                   TextColor="DarkBlue" />
+                                   TextColor="#1D4ED8"
+                                   FontAttributes="Bold" />
 
                             <Label Text="{Binding QuantityBefore, StringFormat='Before: {0}'}"
-                                   FontSize="14" />
+                                   FontSize="14"
+                                   TextColor="#374151" />
 
                             <Label Text="{Binding QuantityAfter, StringFormat='After: {0}'}"
-                                   FontSize="14" />
+                                   FontSize="14"
+                                   TextColor="#374151" />
 
                             <Label Text="{Binding Note, StringFormat='Note: {0}'}"
                                    FontSize="14"
+                                   TextColor="#374151"
                                    LineBreakMode="WordWrap" />
 
                             <Label Text="{Binding CreatedByEmail, StringFormat='By: {0}'}"
                                    FontSize="13"
-                                   TextColor="#555555" />
+                                   TextColor="#6B7280"
+                                   LineBreakMode="WordWrap" />
 
                             <Label Text="{Binding CreatedAtLocalText, StringFormat='When: {0}'}"
                                    FontSize="13"
-                                   TextColor="#555555" />
+                                   TextColor="#6B7280"
+                                   LineBreakMode="WordWrap" />
                         </VerticalStackLayout>
                     </Frame>
                 </DataTemplate>

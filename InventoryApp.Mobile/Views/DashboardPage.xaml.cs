@@ -99,12 +99,21 @@ public partial class DashboardPage : ContentPage
 
     private async void OnExportExcelReportClicked(object sender, EventArgs e)
     {
+        if (!ExportExcelButton.IsEnabled)
+            return;
+
+        var originalText = "Export Excel Report";
+
         try
         {
+            ExportExcelButton.IsEnabled = false;
+            ExportExcelButton.Text = "Exporting...";
+
             var bytes = await _reportApiService.ExportExcelAsync(AppSession.OrganizationId);
 
             if (bytes == null || bytes.Length == 0)
             {
+                ExportExcelButton.Text = originalText;
                 await DisplayAlert("Error", "Failed to export Excel report.", "OK");
                 return;
             }
@@ -122,10 +131,18 @@ public partial class DashboardPage : ContentPage
             {
                 File = new ReadOnlyFile(filePath)
             });
+
+            await Task.Delay(2000);
+            ExportExcelButton.Text = originalText;
         }
         catch (Exception ex)
         {
+            ExportExcelButton.Text = originalText;
             await DisplayAlert("Error", $"Export failed: {ex.Message}", "OK");
+        }
+        finally
+        {
+            ExportExcelButton.IsEnabled = true;
         }
     }
 
@@ -147,14 +164,9 @@ public partial class DashboardPage : ContentPage
         AppSession.OrganizationId = Guid.Empty;
         AppSession.OrganizationType = string.Empty;
 
-        Application.Current!.MainPage = new NavigationPage(
-                     new LoginPage(
-                         _authApiService,
-                         _categoryApiService,
-                         _itemApiService,
-                         _stockTransactionApiService,
-                         _reportApiService,
-                         _organizationApiService,
-                         _userApiService));
+        Application.Current!.MainPage = new NavigationPage(new LoginPage(_authApiService,
+                                             _categoryApiService,_itemApiService,
+                                             _stockTransactionApiService,_reportApiService,
+                                             _organizationApiService,_userApiService));
     }
 }

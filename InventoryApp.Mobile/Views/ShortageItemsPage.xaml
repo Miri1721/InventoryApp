@@ -2,169 +2,184 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InventoryApp.Mobile.Views.ShortageItemsPage"
-             Title="Items To Reorder">
+             Title="Items To Reorder"
+             BackgroundColor="#F7F9FC">
 
-    <Grid RowDefinitions="Auto,Auto,*" Padding="20,0,20,0">
+    <Grid RowDefinitions="Auto,Auto,*" Padding="20,5,20,0" RowSpacing="5">
 
-        <VerticalStackLayout Grid.Row="0" Spacing="12">
+        <VerticalStackLayout Grid.Row="0" Spacing="10">
+            <Label Text="Track items that are below their minimum threshold"
+                       FontSize="15"
+                       TextColor="#6B7280" />
+
             <Label x:Name="MessageLabel"
-                   TextColor="Red"
+                   TextColor="#B91C1C"
                    FontSize="14"
                    LineBreakMode="WordWrap" />
         </VerticalStackLayout>
 
-        <Grid x:Name="SearchSection"
-              Grid.Row="1"
-              ColumnDefinitions="*,*"
-              ColumnSpacing="20"
-              Margin="0,0,0,10"
-              IsVisible="False">
-            <VerticalStackLayout Grid.Column="0"
-                                 Spacing="6"
-                                 Padding="0,0,0,5"
-                                 HorizontalOptions="Fill"
-                                 VerticalOptions="Start">
-                <Label Text="Search by Category"
-                       FontSize="14"
-                       FontAttributes="Bold" />
-                <SearchBar x:Name="CategorySearchBar"
-                           Placeholder="Type category name"
-                           TextChanged="OnSearchTextChanged"
-                           HorizontalOptions="Fill"
-                           VerticalOptions="Center" />
-            </VerticalStackLayout>
+        <Frame Grid.Row="1"
+               x:Name="SearchSection"
+               IsVisible="False"
+               Padding="16"
+               CornerRadius="18"
+               BorderColor="#E5E7EB"
+               BackgroundColor="White"
+               HasShadow="False">
 
-            <VerticalStackLayout Grid.Column="1"
-                                 Spacing="6"
-                                 Padding="0,0,0,5"
-                                 HorizontalOptions="Fill"
-                                 VerticalOptions="Start">
-                <Label Text="Search by Item"
-                       FontSize="14"
-                       FontAttributes="Bold" />
-                <SearchBar x:Name="ItemSearchBar"
-                           Placeholder="Type item name"
-                           TextChanged="OnSearchTextChanged"
-                           HorizontalOptions="Fill"
-                           VerticalOptions="Center" />
+            <VerticalStackLayout Spacing="5">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Search by Category"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#374151" />
+                    <SearchBar x:Name="CategorySearchBar" Margin="0,0,0,5"
+                               Placeholder="Type category name"
+                               TextChanged="OnSearchTextChanged"
+                               BackgroundColor="#F9FAFB" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Search by Item"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="#374151" />
+                    <SearchBar x:Name="ItemSearchBar" Margin="0,0,0,5"
+                               Placeholder="Type item name"
+                               TextChanged="OnSearchTextChanged"
+                               BackgroundColor="#F9FAFB" />
+                </VerticalStackLayout>
             </VerticalStackLayout>
-        </Grid>
+        </Frame>
 
         <CollectionView Grid.Row="2"
                         x:Name="ShortageItemsCollectionView"
-                        Margin="0,8,0,0"
                         SelectionMode="None">
             <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame Margin="0"
-                           Padding="16"
-                           CornerRadius="16"
-                           BorderColor="#D9D9D9"
+                           Padding="18"
+                           CornerRadius="18"
+                           BorderColor="#E5E7EB"
+                           BackgroundColor="White"
                            HasShadow="False">
-                        <VerticalStackLayout Spacing="8">
+                        <VerticalStackLayout Spacing="10">
                             <Label Text="{Binding Name}"
                                    FontSize="22"
                                    FontAttributes="Bold"
+                                   TextColor="#111827"
                                    LineBreakMode="WordWrap" />
 
                             <Label Text="{Binding CategoryName, StringFormat='Category: {0}'}"
                                    FontSize="14"
-                                   TextColor="DarkBlue"
+                                   TextColor="#1D4ED8"
                                    FontAttributes="Bold" />
 
                             <Label Text="{Binding Description}"
                                    FontSize="15"
-                                   TextColor="#555555"
+                                   TextColor="#6B7280"
                                    LineBreakMode="WordWrap" />
 
                             <Label Text="{Binding Unit, StringFormat='Unit: {0}'}"
-                                   FontSize="14" />
+                                   FontSize="14"
+                                   TextColor="#374151" />
 
                             <Label Text="{Binding Supplier, StringFormat='Supplier: {0}'}"
-                                   FontSize="14" />
-                            
+                                   FontSize="14"
+                                   TextColor="#374151" />
+
                             <Label Text="{Binding CurrentQuantity, StringFormat='Current: {0}'}"
-                                   FontSize="14" />
+                                   FontSize="14"
+                                   TextColor="#374151" />
 
                             <Label Text="{Binding MinimumThreshold, StringFormat='Minimum Threshold: {0}'}"
-                                   FontSize="14" />
+                                   FontSize="14"
+                                   TextColor="#374151" />
 
                             <Label Text="{Binding MissingText}"
-                                   TextColor="DarkRed"
+                                   TextColor="#991B1B"
                                    FontAttributes="Bold"
                                    FontSize="15" />
 
                             <Label Text="Below Threshold"
-                                   TextColor="Red"
+                                   TextColor="#DC2626"
                                    FontAttributes="Bold"
                                    FontSize="14" />
 
-                            <FlexLayout Wrap="Wrap" Direction="Row"
-                                        JustifyContent="Start" AlignItems="Stretch"
+                            <FlexLayout Wrap="Wrap"
+                                        Direction="Row"
+                                        JustifyContent="Start"
+                                        AlignItems="Stretch"
                                         AlignContent="Start">
+
                                 <Button Text="Edit"
                                         Clicked="OnEditClicked"
                                         CommandParameter="{Binding .}"
-                                        Margin="0,0,10,5"
-                                        CornerRadius="5"
-                                        HeightRequest="40"
-                                        MinimumWidthRequest="110"
-                                        BackgroundColor="DarkBlue"
+                                        Margin="0,0,5,5"
+                                        CornerRadius="10"
+                                        HeightRequest="48"
+                                        MinimumWidthRequest="150"
+                                        BackgroundColor="#1D4ED8"
                                         TextColor="White"
-                                        FlexLayout.Basis="120"
+                                        FontAttributes="Bold"
+                                        FlexLayout.Basis="150"
                                         FlexLayout.Grow="1" />
 
                                 <Button Text="Deactivate"
                                         Clicked="OnDeactivateClicked"
                                         CommandParameter="{Binding .}"
-                                        Margin="0,0,10,5"
-                                        CornerRadius="5"
-                                        HeightRequest="40"
-                                        MinimumWidthRequest="130"
-                                        BackgroundColor="DarkBlue"
+                                        Margin="0,0,5,5"
+                                        CornerRadius="10"
+                                        HeightRequest="48"
+                                        MinimumWidthRequest="150"
+                                        BackgroundColor="#1D4ED8"
                                         TextColor="White"
+                                        FontAttributes="Bold"
                                         FlexLayout.Basis="150"
                                         FlexLayout.Grow="1" />
 
                                 <Button Text="Delete"
                                         Clicked="OnDeleteClicked"
                                         CommandParameter="{Binding .}"
-                                        Margin="0,0,10,5"
-                                        CornerRadius="5"
-                                        HeightRequest="40"
-                                        MinimumWidthRequest="110"
-                                        BackgroundColor="#B00020"
+                                        Margin="0,0,5,5"
+                                        CornerRadius="10"
+                                        HeightRequest="48"
+                                        MinimumWidthRequest="150"
+                                        BackgroundColor="#B91C1C"
                                         TextColor="White"
-                                        FlexLayout.Basis="120"
+                                        FontAttributes="Bold"
+                                        FlexLayout.Basis="150"
                                         FlexLayout.Grow="1" />
 
                                 <Button Text="Record Movement"
                                         Clicked="OnRecordMovementClicked"
                                         CommandParameter="{Binding .}"
-                                        Margin="0,0,10,5"
-                                        CornerRadius="5"
-                                        HeightRequest="40"
-                                        MinimumWidthRequest="160"
-                                        BackgroundColor="DarkBlue"
+                                        Margin="0,0,5,5"
+                                        CornerRadius="10"
+                                        HeightRequest="48"
+                                        MinimumWidthRequest="150"
+                                        BackgroundColor="#1D4ED8"
                                         TextColor="White"
-                                        FlexLayout.Basis="180"
+                                        FontAttributes="Bold"
+                                        FlexLayout.Basis="150"
                                         FlexLayout.Grow="1" />
 
                                 <Button Text="View History"
                                         Clicked="OnViewHistoryClicked"
                                         CommandParameter="{Binding .}"
-                                        Margin="0,0,10,5"
-                                        CornerRadius="5"
-                                        HeightRequest="40"
-                                        MinimumWidthRequest="140"
+                                        Margin="0,0,5,5"
+                                        CornerRadius="10"
+                                        HeightRequest="48"
+                                        MinimumWidthRequest="150"
                                         BackgroundColor="White"
-                                        BorderColor="DarkBlue"
-                                        BorderWidth="2"
-                                        TextColor="Black"
+                                        BorderColor="#D1D5DB"
+                                        BorderWidth="1.5"
+                                        TextColor="#111827"
+                                        FontAttributes="Bold"
                                         FlexLayout.Basis="150"
                                         FlexLayout.Grow="1" />
                             </FlexLayout>

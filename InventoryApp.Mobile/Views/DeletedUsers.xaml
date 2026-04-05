@@ -2,50 +2,63 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="InventoryApp.Mobile.Views.DeletedUsersPage"
-             Title="Deleted Staff Users">
+             Title="Deleted Staff Users"
+             BackgroundColor="#F7F9FC">
 
-    <Grid RowDefinitions="Auto,*" Padding="20,0,20,0">
-        <Label x:Name="MessageLabel"
-               Grid.Row="0"
-               TextColor="Red"
-               FontSize="14"
-               LineBreakMode="WordWrap" />
+    <Grid RowDefinitions="Auto,*" Padding="20,5,20,0" RowSpacing="5">
+
+        <VerticalStackLayout Grid.Row="0" Spacing="14">
+            <Label Text="Recover staff users that were previously deleted"
+                       FontSize="15"
+                       TextColor="#6B7280" />
+
+            <Label x:Name="MessageLabel"
+                   TextColor="#B91C1C"
+                   FontSize="14"
+                   LineBreakMode="WordWrap" />
+        </VerticalStackLayout>
 
         <CollectionView Grid.Row="1"
                         x:Name="UsersCollectionView"
-                        Margin="0,16,0,0"
                         SelectionMode="None">
             <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Padding="12"
-                           CornerRadius="16"
-                           BorderColor="#D9D9D9"
+                    <Frame Padding="18"
+                           CornerRadius="18"
+                           BorderColor="#E5E7EB"
+                           BackgroundColor="White"
                            HasShadow="False">
-                        <VerticalStackLayout Spacing="8">
+                        <VerticalStackLayout Spacing="10">
                             <Label Text="{Binding FullName}"
-                                   FontSize="20"
-                                   FontAttributes="Bold" />
+                                   FontSize="22"
+                                   FontAttributes="Bold"
+                                   TextColor="#111827"
+                                   LineBreakMode="WordWrap" />
 
                             <Label Text="{Binding Email, StringFormat='Email: {0}'}"
-                                   FontSize="15" />
+                                   FontSize="15"
+                                   TextColor="#374151"
+                                   LineBreakMode="WordWrap" />
 
                             <Label Text="{Binding Role, StringFormat='Role: {0}'}"
                                    FontSize="15"
-                                   TextColor="DarkBlue" />
+                                   TextColor="#1D4ED8"
+                                   FontAttributes="Bold" />
 
                             <Button Text="Recover"
                                     Clicked="OnRecoverClicked"
                                     CommandParameter="{Binding .}"
-                                    CornerRadius="5"
-                                    HeightRequest="40"
+                                    CornerRadius="10"
+                                    HeightRequest="48"
                                     MaximumWidthRequest="140"
                                     HorizontalOptions="Start"
-                                    BackgroundColor="DarkBlue"
-                                    TextColor="White" />
+                                    BackgroundColor="#1D4ED8"
+                                    TextColor="White"
+                                    FontAttributes="Bold" />
                         </VerticalStackLayout>
                     </Frame>
                 </DataTemplate>
