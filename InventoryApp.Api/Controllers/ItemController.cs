@@ -34,7 +34,9 @@ namespace InventoryApp.Api.Controllers
                 Unit = request.Unit,
                 CurrentQuantity = request.CurrentQuantity,
                 MinimumThreshold = request.MinimumThreshold,
-                Supplier = request.Supplier
+                Supplier = request.Supplier,
+                SupplierPhone = request.SupplierPhone,
+                SupplierEmail = request.SupplierEmail
             };
 
             _mongoDbService.Items.InsertOne(item);
@@ -50,6 +52,8 @@ namespace InventoryApp.Api.Controllers
                 CurrentQuantity = item.CurrentQuantity,
                 MinimumThreshold = item.MinimumThreshold,
                 Supplier = item.Supplier,
+                SupplierPhone = item.SupplierPhone,
+                SupplierEmail = item.SupplierEmail,
                 IsBelowThreshold = item.CurrentQuantity < item.MinimumThreshold,
                 IsActive = item.IsActive,
                 IsDeleted = item.IsDeleted
@@ -74,6 +78,8 @@ namespace InventoryApp.Api.Controllers
                 CurrentQuantity = i.CurrentQuantity,
                 MinimumThreshold = i.MinimumThreshold,
                 Supplier = i.Supplier,
+                SupplierPhone = i.SupplierPhone,
+                SupplierEmail = i.SupplierEmail,
                 IsBelowThreshold = i.CurrentQuantity < i.MinimumThreshold,
                 IsActive = i.IsActive,
                 IsDeleted = i.IsDeleted
@@ -104,6 +110,8 @@ namespace InventoryApp.Api.Controllers
                 CurrentQuantity = i.CurrentQuantity,
                 MinimumThreshold = i.MinimumThreshold,
                 Supplier = i.Supplier,
+                SupplierPhone = i.SupplierPhone,
+                SupplierEmail = i.SupplierEmail,
                 IsBelowThreshold = true,
                 IsActive = i.IsActive,
                 IsDeleted = i.IsDeleted
@@ -130,12 +138,14 @@ namespace InventoryApp.Api.Controllers
             }
 
             var update = Builders<Item>.Update
-                .Set(i => i.Name, request.Name)
-                .Set(i => i.Description, request.Description)
-                .Set(i => i.Unit, request.Unit)
-                .Set(i => i.CurrentQuantity, request.CurrentQuantity)
-                .Set(i => i.MinimumThreshold, request.MinimumThreshold)
-                .Set(i => i.Supplier, request.Supplier);
+                 .Set(i => i.Name, request.Name)
+                 .Set(i => i.Description, request.Description)
+                 .Set(i => i.Unit, request.Unit)
+                 .Set(i => i.CurrentQuantity, request.CurrentQuantity)
+                 .Set(i => i.MinimumThreshold, request.MinimumThreshold)
+                 .Set(i => i.Supplier, request.Supplier)
+                 .Set(i => i.SupplierPhone, request.SupplierPhone)
+                 .Set(i => i.SupplierEmail, request.SupplierEmail);
 
             _mongoDbService.Items.UpdateOne(
                 i => i.ItemId == itemId,
@@ -147,6 +157,8 @@ namespace InventoryApp.Api.Controllers
             item.CurrentQuantity = request.CurrentQuantity;
             item.MinimumThreshold = request.MinimumThreshold;
             item.Supplier = request.Supplier;
+            item.SupplierPhone = request.SupplierPhone;
+            item.SupplierEmail = request.SupplierEmail;
 
             return Ok(new ItemResponseDto
             {
@@ -159,6 +171,8 @@ namespace InventoryApp.Api.Controllers
                 CurrentQuantity = item.CurrentQuantity,
                 MinimumThreshold = item.MinimumThreshold,
                 Supplier = item.Supplier,
+                SupplierPhone = item.SupplierPhone,
+                SupplierEmail = item.SupplierEmail,
                 IsBelowThreshold = item.CurrentQuantity < item.MinimumThreshold,
                 IsActive = item.IsActive,
                 IsDeleted = item.IsDeleted

@@ -71,7 +71,7 @@
                         x:Name="CategoriesCollectionView"
                         SelectionMode="None">
             <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>

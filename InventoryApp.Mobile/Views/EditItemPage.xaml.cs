@@ -19,6 +19,8 @@ public partial class EditItemPage : ContentPage
         UnitEntry.Text = _item.Unit;
         MinimumThresholdEntry.Text = _item.MinimumThreshold.ToString();
         SupplierEntry.Text = _item.Supplier;
+        SupplierPhoneEntry.Text = _item.SupplierPhone;
+        SupplierEmailEntry.Text = _item.SupplierEmail;
     }
 
     private async void OnSaveClicked(object sender, EventArgs e)
@@ -31,6 +33,8 @@ public partial class EditItemPage : ContentPage
             var description = DescriptionEditor.Text?.Trim() ?? string.Empty;
             var unit = UnitEntry.Text?.Trim() ?? string.Empty;
             var supplier = SupplierEntry.Text?.Trim() ?? string.Empty;
+            var supplierPhone = SupplierPhoneEntry.Text?.Trim() ?? string.Empty;
+            var supplierEmail = SupplierEmailEntry.Text?.Trim() ?? string.Empty;
 
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -57,7 +61,9 @@ public partial class EditItemPage : ContentPage
                 Unit = unit,
                 CurrentQuantity = _item.CurrentQuantity,
                 MinimumThreshold = minimumThreshold,
-                Supplier = supplier
+                Supplier = supplier,
+                SupplierPhone = supplierPhone,
+                SupplierEmail = supplierEmail
             };
 
             var success = await _itemApiService.UpdateAsync(_item.ItemId, request);

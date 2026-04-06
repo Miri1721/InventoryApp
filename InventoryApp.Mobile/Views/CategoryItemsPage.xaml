@@ -80,7 +80,7 @@
                         x:Name="ItemsCollectionView"
                         SelectionMode="None">
             <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical" ItemSpacing="12" />
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
@@ -137,9 +137,11 @@
                                    FontSize="14"
                                    TextColor="#374151" />
 
-                            <Label Text="{Binding Supplier, StringFormat='Supplier: {0}'}"
+                            <Label Text="{Binding SupplierDisplay}"
+                                   IsVisible="{Binding HasSupplierInfo}"
                                    FontSize="14"
-                                   TextColor="#374151" />
+                                   TextColor="#374151"
+                                   LineBreakMode="WordWrap" />      
 
                             <Label Text="{Binding CurrentQuantity, StringFormat='Current Quantity: {0}'}"
                                    FontSize="14"

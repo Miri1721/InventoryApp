@@ -87,9 +87,10 @@ public partial class DashboardPage : ContentPage
     private async void OnShortageItemsClicked(object sender, EventArgs e)
     {
         await Navigation.PushAsync(new ShortageItemsPage(
-            _itemApiService,
-            _categoryApiService,
-            _stockTransactionApiService));
+                                         _itemApiService,
+                                         _categoryApiService,
+                                         _stockTransactionApiService,
+                                         _reportApiService));
     }
 
     private async void OnStaffClicked(object sender, EventArgs e)

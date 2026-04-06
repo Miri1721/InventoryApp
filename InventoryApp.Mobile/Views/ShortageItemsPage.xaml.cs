@@ -10,15 +10,18 @@ public partial class ShortageItemsPage : ContentPage
 
     private List<ItemModel> _allShortageItems = new();
     private readonly StockTransactionApiService _stockTransactionApiService;
+    private readonly ReportApiService _reportApiService;
 
     public ShortageItemsPage(ItemApiService itemApiService,
-                             CategoryApiService categoryApiService,
-                             StockTransactionApiService stockTransactionApiService)
+                          CategoryApiService categoryApiService,
+                          StockTransactionApiService stockTransactionApiService,
+                          ReportApiService reportApiService)
     {
         InitializeComponent();
         _itemApiService = itemApiService;
         _categoryApiService = categoryApiService;
         _stockTransactionApiService = stockTransactionApiService;
+        _reportApiService = reportApiService;
     }
 
     protected override async void OnAppearing()
@@ -186,6 +189,57 @@ public partial class ShortageItemsPage : ContentPage
         if (sender is Button button && button.CommandParameter is ItemModel item)
         {
             await Navigation.PushAsync(new ItemHistoryPage(_stockTransactionApiService, item));
+        }
+    }
+
+    private async void OnExportReorderReportClicked(object sender, EventArgs e)
+    {
+        if (!ExportReorderReportButton.IsEnabled)
+            return;
+
+        var originalText = "Export Reorder Report";
+
+        try
+        {
+            ExportReorderReportButton.IsEnabled = false;
+            ExportReorderReportButton.Opacity = 0.7;
+            ExportReorderReportButton.Text = "Exporting...";
+
+            var bytes = await _reportApiService.ExportShortageExcelAsync(AppSession.OrganizationId);
+
+            if (bytes == null || bytes.Length == 0)
+            {
+                ExportReorderReportButton.Text = originalText;
+                MessageLabel.Text = "Failed to export reorder report.";
+                return;
+            }
+
+            var safeOrganizationName = string.IsNullOrWhiteSpace(AppSession.OrganizationName)
+                ? "Organization"
+                : string.Concat(AppSession.OrganizationName.Split(Path.GetInvalidFileNameChars()));
+
+            var fileName = $"ReorderReport_{safeOrganizationName}_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+            var filePath = Path.Combine(FileSystem.CacheDirectory, fileName);
+
+            File.WriteAllBytes(filePath, bytes);
+
+            await Launcher.Default.OpenAsync(new OpenFileRequest
+            {
+                File = new ReadOnlyFile(filePath)
+            });
+
+            await Task.Delay(2000);
+            ExportReorderReportButton.Text = originalText;
+        }
+        catch (Exception ex)
+        {
+            ExportReorderReportButton.Text = originalText;
+            MessageLabel.Text = $"Failed to export reorder report: {ex.Message}";
+        }
+        finally
+        {
+            ExportReorderReportButton.IsEnabled = true;
+            ExportReorderReportButton.Opacity = 1;
         }
     }
 }

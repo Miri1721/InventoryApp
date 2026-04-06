@@ -46,6 +46,8 @@ public partial class CreateItemPage : ContentPage
             var description = DescriptionEditor.Text?.Trim() ?? string.Empty;
             var unit = UnitEntry.Text?.Trim() ?? string.Empty;
             var supplier = SupplierEntry.Text?.Trim() ?? string.Empty;
+            var supplierPhone = SupplierPhoneEntry.Text?.Trim() ?? string.Empty;
+            var supplierEmail = SupplierEmailEntry.Text?.Trim() ?? string.Empty;
 
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -81,6 +83,8 @@ public partial class CreateItemPage : ContentPage
                 CurrentQuantity = currentQuantity,
                 MinimumThreshold = minimumThreshold,
                 Supplier = supplier,
+                SupplierPhone = supplierPhone,
+                SupplierEmail = supplierEmail
             };
 
             var success = await _itemApiService.CreateAsync(request);

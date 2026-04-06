@@ -7,7 +7,7 @@
 
     <Grid RowDefinitions="Auto,Auto,*" Padding="20,5,20,0" RowSpacing="5">
 
-        <VerticalStackLayout Grid.Row="0" Spacing="10">
+        <VerticalStackLayout Grid.Row="0" Spacing="5">
             <Label Text="Track items that are below their minimum threshold"
                        FontSize="15"
                        TextColor="#6B7280" />
@@ -16,6 +16,18 @@
                    TextColor="#B91C1C"
                    FontSize="14"
                    LineBreakMode="WordWrap" />
+            <Button x:Name="ExportReorderReportButton"
+                     Text="Export Reorder Report"
+                     Clicked="OnExportReorderReportClicked"
+                     CornerRadius="10"
+                     HeightRequest="48"
+                     MaximumWidthRequest="220"
+                     HorizontalOptions="Start"
+                     BackgroundColor="White"
+                     BorderColor="#D1D5DB"
+                     BorderWidth="1.5"
+                     TextColor="#111827"
+                     FontAttributes="Bold" />   
         </VerticalStackLayout>
 
         <Frame Grid.Row="1"
@@ -49,7 +61,10 @@
                                TextChanged="OnSearchTextChanged"
                                BackgroundColor="#F9FAFB" />
                 </VerticalStackLayout>
+                
+                
             </VerticalStackLayout>
+            
         </Frame>
 
         <CollectionView Grid.Row="2"
@@ -88,9 +103,11 @@
                                    FontSize="14"
                                    TextColor="#374151" />
 
-                            <Label Text="{Binding Supplier, StringFormat='Supplier: {0}'}"
+                            <Label Text="{Binding SupplierDisplay}"
+                                   IsVisible="{Binding HasSupplierInfo}"
                                    FontSize="14"
-                                   TextColor="#374151" />
+                                   TextColor="#374151"
+                                   LineBreakMode="WordWrap" />      
 
                             <Label Text="{Binding CurrentQuantity, StringFormat='Current: {0}'}"
                                    FontSize="14"

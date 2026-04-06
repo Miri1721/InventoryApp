@@ -12,6 +12,8 @@
         public double CurrentQuantity { get; set; }
         public double MinimumThreshold { get; set; }
         public string Supplier { get; set; } = string.Empty;
+        public string SupplierPhone { get; set; } = string.Empty;
+        public string SupplierEmail { get; set; } = string.Empty;
         public bool IsBelowThreshold { get; set; }
 
         public double MissingQuantity => MinimumThreshold > CurrentQuantity
@@ -34,5 +36,31 @@
 
         public bool ShowBelowThresholdWarning => !IsDeleted && IsBelowThreshold;
         public bool IsActiveAndBelowThreshold => !IsDeleted && IsActive && IsBelowThreshold;
+
+        public bool HasSupplierInfo =>
+                !string.IsNullOrWhiteSpace(Supplier) ||
+                !string.IsNullOrWhiteSpace(SupplierPhone) ||
+                !string.IsNullOrWhiteSpace(SupplierEmail);
+
+        public string SupplierDisplay
+        {
+            get
+            {
+                var parts = new List<string>();
+
+                if (!string.IsNullOrWhiteSpace(Supplier))
+                    parts.Add(Supplier);
+
+                if (!string.IsNullOrWhiteSpace(SupplierPhone))
+                    parts.Add($"Phone: {SupplierPhone}");
+
+                if (!string.IsNullOrWhiteSpace(SupplierEmail))
+                    parts.Add($"Email: {SupplierEmail}");
+
+                return parts.Count > 0
+                    ? $"Supplier: {string.Join(" | ", parts)}"
+                    : string.Empty;
+            }
+        }
     }
 }

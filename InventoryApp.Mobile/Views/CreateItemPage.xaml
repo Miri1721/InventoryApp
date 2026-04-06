@@ -73,7 +73,7 @@
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Spacing="8">
-                        <Label Text="Supplier"
+                        <Label Text="Supplier Name"
                                FontSize="14"
                                FontAttributes="Bold"
                                TextColor="#374151" />
@@ -82,7 +82,35 @@
                                BackgroundColor="#F9FAFB"
                                TextColor="#111827"
                                PlaceholderColor="#9CA3AF"
-                               HeightRequest="48" />
+                               HeightRequest="48" />        
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Supplier Phone"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="#374151" />
+                        <Entry x:Name="SupplierPhoneEntry"
+                               Placeholder="Enter supplier phone"
+                               Keyboard="Telephone"
+                               BackgroundColor="#F9FAFB"
+                               TextColor="#111827"
+                               PlaceholderColor="#9CA3AF"
+                               HeightRequest="48" />        
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Supplier Email"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="#374151" />
+                        <Entry x:Name="SupplierEmailEntry"
+                               Placeholder="Enter supplier email"
+                               Keyboard="Email"
+                               BackgroundColor="#F9FAFB"
+                               TextColor="#111827"
+                               PlaceholderColor="#9CA3AF"
+                               HeightRequest="48" />        
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Spacing="8">
