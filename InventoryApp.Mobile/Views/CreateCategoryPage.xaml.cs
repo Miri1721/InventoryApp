@@ -35,11 +35,11 @@ public partial class CreateCategoryPage : ContentPage
                 OrganizationId = AppSession.OrganizationId
             };
 
-            var success = await _categoryApiService.CreateAsync(request);
+            var result = await _categoryApiService.CreateAsync(request);
 
-            if (!success)
+            if (!result.Success)
             {
-                MessageLabel.Text = "Failed to create category.";
+                MessageLabel.Text = result.ErrorMessage ?? "Failed to create category.";
                 return;
             }
 

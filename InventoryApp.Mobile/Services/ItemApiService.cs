@@ -17,16 +17,42 @@ namespace InventoryApp.Mobile.Services
             return result ?? new List<ItemModel>();
         }
 
-        public async Task<bool> CreateAsync(CreateItemRequest request)
+        public async Task<(bool Success, string? ErrorMessage)> CreateAsync(CreateItemRequest request)
         {
             var response = await _httpClient.PostAsJsonAsync("api/Item", request);
-            return response.IsSuccessStatusCode;
+
+            if (response.IsSuccessStatusCode)
+            {
+                return (true, null);
+            }
+
+            var errorMessage = await response.Content.ReadAsStringAsync();
+
+            if (string.IsNullOrWhiteSpace(errorMessage))
+            {
+                errorMessage = "Failed to create item.";
+            }
+
+            return (false, errorMessage);
         }
 
-        public async Task<bool> UpdateAsync(Guid itemId, UpdateItemRequest request)
+        public async Task<(bool Success, string? ErrorMessage)> UpdateAsync(Guid itemId, UpdateItemRequest request)
         {
             var response = await _httpClient.PutAsJsonAsync($"api/Item/{itemId}", request);
-            return response.IsSuccessStatusCode;
+
+            if (response.IsSuccessStatusCode)
+            {
+                return (true, null);
+            }
+
+            var errorMessage = await response.Content.ReadAsStringAsync();
+
+            if (string.IsNullOrWhiteSpace(errorMessage))
+            {
+                errorMessage = "Failed to update item.";
+            }
+
+            return (false, errorMessage);
         }
 
         public async Task<bool> DeactivateAsync(Guid itemId)

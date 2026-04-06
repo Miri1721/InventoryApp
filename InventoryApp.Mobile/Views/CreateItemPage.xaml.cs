@@ -87,11 +87,11 @@ public partial class CreateItemPage : ContentPage
                 SupplierEmail = supplierEmail
             };
 
-            var success = await _itemApiService.CreateAsync(request);
+            var result = await _itemApiService.CreateAsync(request);
 
-            if (!success)
+            if (!result.Success)
             {
-                MessageLabel.Text = "Failed to create item.";
+                MessageLabel.Text = result.ErrorMessage ?? "Failed to create item.";
                 return;
             }
 

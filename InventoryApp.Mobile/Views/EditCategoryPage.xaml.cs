@@ -39,11 +39,11 @@ public partial class EditCategoryPage : ContentPage
                 Description = description
             };
 
-            var success = await _categoryApiService.UpdateAsync(_category.CategoryId, request);
+            var result = await _categoryApiService.UpdateAsync(_category.CategoryId, request);
 
-            if (!success)
+            if (!result.Success)
             {
-                MessageLabel.Text = "Failed to update category.";
+                MessageLabel.Text = result.ErrorMessage ?? "Failed to update category.";
                 return;
             }
 

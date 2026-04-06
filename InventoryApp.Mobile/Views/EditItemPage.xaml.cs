@@ -66,11 +66,11 @@ public partial class EditItemPage : ContentPage
                 SupplierEmail = supplierEmail
             };
 
-            var success = await _itemApiService.UpdateAsync(_item.ItemId, request);
+            var result = await _itemApiService.UpdateAsync(_item.ItemId, request);
 
-            if (!success)
+            if (!result.Success)
             {
-                MessageLabel.Text = "Failed to update item.";
+                MessageLabel.Text = result.ErrorMessage ?? "Failed to update item.";
                 return;
             }
 

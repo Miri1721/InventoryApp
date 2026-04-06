@@ -25,14 +25,29 @@ namespace InventoryApp.Api.Controllers
                 return BadRequest("Category name is required.");
             }
 
+            var normalizedName = request.Name.Trim();
+
+            var existingCategory = _mongoDbService.Categories
+                .Find(c =>
+                    c.OrganizationId == request.OrganizationId &&
+                    !c.IsDeleted &&
+                    c.Name.ToLower() == normalizedName.ToLower())
+                .FirstOrDefault();
+
+            if (existingCategory != null)
+            {
+                return BadRequest("A category with this name already exists in this organization.");
+            }
+
             var category = new Category
             {
-                Name = request.Name,
+                Name = normalizedName,
                 Description = request.Description,
                 OrganizationId = request.OrganizationId
             };
 
             _mongoDbService.Categories.InsertOne(category);
+
             return Ok(new CategoryResponseDto
             {
                 CategoryId = category.CategoryId,
@@ -43,6 +58,7 @@ namespace InventoryApp.Api.Controllers
                 IsDeleted = category.IsDeleted
             });
         }
+
 
         [HttpGet("organization/{organizationId}")]
         public IActionResult GetByOrganization(Guid organizationId)
@@ -71,6 +87,21 @@ namespace InventoryApp.Api.Controllers
                 .Find(c => c.CategoryId == categoryId && !c.IsDeleted && c.IsActive)
                 .FirstOrDefault();
 
+            var normalizedName = request.Name.Trim();
+
+            var duplicateCategory = _mongoDbService.Categories
+                .Find(c =>
+                    c.CategoryId != categoryId &&
+                    c.OrganizationId == category.OrganizationId &&
+                    !c.IsDeleted &&
+                    c.Name.ToLower() == normalizedName.ToLower())
+                .FirstOrDefault();
+
+            if (duplicateCategory != null)
+            {
+                return BadRequest("A category with this name already exists in this organization.");
+            }
+
             if (category == null)
             {
                 return NotFound("Category not found.");
@@ -82,14 +113,14 @@ namespace InventoryApp.Api.Controllers
             }
 
             var update = Builders<Category>.Update
-                .Set(c => c.Name, request.Name)
+                .Set(c => c.Name, normalizedName)
                 .Set(c => c.Description, request.Description);
 
             _mongoDbService.Categories.UpdateOne(
                 c => c.CategoryId == categoryId,
                 update);
 
-            category.Name = request.Name;
+            category.Name = normalizedName;
             category.Description = request.Description;
 
             return Ok(new CategoryResponseDto

@@ -1,6 +1,5 @@
 ﻿using InventoryApp.Mobile.Models;
 using System.Net.Http.Json;
-using System.Text.Json;
 
 namespace InventoryApp.Mobile.Services
 {
@@ -12,16 +11,44 @@ namespace InventoryApp.Mobile.Services
             return result ?? new List<CategoryModel>();
         }
 
-        public async Task<bool> CreateAsync(CreateCategoryRequest request)
+        public async Task<(bool Success, string? ErrorMessage)> CreateAsync(CreateCategoryRequest request)
         {
             var response = await _httpClient.PostAsJsonAsync("api/Category", request);
-            return response.IsSuccessStatusCode;
+
+            if (response.IsSuccessStatusCode)
+            {
+                return (true, null);
+            }
+
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            errorMessage = errorMessage?.Trim().Trim('"');
+
+            if (string.IsNullOrWhiteSpace(errorMessage))
+            {
+                errorMessage = "Failed to create category.";
+            }
+
+            return (false, errorMessage);
         }
 
-        public async Task<bool> UpdateAsync(Guid categoryId, UpdateCategoryRequest request)
+        public async Task<(bool Success, string? ErrorMessage)> UpdateAsync(Guid categoryId, UpdateCategoryRequest request)
         {
             var response = await _httpClient.PutAsJsonAsync($"api/Category/{categoryId}", request);
-            return response.IsSuccessStatusCode;
+
+            if (response.IsSuccessStatusCode)
+            {
+                return (true, null);
+            }
+
+            var errorMessage = await response.Content.ReadAsStringAsync();
+            errorMessage = errorMessage?.Trim().Trim('"');
+
+            if (string.IsNullOrWhiteSpace(errorMessage))
+            {
+                errorMessage = "Failed to update category.";
+            }
+
+            return (false, errorMessage);
         }
 
         public async Task<bool> DeactivateAsync(Guid categoryId)

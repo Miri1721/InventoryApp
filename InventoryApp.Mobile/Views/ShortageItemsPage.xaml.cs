@@ -27,6 +27,9 @@ public partial class ShortageItemsPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+
+        ExportReorderReportButton.IsVisible = AppSession.Role == "Manager";
+
         await LoadShortageItemsAsync();
     }
 

@@ -25,9 +25,24 @@ namespace InventoryApp.Api.Controllers
                 return BadRequest("Item name is required.");
             }
 
+            var normalizedName = request.Name.Trim();
+
+            var existingItem = _mongoDbService.Items
+                .Find(i =>
+                    i.OrganizationId == request.OrganizationId &&
+                    i.CategoryId == request.CategoryId &&
+                    !i.IsDeleted &&
+                    i.Name.ToLower() == normalizedName.ToLower())
+                .FirstOrDefault();
+
+            if (existingItem != null)
+            {
+                return BadRequest("An item with this name already exists in this category.");
+            }
+
             var item = new Item
             {
-                Name = request.Name,
+                Name = normalizedName,
                 Description = request.Description,
                 CategoryId = request.CategoryId,
                 OrganizationId = request.OrganizationId,
@@ -127,6 +142,22 @@ namespace InventoryApp.Api.Controllers
                       .Find(i => i.ItemId == itemId && !i.IsDeleted && i.IsActive)
                       .FirstOrDefault();
 
+            var normalizedName = request.Name.Trim();
+
+            var duplicateItem = _mongoDbService.Items
+                .Find(i =>
+                    i.ItemId != itemId &&
+                    i.OrganizationId == item.OrganizationId &&
+                    i.CategoryId == item.CategoryId &&
+                    !i.IsDeleted &&
+                    i.Name.ToLower() == normalizedName.ToLower())
+                .FirstOrDefault();
+
+            if (duplicateItem != null)
+            {
+                return BadRequest("An item with this name already exists in this category.");
+            }
+
             if (item == null)
             {
                 return NotFound("Item not found.");
@@ -138,7 +169,7 @@ namespace InventoryApp.Api.Controllers
             }
 
             var update = Builders<Item>.Update
-                 .Set(i => i.Name, request.Name)
+                 .Set(i => i.Name, normalizedName)
                  .Set(i => i.Description, request.Description)
                  .Set(i => i.Unit, request.Unit)
                  .Set(i => i.CurrentQuantity, request.CurrentQuantity)
@@ -151,7 +182,7 @@ namespace InventoryApp.Api.Controllers
                 i => i.ItemId == itemId,
                 update);
 
-            item.Name = request.Name;
+            item.Name = normalizedName;
             item.Description = request.Description;
             item.Unit = request.Unit;
             item.CurrentQuantity = request.CurrentQuantity;
