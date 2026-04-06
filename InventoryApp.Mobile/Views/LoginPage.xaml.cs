@@ -48,7 +48,7 @@ public partial class LoginPage : ContentPage
 
             if (response == null)
             {
-                MessageLabel.Text = "No response received from server.";
+                MessageLabel.Text = "Login failed. Check credentials and try again";
                 return;
             }
 

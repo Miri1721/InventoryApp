@@ -30,6 +30,11 @@ public partial class DashboardPage : ContentPage
         _organizationApiService = organizationApiService;
         _userApiService = userApiService;
 
+        if (DeviceInfo.Idiom == DeviceIdiom.Phone)
+        {
+            ExportExcelButton.IsEnabled = false;
+        }
+
         NavigationPage.SetHasBackButton(this, false);
     }
 

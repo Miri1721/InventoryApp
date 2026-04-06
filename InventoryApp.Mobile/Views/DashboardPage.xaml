@@ -6,7 +6,7 @@
              BackgroundColor="#F7F9FC">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20,0,20,0" Spacing="5">
+        <VerticalStackLayout Padding="20,5,20,0" Spacing="5">
             <Frame Padding="15"
                    CornerRadius="20"
                    BorderColor="#E5E7EB"
@@ -129,7 +129,7 @@
                                 FlexLayout.Grow="1" />
 
                         <Button x:Name="ExportExcelButton"
-                                Text="Export Excel Report"
+                                Text="Export Excel Report (on PC)"
                                 Clicked="OnExportExcelReportClicked"
                                 Margin="0,0,12,12"
                                 CornerRadius="10"
