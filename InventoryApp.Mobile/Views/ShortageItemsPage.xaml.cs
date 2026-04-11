@@ -29,6 +29,7 @@ public partial class ShortageItemsPage : ContentPage
         base.OnAppearing();
 
         ExportReorderReportButton.IsVisible = AppSession.Role == "Manager";
+        ExportReorderReportButton.IsEnabled = (DeviceInfo.Idiom != DeviceIdiom.Phone);
 
         await LoadShortageItemsAsync();
     }
