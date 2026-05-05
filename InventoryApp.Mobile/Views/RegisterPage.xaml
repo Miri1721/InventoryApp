@@ -108,8 +108,8 @@
                                    FontSize="14"
                                    FontAttributes="Bold"
                                    TextColor="#374151" />
-
-                            <HorizontalStackLayout Spacing="20">
+        
+                            <VerticalStackLayout Spacing="10">
                                 <RadioButton x:Name="NewOrganizationRadioButton"
                                              Content="New organization"
                                              GroupName="OrganizationMode"
@@ -119,8 +119,9 @@
                                 <RadioButton x:Name="ExistingOrganizationRadioButton"
                                              Content="Existing organization"
                                              GroupName="OrganizationMode"
-                                             CheckedChanged="OnOrganizationModeChanged" />
-                            </HorizontalStackLayout>
+                                             CheckedChanged="OnOrganizationModeChanged" 
+                                             />
+                            </VerticalStackLayout>
                         </VerticalStackLayout>
                     </Frame>
 
